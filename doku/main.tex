@@ -1,0 +1,53 @@
+\documentclass[12pt]{article}
+
+\input{preamble}
+
+\begin{document}
+\sloppy
+\input{titlepage}
+
+\input{Kapitel/abstract}
+
+\input{inhaltsverzeichnis}
+% Abbildungsverzeichnis
+\addcontentsline{toc}{section}{Abbildungsverzeichnis} 
+\listoffigures 
+% Tabellenverzeichnis
+\addcontentsline{toc}{section}{Tabellenverzeichnis}
+\listoftables
+\newpage
+
+\phantomsection \addcontentsline{toc}{section}{Abkürzungsverzeichnis}
+\renewcommand\refname{Abkürzungsverzeichnis} \section*{Abkürzungsverzeichnis}
+\input{abkuerzungsverzeichnis}
+\newpage
+
+%% input Kapitel
+\input{Kapitel/einleitung}
+\input{Kapitel/analyse}
+\input{Kapitel/game_design_dokument}
+\input{Kapitel/implementierung}
+\input{Kapitel/interne_qualitaetssicherung}
+\input{Kapitel/testphase_beta}
+\input{Kapitel/optimierung}
+\input{Kapitel/release}
+
+\bibliographystyle{unsrt}
+\bibliography{literatur}
+\addcontentsline{toc}{section}{Literaturverzeichnis}
+
+
+
+\input{Kapitel/linklist}
+\input{Kapitel/game_design}
+\input{Kapitel/TODOs}
+
+%% Analyse ob spielen das Lernen fördert / ob man durch spielen lernt
+%% Analyse ob 2D oder 3D (Vor- NAchteile)
+%% Game genre und Physikbereiche
+%% Analyse Game Engines
+
+%% Spielkonzept
+
+
+\end{document}

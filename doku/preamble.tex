@@ -1,0 +1,53 @@
+%% Codierung
+\usepackage[utf8]{inputenc}
+%% Sprache
+\usepackage[ngerman]{babel}
+%% Anpassung der Seitenränder
+\usepackage[a4paper,lmargin={2cm},rmargin={2cm},tmargin={2.0cm},bmargin = {2.5cm}]{geometry}
+%% zum einbinden von Bildern
+\usepackage{graphicx} 
+
+\newcommand\circledmark[1][green]{%
+  \ooalign{%
+    \hidewidth
+    \kern0.65ex\raisebox{-0.9ex}{\scalebox{3}{\textcolor{#1}{\textbullet}}}
+    \hidewidth\cr
+    $\checkmark$\cr
+  }%
+}
+
+\newcommand\TODO[1]{\textcolor{red}{#1}}
+
+\usepackage{float}
+%% und zum positionieren der Bilder
+\usepackage[export]{adjustbox}
+%% Tabellen
+\usepackage{array}
+%% Einfärbung von Text
+\usepackage{color} 
+\usepackage{enumitem}
+%% findet Verwendung im Inhaltsverzeichnis
+\usepackage[hyphens]{url}
+%% versteckt die Hyperref-Links als normalen Text
+\usepackage[hidelinks]{hyperref}
+%% ermöglicht Querformat
+\usepackage{pdflscape}
+%% Quellcodelistings
+\usepackage{listings}
+\lstset{basicstyle=\footnotesize\ttfamily,breaklines=false} %monospace in listings
+%Weil latex Kacke ist
+\lstset{literate=%
+  {Ö}{{\"O}}1
+  {Ä}{{\"A}}1
+  {Ü}{{\"U}}1
+  {ß}{{\ss}}2
+  {ü}{{\"u}}1
+  {ä}{{\"a}}1
+  {ö}{{\"o}}1
+}
+%für Suche von Umlauten
+\usepackage[T1]{fontenc} 
+%% ermöglicht den Haken hinter den TODOs
+\usepackage{amssymb}
+%% für das Abkürzungsverzeichnis
+\usepackage{acronym}

@@ -193,11 +193,62 @@ Im Spiel wird die Reflexion hauptsächlich durch Spiegel hervorgerufen. Hierbei 
 \end{enumerate}
 Doch was genau bedeutet das?
 
-Der Einfallende Strahl repräsentiert den Lichtstrahl, der auf den Spiegel trifft. Der Reflektierende Strahl repräsentiert den Lichtstrahl, wie er vom Spiegel zurück geworfen wird. Das Einfallslot ist eine Hilfslinie, die senkrecht auf der Spiegelfläche, im Auftreffpunkt des Lichtstrahls liegt. Das Einfallslot kann als eine Art Zeiger betrachtet werden, da sie bei jeder Verdrehung des Spiegels eine andere Richtung einschlägt und somit die Lage des Spiegels charakterisiert. Der Einfallswinkel ist der Winkel zwischen dem einfallenden Lichtstrahl und dem Einfallslot. Der Reflexionswinkel ist der Winkel zwischen dem Lot und dem reflektiertem Strahl.
+Der Einfallende Strahl repräsentiert den Lichtstrahl, der auf den Spiegel trifft. Der Reflektierende Strahl zeigt, wie er vom Spiegel zurück geworfen wird. Das Einfallslot ist eine Hilfslinie, welche orthogonal auf der Spiegelfläche, im Auftreffpunkt des Lichtstrahls steht. Das Einfallslot kann als eine Art Zeiger betrachtet werden, da sie bei jeder Verdrehung des Spiegels eine andere Richtung einschlägt und somit die Lage des Spiegels charakterisiert. Der Einfallswinkel ist der Winkel zwischen dem einfallenden Lichtstrahl und dem Einfallslot. Der Reflexionswinkel ist der Winkel zwischen dem Lot und dem reflektiertem Strahl.
 \TODO{Aus dem Buch Seite 198-199)}
 
-Daraus folgt, dass der reflektierte Lichtstrahl genau den gleichen Winkel aufweist wie der einfallende Lichtstrahl. 
+Die 2. Regel gibt an, dass der Einfalls- und Reflexionswinkel gleich groß sind. Das bedeutet, dass der reflektierte Strahl den selben Winkel aufweist, wie der einfallende Strahl. Verdeutlicht wird dieses Regel durch das Bild in Abbildung \ref{reflecWinkel}.
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.09, center]{res/reflecWinkel.jpg}
+\caption{Reflektierender Lichtstrahl}
+\label{reflecWinkel}
+\end{figure}
+
+
 \subsubsection{Brechung}
+
+Doch wie können die einzelnen Winkel berechnet werden?\\
+Die Bestimmung des Auftrittswinkel $\alpha$ erfolgt ohne größeren Aufwand. Hierfür wird die Vector3.Angle()-Funktion aus Unity herangezogen, welche den Winkel zwischen dem einfallendem Lichtstrahl und dem Lot ermittelt. Die Berechnung des Brechungswinkels ist dahingegen nicht ohne weiteres möglich. Hierfür muss das Snelliussches Brechungsgesetz und der Brechungsindex der unterschiedlichen Materialien bekannt sein. Der Brechungsindex n ist eine physische Größe, die das Verhältnis der Lichtgeschwindigkeit im Vakuum und der Ausbreitungsgeschwindigkeit im Medien angibt. Die allgemeine Formel lautet: $n = \frac{c_0}{c_M}$, wobei $c_0$ die Vakuumlichtgeschwindigkeit und $c_M$ die Geschwindigkeit im Medium darstellt. Eine Beispielrechnung zeigt den Übergang von Luft zu Wasser:
+\begin{center}
+$n_{Luft\rightarrow Wasser} = \frac{c_{Luft}}{c_{Wasser}} = \frac{300.000\frac{km}{s}}{225.000\frac{km}{s}}$ = 1,33
+\end{center}
+In der nachfolgenden Tabelle werden die für dieses Projekt notwendigen Stoffe und ihre Brechzahlen dargestellt.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{l|c}
+\multicolumn{1}{c}{Stoff} & \multicolumn{1}{|c}{Brechungsindex n} \\ \hline \hline
+Wasser                    & 1.33                               \\ \hline
+Glas                      & 1.53                               \\ \hline
+Luft                      & 1.00                               \\ \hline
+Diamant                   & 2.40                               \\ \hline
+Eis                       & 1.31                               
+\end{tabular}
+\caption{Brechungsindex verschiedener Materialien}
+\label{brechungsindex}
+\end{table} 
+
+Das Brechungsgesetz weist die folgende Formel auf, woraufhin durch Umformung der Brechungswinkel $\beta$ berechnet werden kann: 
+\begin{center}
+$\frac{\sin\alpha}{\sin\beta}$ = $\frac{n_2}{n_1}$ $\Rightarrow$ $\beta$ $=$  $\arcsin\frac{\sin\alpha * n_1}{n_2}$
+\end{center}
+Tritt ein Lichtstrahl in einen Stoff, der eine Höhere Brechzahl aufweist als der Erste ($n_2 > n_1$), dann wird er zur orthogonalen hin gebrochen und $\beta$ ist kleiner als $\alpha$. Tritt jedoch der Strahl von einem Stoff mit einer hoher optischen Dichte in einem mit einer geringeren, so wird er von der orthogonalen weg gebrochen und $\beta$ ist kleiner als $\alpha$. Beim zweiten Fall ist zu beachten, dass $n_1$ die Brechzahl des \textit{optisch dichteren} und $n_2$ die des \textit{dünneren Stoffes} sind. Zur Berechnung und Veranschaulichung des Brechungswinkel müssen nur noch die entsprechenden Werte eingetragen und die Regeln beachtet werden. Dies wird Anhand zweier Beispiele gezeigt.
+
+\begin{enumerate}
+\item Beispiel: wenig dichter Stoff in dichter Stoff\\
+Gegeben sind die Brechzahlen für Luft $n_1$ = $n_L$ = 1 und Wasser $n_2$ = $n_W$ = 1.33 sowie der Einfallswinkel mit $\alpha$ = 50\degree.
+Nun wird in das Snelliussches Brechungsgesetz eingesetzt und der Brechungswinkel berechnet.
+\begin{center}
+$\frac{\sin\alpha}{\sin\beta}$ = $\frac{n_2}{n_1}$ $\Rightarrow$ $\frac{\sin 50\degree}{\sin\beta}$ = $\frac{1.33}{1}$ $\Rightarrow$ $\beta$ $=$  $\arcsin\frac{\sin 50 * 1}{1.33}$ $\Rightarrow$ $\beta = 35.1\degree$
+\end{center}
+
+\item Beispiel: dichter Stoff in wenig dichter Stoff\\
+Gegeben sind die Brechzahlen für Luft $n_2$ = $n_L$ = 1 und Glas $n_1$ = $n_G$ = 1.33 sowie der Einfallswinkel mit $\alpha$ = 30\degree.
+Nun wird in das Snelliussches Brechungsgesetz eingesetzt und der Brechungswinkel berechnet.
+\begin{center}
+$\frac{\sin\alpha}{\sin\beta}$ = $\frac{n_2}{n_1}$ $\Rightarrow$ $\frac{\sin 30\degree}{\sin\beta}$ = $\frac{1}{1.53}$ $\Rightarrow$ $\beta$ $=$  $\arcsin\frac{\sin 30 * 1.53}{1}$ $\Rightarrow$ $\beta = 49.9\degree$
+\end{center}
+\end{enumerate}
 
 
 \newpage

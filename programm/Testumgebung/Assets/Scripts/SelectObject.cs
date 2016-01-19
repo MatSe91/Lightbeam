@@ -2,24 +2,34 @@
 using System.Collections;
 
 public class SelectObject : MonoBehaviour {
+    private bool activated;
 
 	// Use this for initialization
 	void Start () {
+        activated = false;
 	
 	}
+
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.touchCount != 0)
+       if (Input.GetMouseButtonDown(0))
         {
-            Touch touch = Input.touches[0];
-            Ray ray = Camera.main.ScreenPointToRay(touch.position);
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 
-            if (Physics.Raycast(ray, out hit, 100f))
+            if (Physics.Raycast(ray, out hit))
             {
-                Debug.Log(hit.transform.gameObject.name);
+                if (hit.collider.gameObject.name == "Outer")
+                {
+                    if (!activated)
+                    {
+                        // hier muss iwie der rotator und linerenderer gestartet werden
+                        activated = true;
+                    }
+                   Debug.Log(hit.collider.gameObject.name);
+                }
             }
         }
     }

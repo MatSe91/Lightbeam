@@ -24,6 +24,11 @@ public class LaserBeam : MonoBehaviour {
         lr.useWorldSpace = true;
     }
 
+    void EnableLineRenderer()
+    {
+        lr.enabled = true;
+    }
+
     // Update is called once per frame
     void Update() {
         verti = 1;
@@ -40,18 +45,30 @@ public class LaserBeam : MonoBehaviour {
             lr.SetVertexCount(verti);
             if (Physics.Raycast(curPos, inDirection, out hit))
             {
+              // Debug.DrawRay(curPos, inDirection*40, Color.magenta);
+
+               // Debug.Log("Richtung: " + inDirection);
                 curPos = hit.point;
                 inDirection = Vector3.Reflect(inDirection, hit.normal);
                 lr.SetPosition(verti - 1, hit.point);
                 if (hit.transform.gameObject.tag != refTag)
                 {
-                    isActive = false;
+                     isActive = false;
+                }
+                if (hit.transform.gameObject.tag == refTag)
+                {
+                    float angle = Vector3.Angle(inDirection, hit.normal);
+                    Debug.DrawRay(curPos, hit.normal *3, Color.blue);
+
+                  Debug.Log("Game Object:"+ hit.transform.gameObject.name+", Winkel: " + angle);
+                    Debug.Log("Die Normale: "+hit.normal);
+
                 }
             }
             else
             {
                 isActive = false;
-                lr.SetPosition(verti - 1, 40 * inDirection);
+                lr.SetPosition(verti - 1,curPos+ 40 * inDirection);
 
             }
             if (verti > limit)

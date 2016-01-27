@@ -73,13 +73,11 @@
     <Compile Include="Assets\FastFakeSkin\Demo\Code\LookAt.cs" />
     <Compile Include="Assets\FastFakeSkin\Demo\Code\MapChanger.cs" />
     <Compile Include="Assets\FastFakeSkin\Demo\Code\Probe.cs" />
-    <Compile Include="Assets\Scripts\Beam.cs" />
-    <Compile Include="Assets\Scripts\Beam1.cs" />
     <Compile Include="Assets\Scripts\ControllingCameraResolution.cs" />
     <Compile Include="Assets\Scripts\ExitGameOnBackButton.cs" />
-    <Compile Include="Assets\Scripts\LaserBeam.cs" />
-    <Compile Include="Assets\Scripts\PlayerRotator2.cs" />
-    <Compile Include="Assets\Scripts\RaycastReflection.cs" />
+    <Compile Include="Assets\Scripts\LightBeam.cs" />
+    <Compile Include="Assets\Scripts\MirrorRotator.cs" />
+    <Compile Include="Assets\Scripts\PlayerRotator.cs" />
     <Compile Include="Assets\Scripts\SelectObject.cs" />
   </ItemGroup>
   <ItemGroup>

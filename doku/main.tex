@@ -6,7 +6,7 @@
 \sloppy
 \input{titlepage}
 
-\input{Kapitel/abstract}
+%%\input{Kapitel/abstract}
 
 \input{inhaltsverzeichnis}
 % Abbildungsverzeichnis
@@ -18,7 +18,7 @@
 \newpage
 
 \phantomsection \addcontentsline{toc}{section}{Abkürzungsverzeichnis}
-\renewcommand\refname{Abkürzungsverzeichnis} \section*{Abkürzungsverzeichnis}
+\section*{Abkürzungsverzeichnis}
 \input{abkuerzungsverzeichnis}
 \newpage
 
@@ -32,15 +32,14 @@
 \input{Kapitel/optimierung}
 \input{Kapitel/release}
 
-\bibliographystyle{unsrt}
+\phantomsection \addcontentsline{toc}{section}{Literatur}
 \bibliography{literatur}
-\addcontentsline{toc}{section}{Literaturverzeichnis}
+\bibliographystyle{unsrt}
 
 
 
-\input{Kapitel/linklist}
-\input{Kapitel/game_design}
-\input{Kapitel/TODOs}
+%%\input{Kapitel/linklist}
+%%\input{Kapitel/TODOs}
 
 %% Analyse ob spielen das Lernen fördert / ob man durch spielen lernt
 %% Analyse ob 2D oder 3D (Vor- NAchteile)

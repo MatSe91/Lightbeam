@@ -1,14 +1,212 @@
 \section{Game Design Document}
 \label{ganmeDesignDoku}
 \subsection{Geschichte / Story}
+\subsubsection{Ziel des Spiels}
+Das Ziel des Spiels ist es, einen Samen mit Licht zu versorgen, sodass dieser zu einem Weltenbaum heranwächst. Dafür werden mehrere Level durchlaufen, in dem ein Lichtstrahl durch unterschiedliche Spielelemente von einem Startpunkt zu einem Zielpunkt (Samen des Baums) geleitet wird.
 
-\subsection{Charaktere}
-\subsection{Level/Umgebungen}
-\subsection{Gameplay}
-\subsection{Steuerung}
-\subsection{Kunst}
+\subsection{Level und Menüs}
+\subsubsection{Menü}
+\begin{description}
+
+\item [Hauptmenü] \hfill \\
+siehe Zeichnung (nicht eingefügt)
+
+\item [Optionsmenü] \hfill \\
+siehe Zeichnung (Play und Optionen Buttons)(nicht eingefügt)
+
+\item [Abschlussdarstellung] \hfill \\
+Siehe Zeichnung
+Es ist möglich das Level Neuzustarten, das nächste Level zu starten, in die Levelansicht zu wechseln und/oder das gerade gespielte Level komplett zu betrachten. 
+\end{description}
+\subsubsection{Levelkonzept}
+Das Konzept dieses Spiels beruht auf die Verwendung mehrerer aneinandergereihter Bereiche, die den Charakter eines Sidescrollers aufweisen. Zu Beginn des Spiels weisen die Levels nur einen Bereich auf. Diese Level dienen der Orientierung und das Verstehen der unterschiedlichen Spielfunktionen. In den weiterführenden Level steigt die Anzahl der Bereiche, die gelöst werden müssen, um das Ziel zu erreichen. Der Wechsel zwischen den Bereichen erfolgt allerdings nicht autonom. Hierfür muss am Ende eines jeden Bereiches ein Checkpoint mit dem Lichtstahl angeleuchtet werden. Durch zusätzliches berühren dieses Punktes wird der aktuelle Bereich beendet und der neue freigeschaltet. Das zeigt sich durch verschieben der Kamera in eine Richtung, bis sich der Checkpoint am Anfang des Screens befindet. Durch das selbstständige Ausstrahlen des Lichtstrahls fungiert er als eine Art 2. Startpunkt. Die Zugehörigkeiten zwischen die Anzahl der Bereiche und die Level sind in Tabelle \ref{screenLevel} aufgezeigt. Neue Level werden durch den Abschluss des vorherigen Levels und  eine definierte Anzahl an Collectables freigeschaltet. Im Durchschnitt sind 3 Coll. gedacht.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{c|c}
+Levelbereich & Anzahl der Screens / Bereiche \\ \hline
+1 - 5  & 1 Screen \\ 
+6 - 15 & 2 Screens \\
+16 - 25 & 3 Screens      
+\end{tabular}
+\caption{Anzahl Screens in Levelbereiche}
+\label{screenLevel}
+\end{table}
+
+\subsubsection{Anzahl Collectables im Level}
+Jedes Level besitzt eine genau definierte Anzahl Collectables, welche für die Freischaltung neuer Level benötigt werden. Der Zusammenhang zwischen Collectable, Bereich und Level wird in Tabelle \ref{collect_Level} gezeigt. Insgesamt können somit nach Abschluss des letzten Level 110 Collectables gesammelt werden.
+\begin{table}[H]
+\centering
+\begin{tabular}{l|c|c|c}
+Levelbereich & \begin{tabular}[c]{@{}c@{}}Anzahl Collectable \\ pro Bereich\end{tabular} & \begin{tabular}[c]{@{}c@{}}Anzahl Collectable \\ pro Level\end{tabular} & \begin{tabular}[c]{@{}c@{}}Gesamte Collectables \\ dieser Levelspanne\end{tabular}  \\ \hline
+Lv 1 - 5 &2  &2  &10   \\ 
+Lv 6 - 15&2  &4  &40  \\
+Lv 16 - 25 &2  &6  &60
+\end{tabular}
+\caption{Anzahl Collectables}
+\label{collect_Level}
+\end{table}
+
+\subsubsection{Setting}
+Das Setting beschreibt die Umgebung und die Konzeption der einzelnen Level. Folgende Settings werden verwendet:
+
+\begin{itemize}
+\item Höhle
+\item Erdoberfläche/Wiese
+\item Wald
+\item Baumkrone
+\item Bauminneres (optional)
+\item Himmel (optional)
+\end{itemize}
+
+\subsection{Spielelemente}
+\begin{enumerate}
+\item \textbf{Spiegel} \hfill \\
+Ein Spiegel ist ein Game Objekt, welches den Lichtstrahl reflektiert. Hierbei wird die korrekte Reflexion nach physikalischen Gesetzen angewendet. Werden Spiegel von hinten angeleuchtet erfolgt keine Reflexion. Alle Spiegeltypen werden mit einer vordefinierten Richtung im Spiel angebracht.
+
+Der Spiegel ist als abstrakte Form zu sehen und weist deshalb keine grafischen Elemente und Interaktionsmöglichkeiten auf. Diese werden bei den spezifischen Spiegeltypen definiert.
+
+\begin{enumerate}
+    \item \textbf{Rotierender Spiegel} \hfill \\
+    Der rotierende Spiegel befindet sich an einer definierten Stelle im Spiel. Durch antippen des Game Objektes wird dieser markiert und kann durch wischen um insgesamt 140$\degree$ verdreht werden. Der rückseitige Mittelpunkt befindet sich an der Wand und stellt die Verbindung mit der Wand sicher. Der Lichtstrahl wird entsprechend des Auftrittswinkels auf der Spiegelfäche reflektiert.
+    
+    \TODO{TODO: Aussehen des Spiegels}
+    
+    \item \textbf{Spiegel mit Farbeinschränkungen} \hfill \\
+    Der Spiegel mit Farbeinschränkungen kann als fester, rotierender oder beweglicher Spiegel auftreten. Die Funktionalität sowie die Interaktionsmöglichkeiten beschränken sich auf die Spiegeltypen. Eine zusätzliche Funktionalität wird durch die veränderte Farbe des Lichtstrahls herbeigeführt. Hierbei kann nur der Strahl reflektiert werden, wie auch der Spiegel aufweist.
+    
+    \TODO{TODO: Aussehen des Spiegels}
+    
+    \TODO{TODO: verschiedene Farben $\rightarrow$ Spiegel Rot $=$ roter Strahl wird reflektiert}
+    
+    \item \textbf{Beweglicher Spiegel} \hfill \\
+    Der bewegliche Spiegel ist ein Game Objekt, der auf einer definierten Linie verschoben werden kann. Der Spiegel selbst kann allerdings nicht rotiert werden. Durch anklicken des Game Objektes wird der Spiegel ausgewählt, der dann wiederum durch wischen bewegt werden kann.
+    
+    \TODO{TODO: Aussehen der Linie}
+    
+    \TODO{TODO: Aussehen Spiegel}
+    
+    \item \textbf{Fester Spiegel} \hfill \\
+    Der feste Spiegel ist ein unbewegliches Game Object, welches lediglich den Lichtstrahl reflektiert. Dieser Spiegel stellt keine weiteren Interaktionsmöglichkeiten zur Verfügung.
+    
+    \TODO{TODO: Aussehen des Spiegels}
+\end{enumerate}
+
+\item \textbf{Prisma} \hfill \\
+Das Prisma ist ein Game Objekt, das den Lichtstrahl in seine Spektralfarben aufteilt. Hierbei ist der Auftreffpunkt ausschlaggebend, da dieser den Verlauf der weiteren Lichtstrahlen definiert. Eine direkte Interaktion über Berührung ist nicht möglich.
+
+Das Prisma hat die Form eines Edelsteins, welcher bunt schimmert. Die schimmernden Farben setzen sich aus den Spektralfarben zusammen, die sich langsam abwechseln.
+
+\item \textbf{Wasserfall} \hfill \\
+Ein Wasserfall weist eine ähnliche Funktionalität wie ein Prisma auf. Sobald der Lichtstrahl die Wasseroberfläche (eigentlich den Nebel vom Wasserfall) trifft wird der Strahl in seine Spektren aufgeteilt. Diese neu entstandenen Lichtstrahlen (insgesamt sieben: Rot, Orange, Gelb, Grün, Hellblau, Indigo und Violett) fallen in einem Bogen zum Erdboden. Es ist egal in welchem Winkel der Strahl auf den Wasserfall trifft, genau an der Schnittstelle beider Elemente wird der Regenbogen generiert. Der Wasserfall selbst besitzt keine weiteren Interaktionsmöglichkeiten.
+
+\TODO{TODO: Beschreibung Aussehen des Wasserfalls}
+
+\TODO{TODO: Wasserfall (und ggf. Nebel) wird animiert}
+
+\item \textbf{Türmechanismus} \hfill \\
+Es existieren Tore, die den Weg des Lichtstrahls versperren. Diese Tore müssen über einen Schalter geöffnet werden. Der Türmechanismus unterscheidet sich in zwei Typen:
+\begin{enumerate}
+\item \textbf{Einmaliges Anleuchten des Schalters}\hfill \\
+Hierbei muss der Lichtstrahl nur eine kurze Zeit auf den Schalter gerichtet sein. Dieser lädt sich innerhalb von zwei Sekunden auf, danach wird das Tor durch eine Animation dauerhaft geöffnet.
+\item \textbf{Dauerhaftes Anleuchten des Schalters}\hfill \\
+Hierbei muss der Lichtstrahl dauerhaft auf den Schalter leuchten, sodass sich das Tor öffnet und auch geöffnet bleibt. Der Schalter lädt sich eine kurze Zeit auf. Dann erfolgt eine Animation, wie sich das Tor öffnet, bzw. schließt.
+\end{enumerate}
+Beiden Typen können nicht miteinander kombiniert werden (für eine Tür), da beide Typen das selbe Design aufweisen. Es können allerdings mehrere Schalter eines Typs für ein Tor verwendet werden.
+
+\TODO{TODO: Beschreibung Aussehen der Schalter $\rightarrow$ Sozalzelle}
+
+\TODO{TODO: Beschreibung Aussehen der Tore $\rightarrow$ Textur aus Stein/Holz/Blätter-platten, abhängig vom Level}
+
+\TODO{TODO: Beschreibung Aussehen der Türöffnungsanimation}
+
+\item \textbf{Wasser} \hfill \\
+Das Medium Wasser ist zuständig für eine weitere physikalische Besonderheit: die Brechung des Lichts. Hierbei soll der Lichtstrahl am Auftrittspunkt M im Wasser gebrochen werden. Zeitgleich erfolgt eine Reflexion auf der Oberfläche. Man kann den Strahl nur in, bzw. aus dem Wasser führen, wobei immer die physikalischen Gegebenheiten beachtet werden. Eine direkte Interaktion ist nicht vorgesehen.
+
+Das Wasser ist nur aus der Seitenperspektive sichtbar. Hierbei wird eine waagerechte Linie durch das Bild gezogen und das Wasser etwas bläulich eingefärbt. Dadurch ist es als solches erkennbar.
+
+\item \textbf{Glas} \hfill \\
+Glas weist das selbe Prinzip wie Wasser auf. Der Lichtstrahl trifft auf Glas, woraufhin der Strahl gebrochen und reflektiert wird.
+
+\TODO{TODO: Interaktionsmöglichkeiten? / braucht man Glas?}
+
+\TODO{TODO: Aussehen des Glases beschreiben}
+
+\item \textbf{Hintergrund} \hfill \\
+Der Hintergrund dient der Umgebungsgestaltung. Hierbei sind also keinerlei Interaktionsmöglichkeiten verbunden. 
+
+Der Hintergrund besteht aus Felsen, Berge, Bäume und anderen Pflanzen. Durch geschicktes anordnen der Assets aus dem 2- und 3D-Bereich entsteht der Eindruck einer 3D-Umgebung. Zudem wird der Hintergrund in seinen natürlichen Farben dargestellt.
+
+\item \textbf{Vordergrund} \hfill \\
+Auch der Vordergrund dient der Umgebungsgestaltung. Hierbei sind allerdings auch Interaktionsmöglichkeiten gegeben. Einige dieser sind die Steuerung des Lichtstrahl sowie der anderen Game Objekte.
+
+Assets wie Felsen, Gräser, Steine und andere dienen als Wände und somit als Begrenzung des Spielfeldes. Die Assets befinden sind in einem minimalistischen Zustand, das heißt, sie sind nur als schwarze und graue Flächen zu erkennen. Erst bei einsammeln der Collectables wird der Vordergrund in Farbe gehüllt.
+
+\item \textbf{Lichtstrahl} \hfill \\
+Der Lichtstrahl ist das eigentliche Spielelement, wobei eine direkte Interaktion nicht möglich ist. Das wird mit der linearen, gleichmäßigen Ausbreitung des Lichts begründet. Die Steuerung der Lichtstrahl erfolgt vom jeweiligen Ausgangspunkt. Das bedeutet, das Game Objekt, welches den Lichtstrahl erzeugt, bzw. reflektiert sind die eigentlichen Steuerelemente. Der Strahl selbst ist immer geradlinig und wird ggf. an Spiegel reflektiert oder gebrochen oder endet an den Wänden. Trifft er auf Wände oder auf nicht reflektierende Game Objekte wird eine Animation erzeugt, die das Strahlende zeigt. Er wird unterschieden in zwei Typen:
+\begin{enumerate}
+\item \textbf{Normaler Lichtstrahl} \hfill \\
+Der Normale Lichtstrahl wird als weißer Strahl mit einer Animation dargestellt. Diese Animation lässt den Strahl "{}lebendig"{} wirken. Zudem werden Partikeleffekte verwendet, um den Strahl optisch aufzuwerten.
+\item \textbf{Farbiger Lichtstrahl} \hfill \\
+Der farbige Lichtstrahl besitzt genau die selben Eigenschaften wie der normale. Der einzige Unterschied besteht darin, das der Strahl nicht weiß, sondern eine andere Farbe besitzt. Er kann folgende Farben annehmen: \textcolor{red}{\textbf{Rot}}, \textcolor{orange}{\textbf{Orange}},  \textcolor{yellow}{\textbf{Gelb}}, \textcolor{green}{\textbf{Grün}}, \textcolor{cyan}{\textbf{Hellblau}}, \textcolor{indigo}{\textbf{Indigo}} und \textcolor{violet}{\textbf{Violett}}
+\end{enumerate}
+
+\item \textbf{Startpunkt} \hfill \\
+Der Startpunkt eines jeden Level erzeugt den Lichtstrahl. Durch einmaligen berühren des Startpunktes aktiviert sich dieser mit einer Animation und der Lichtstrahl wird dauerhaft erzeugt. Ein erneutes auswählen lässt den Lichtstrahl nicht verschwinden, sondern wählt das Game Objekt aus, sodass der Lichtstrahl um 360\degree rotiert werden kann. Der Strahl steht somit im direkten Zusammenhang zum Startpunkt. Die Rotation wird durch wischen oder tippen auf eine beliebige Stelle im Spiel erzeugt. Der Lichtstrahl und somit die Ausrichtung des Startpunktes orientiert sich an der Position an dem der Bildschirm berührt wird.
+
+Der Startpunkt soll in Form einer Sonnenblume dargestellt werden. Diese befindet sich zuerst in einem nicht-erblühten Zustand. Beim Antippen des Game Objektes startet eine Animation, die nicht länger als zwei Sekunden dauert. Lichtpartikel sammeln sich aus der Luft an der Sonnenblume, zusätzlich erblüht diese. Die Lichtpartikel verschwinden und ein Lichtstrahl generiert sich aus der Blüte. Die Blüte kann um 360\degree rotiert werden.
+
+\item \textbf{Zielpunkt} \hfill \\
+Der Zielpunkt stellt das Ziel eines jeden Levels dar. 
+Sobald das Ziel mit dem Licht angestrahlt wird, ist das Levels gelöst. Durch das Berühren des Zielpunkts kann der Spieler das Level beenden. Falls dieser alle Collectables eingesammelt hat erstrahlt auch der letzte Levelabschnitt in Farbe und der Endscreen dieses Levels wird angezeigt.
+
+Je nach Fortschritt und Zustand des Baums wird der Zielpunkt anders dargestellt. Dies beginnt mit einem Samen und verändert sich im laufe des Spiels zu einem Sprössling und weiter zu einem Baum, welcher das Licht benötigt um weiter zu wachsen.
+
+\item \textbf{Checkpoint} \hfill \\
+Der Checkpoint innerhalb eines Levels verbindet die einzelnen Levelabschnitte miteinander und erlaubt das weiter Scrollen des Bildschirms zum nächsten Teil des Levels.
+Sobald der Lichtstrahl auf den Checkpoint trifft leuchtet der Checkpoint auf und ermöglicht dem Spieler durch eine Berührung dieses Elements in den nächsten Abschnitt zu gelangen. Wenn alle Collectables innerhalb des Abschnitt gesammelt wurden, erstrahlt dieser in Farben. 
+
+Der Kontrollpunkt soll in Form einer kleineren Sonnenblume dargestellt werden. Diese befindet sich zuerst in einem nicht-erblühten Zustand. Die Pflanze erblüht beim Berühren während der Lichtstrahl darauf leuchtet. 
+
+\item \textbf{Collectable-Pflanze} \hfill \\
+Die Col.-Pflanze wird als Vorder- und Hintergrund Stilmittel eingesetzt, um die Umgebung zu gestalten. Dieses Game Objekt steht immer im direkten Zusammenhang mit einem Collectable. Eine Interaktion ist allerdings nicht möglich.
+
+Die Col.-Pflanze ist eine Blume / Blüte, die zu Beginn eine Knospe ist. Beim "{}Einsammeln"{} eines Collectables fällt dieser auf die Col.-Pflanze, welche wiederum aufblüht und die Umgebung in Farbe hüllt. 
+
+\TODO{TODO: Überlegen welche Pflanze schön dazu passt.}
+
+\item \textbf{Wand} \hfill \\
+Die Wände dienen als Spielfeldbegrenzung oder als Hindernisse, welche den Lichtstrahl blockieren. Mit den Wänden ist keine Interaktion möglich. Es ist dem Lichtstrahl nicht möglich durch die Wand zu strahlen.
+
+Wände können durch unterschiedlichste Assets zusammengesetzt sein. Diese sind unter anderen Felsen, Steine und Bäume. Auch die Wände befinden sich in einem minimalistischen Zustand und werden daher in Schwarz / Grau dargestellt. Eine farbige Gestaltung erfolgt bei einsammeln eines Collectables.
+
+\item \textbf{Collectables} \hfill \\
+Collectables sind Game Objekte, welche gesammelt werden können. Das erfolgt allerdings nicht durch Antippen, sondern durch anstrahlen des Lichts. Sie werden erst bei Abschluss des Levels oder des Bereiches eingesammelt, unter der Bedingung, dass noch immer das Collectable angeleuchtet wird. Mit Ihnen ist keine direkte Interaktion möglich. 
+
+Das Collectable hat die Form eines Wassertropfens. Dieser ist halbdurchsichtig und bläulich eingefärbt. 
+
+%\item \textbf{Weltenbaum} \TODO{TODO} \hfill \\
+%
+%Der Weltenbaum dient als Levelauswahlmenü und wird je nach Anzahl der freigeschalteten Level größer und umfangreicher gestaltet. Folgende Stadien des Baumes sind möglich Samen/Knospe/Strauch/Baum etc. Das Ziel des Spiels ist es den Baum zum wachsen zu bringen und ihn in seine vollste Pracht zu bringen.
+
+\end{enumerate}
+\subsection{Grafikdesign}
+\subsubsection{Grafikstil des Spiels}
+Das Spiel ist in einem schlichten, minimalistischen Design gehalten. Zu Beginn sind nur wenige Farben erkennbar, diese sind unter anderem schwarz-weiß, verschiedene Graustufen und Grüntöne. Durch Einsammeln der Collectables und Aktivierung des Checkpoints oder Zielpunktes werden in einem definierten Bereich alle Assets farblich gestaltet. Sind alle Collectables in einem Level eingesammelt werden auch alle Assets im gesamten Bereich farblich dargestellt.
+
+\subsubsection{Verwendete Assets}
+Für die Spielelemente sowie das Design der Level werden u.a. die Assets "{}Stylized Jungle Pack"{}\cite{jungle} und {}"2D Forest Pack"{} \cite{forest} vom schwedischen Grafikdesigner Mikael Gustafsson, welche über den Assetstore von Unity erworben wurden, verwendet. Diese entsprechen unseren Vorstellungen über das Spiel und tragen viel zur Immersion der Spielwelt bei.
+
 \subsection{Musik}
-\subsection{User Interface}
+\subsection{Spezifikation}
+\begin{description}
+\item [Horizontale Verwendung] \hfill \\
+Das Spiel wird nur in der Horizontalen Perspektive des Geräts dargestellt.
+
+\item [Automatische Speicherung] \hfill \\
+Das Spiel soll nach jedem Level automatisch gespeichert werden. Dafür wird lokal eine Speicherdatei erzeugt, die im Game Ordner versteckt angelegt wird. Die bereits vorhandene Optional wäre den Spielstand in die Googleplay Cloud zu laden.
+\end{description}
+
 \subsection{Spielmechaniken}
 
 \newpage

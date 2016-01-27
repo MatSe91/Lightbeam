@@ -24,19 +24,12 @@
 %% Tabellen
 \usepackage{array}
 %% Einfärbung von Text
-\usepackage{color} 
+\usepackage{xcolor} 
 \usepackage{enumitem}
 %% findet Verwendung im Inhaltsverzeichnis
 \usepackage[hyphens]{url}
 %% versteckt die Hyperref-Links als normalen Text
-%% Informationen werden in PDF-Eigenschaften geschrieben
-\usepackage[%
-hidelinks,%
-  pdftitle={Entwicklung eines Physikspiels, welches Physik spielerisch lehrt, auf Basis einer Engine},%
-  pdfauthor={Roman Jung und Matthias Seyfarth},%
-  pdfsubject={Entwicklung eines Physikspiels},%
-  pdfproducer={PDFLaTeX},%
-  pdfkeywords={Game; Spiel; lernen; lehren; Counter Strike; Engine; Unity; Studienarbeit; DHBW; Karlsruhe; Informatik}]{hyperref}
+\usepackage[hidelinks]{hyperref}
 %% ermöglicht Querformat
 \usepackage{pdflscape}
 %% Quellcodelistings
@@ -60,3 +53,7 @@ hidelinks,%
 \usepackage{acronym}
 %% dadurch kann man \degree (°) anwenden
 \usepackage{gensymb}
+%%Farbe Indigo definiert
+\definecolor{indigo}{rgb}{0.0, 0.25, 0.42}
+%%Fußnote in Tabellen
+\usepackage{footnote}

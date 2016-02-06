@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class PlayerRotator : MonoBehaviour {
-    private bool rotatable;
+    private bool active;
     private Vector3 pos;
     private Vector3 dir;
     private float angle;
@@ -11,21 +11,21 @@ public class PlayerRotator : MonoBehaviour {
 
     // Use this for initialization
     void Start() {
-        rotatable = true;
+        active = true;
         lightBeam.SetActive(true);
 
     }
 
-    void setRotatable(bool rot)
+    void setActiveGameObject(bool rot)
     {
-        rotatable = rot;
+        active = rot;
     }
 
     void Update() {
 
        if (Input.GetKey(KeyCode.Mouse0) || Input.GetKeyUp(KeyCode.Mouse0))
        {
-         if (rotatable)
+         if (active)
            {
                 // positioniert die Anzeige genau auf die Maus / Touch
                 pos = Camera.main.WorldToScreenPoint(transform.position);

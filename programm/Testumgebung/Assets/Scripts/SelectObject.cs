@@ -51,14 +51,17 @@ public class SelectObject : MonoBehaviour {
                     // wenn das Spiel gestartet wurde darfst du arbeiten
                     if (gameStarted)
                     {
-                        // und setze Rotierbarkeit auf true
-                        inUse.SendMessage("setRotatable", true);
 
-                        // wenn ein neues Objekt gewählt wurde, setze das Alte auf nicht rotierbar
+                        Debug.Log("foo" + inUse, inUse);
+                        // wenn ein neues Objekt gewählt wurde, setze das Alte auf nicht nicht aktiv
                         if (sameObject != null && !sameObject.Equals(inUse))
                         {
-                            sameObject.SendMessage("setRotatable", false);
+
+                            sameObject.SendMessage("setActiveGameObject", false);
                         }
+                        // und setze Rotierbarkeit auf true
+                            inUse.SendMessage("setActiveGameObject", true);
+
 
                     }
 

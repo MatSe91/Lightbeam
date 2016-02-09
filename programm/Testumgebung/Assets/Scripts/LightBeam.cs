@@ -11,6 +11,9 @@ public class LightBeam : MonoBehaviour {
     public string refTag; //tag it can reflect off.
   //  public int Distanz; //max distance for beam to travel.
     public int limit; // max reflections
+    public GameObject checkPoint1;
+    public GameObject checkPoint2;
+
     private int verti = 1; //segment handler don't touch.
 
 
@@ -55,14 +58,21 @@ public class LightBeam : MonoBehaviour {
                 {
                      isActive = false;
                 }
+
                 if (hit.transform.gameObject.tag == refTag)
                 {
                     float angle = Vector3.Angle(inDirection, hit.normal);
-                 //   Debug.DrawRay(curPos, hit.normal *3, Color.blue);
 
-                //  Debug.Log("Game Object:"+ hit.transform.gameObject.name+", Winkel: " + angle);
-                  //  Debug.Log("Die Normale: "+hit.normal);
+                }
 
+                if (hit.transform.gameObject.Equals(checkPoint1))
+                {
+
+                    checkPoint1.transform.GetChild(0).gameObject.SetActive(true);
+                }
+                else
+                {
+                    checkPoint1.transform.GetChild(0).gameObject.SetActive(false);
                 }
             }
             else

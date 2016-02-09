@@ -52,16 +52,15 @@ public class SelectObject : MonoBehaviour {
                     if (gameStarted)
                     {
 
-                        Debug.Log("foo" + inUse, inUse);
-                        // wenn ein neues Objekt gewählt wurde, setze das Alte auf nicht nicht aktiv
+                       // Debug.Log("foo" + inUse, inUse);
+                        // wenn ein neues Objekt gewählt wurde, setze das Alte auf passiv
                         if (sameObject != null && !sameObject.Equals(inUse))
                         {
 
                             sameObject.SendMessage("setActiveGameObject", false);
                         }
-                        // und setze Rotierbarkeit auf true
+                        // und setze Objekt auf aktiv
                             inUse.SendMessage("setActiveGameObject", true);
-
 
                     }
 

@@ -11,11 +11,9 @@ public class LightBeam : MonoBehaviour {
     public string refTag; //tag it can reflect off.
   //  public int Distanz; //max distance for beam to travel.
     public int limit; // max reflections
-    public GameObject checkPoint1;
-    public GameObject checkPoint2;
-
+    public LayerMask mask;
+    private GameObject oldObject;
     private int verti = 1; //segment handler don't touch.
-
 
 
 
@@ -25,11 +23,7 @@ public class LightBeam : MonoBehaviour {
         lr.enabled = true;
         lr.SetWidth(0.2f, 0.2f);
         lr.useWorldSpace = true;
-    }
 
-    void EnableLineRenderer()
-    {
-        lr.enabled = true;
     }
 
     // Update is called once per frame
@@ -48,12 +42,10 @@ public class LightBeam : MonoBehaviour {
             lr.SetVertexCount(verti);
             if (Physics.Raycast(curPos, inDirection, out hit))
             {
-              // Debug.DrawRay(curPos, inDirection*40, Color.magenta);
-
-               // Debug.Log("Richtung: " + inDirection);
                 curPos = hit.point;
                 inDirection = Vector3.Reflect(inDirection, hit.normal);
                 lr.SetPosition(verti - 1, hit.point);
+
                 if (hit.transform.gameObject.tag != refTag)
                 {
                      isActive = false;
@@ -65,20 +57,21 @@ public class LightBeam : MonoBehaviour {
 
                 }
 
-                if (hit.transform.gameObject.Equals(checkPoint1))
+                if ((mask.value & 1 << hit.transform.gameObject.layer) == 1 << hit.transform.gameObject.layer)
                 {
-
-                    checkPoint1.transform.GetChild(0).gameObject.SetActive(true);
-                }
-                else
-                {
-                    checkPoint1.transform.GetChild(0).gameObject.SetActive(false);
+                    ActivateCheckPoint(hit.transform.gameObject, true);
+                    oldObject = hit.transform.gameObject;
                 }
             }
             else
             {
                 isActive = false;
                 lr.SetPosition(verti - 1,curPos+ 40 * inDirection);
+
+                if (oldObject != null)
+                {
+                    ActivateCheckPoint(oldObject, false);
+                }
 
             }
             if (verti > limit)
@@ -88,4 +81,10 @@ public class LightBeam : MonoBehaviour {
 
         }
     }
+
+    private void ActivateCheckPoint(GameObject checkP, bool bo)
+    {
+        checkP.GetComponent<CheckPTouchCollider>().setBeamConnectivity(bo);  
+    }
+
 }

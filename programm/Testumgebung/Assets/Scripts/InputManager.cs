@@ -2,12 +2,12 @@
 using System.Collections;
 using System;
 
-public class SelectObject : MonoBehaviour {
+public class InputManager : MonoBehaviour {
 
     private GameObject inUse;
     private GameObject sameObject;
     private bool gameStarted;
-    public GameObject Outer;
+    public GameObject PlayerChild;
 
 	// Use this for initialization
 	void Start () {
@@ -41,10 +41,10 @@ public class SelectObject : MonoBehaviour {
                     inUse = inUse.transform.parent.gameObject;
 
                     // Wird der Lichtkörper angeklickt starte das Spiel und aktiviere Script PlayerRotator2
-                    if (!gameStarted && inUse.Equals(Outer))
+                    if (!gameStarted && inUse.Equals(PlayerChild))
                     {
                         gameStarted = true;
-                        Outer.GetComponent<PlayerRotator>().enabled = true;
+                        PlayerChild.GetComponent<PlayerRotator>().enabled = true;
                        //  Debug.Log("Spiel Gestartet:" + gameStarted );
                     }
                     
@@ -52,7 +52,7 @@ public class SelectObject : MonoBehaviour {
                     if (gameStarted)
                     {
 
-                       // Debug.Log("foo" + inUse, inUse);
+                        // Debug.Log("foo" + inUse, inUse);
                         // wenn ein neues Objekt gewählt wurde, setze das Alte auf passiv
                         if (sameObject != null && !sameObject.Equals(inUse))
                         {

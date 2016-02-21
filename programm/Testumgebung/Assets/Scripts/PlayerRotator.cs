@@ -12,7 +12,8 @@ public class PlayerRotator : MonoBehaviour {
     // Use this for initialization
     void Start() {
         active = true;
-        lightBeam.SetActive(true);
+        lightBeam.GetComponent<LightBeam>().enabled = true;
+       //ightBeam.SendMessage("setBeamActive", true);
 
     }
 

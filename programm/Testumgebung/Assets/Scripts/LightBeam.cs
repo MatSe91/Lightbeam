@@ -11,7 +11,7 @@ public class LightBeam : MonoBehaviour {
     public string refTag; //tag it can reflect off.
   //  public int Distanz; //max distance for beam to travel.
     public int limit; // max reflections
-    public LayerMask mask;
+    public LayerMask mask; 
     private GameObject oldObject;
     private int verti = 1; //segment handler don't touch.
 
@@ -42,6 +42,8 @@ public class LightBeam : MonoBehaviour {
             lr.SetVertexCount(verti);
             if (Physics.Raycast(curPos, inDirection, out hit))
             {
+
+               // Debug.Log(hit.lightmapCoord);
                 curPos = hit.point;
                 inDirection = Vector3.Reflect(inDirection, hit.normal);
                 lr.SetPosition(verti - 1, hit.point);
@@ -57,6 +59,7 @@ public class LightBeam : MonoBehaviour {
 
                 }
 
+                // Prüfe ob die angegebene Maske mit der Maske im hit übereinstimmt
                 if ((mask.value & 1 << hit.transform.gameObject.layer) == 1 << hit.transform.gameObject.layer)
                 {
                     ActivateCheckPoint(hit.transform.gameObject, true);

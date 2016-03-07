@@ -14,7 +14,8 @@ public class InputManager : MonoBehaviour {
         gameStarted = false;
 	}
 
-    private void ElementZuweisen()
+    // Update is called once per frame
+    void Update()
     {
         // prüfe ob die linke Maustaste gedrückt wird
         if (Input.GetMouseButtonDown(0))
@@ -31,7 +32,7 @@ public class InputManager : MonoBehaviour {
                 // Wenn Hintergrund oder Wand getroffen wurde mache nichts
                 if (inUse.name == "Background" || inUse.tag == "Wall")
                 {
-                    return;   
+                    return;
                 }
 
                 // wenn ein TouchCollider getroffen wurde
@@ -45,9 +46,9 @@ public class InputManager : MonoBehaviour {
                     {
                         gameStarted = true;
                         PlayerChild.GetComponent<PlayerRotator>().enabled = true;
-                       //  Debug.Log("Spiel Gestartet:" + gameStarted );
+                        //  Debug.Log("Spiel Gestartet:" + gameStarted );
                     }
-                    
+
                     // wenn das Spiel gestartet wurde darfst du arbeiten
                     if (gameStarted)
                     {
@@ -60,7 +61,7 @@ public class InputManager : MonoBehaviour {
                             sameObject.SendMessage("setActiveGameObject", false);
                         }
                         // und setze Objekt auf aktiv
-                            inUse.SendMessage("setActiveGameObject", true);
+                        inUse.SendMessage("setActiveGameObject", true);
 
                     }
 
@@ -71,13 +72,6 @@ public class InputManager : MonoBehaviour {
             }
 
         }
-    }
-
-
-    // Update is called once per frame
-    void Update()
-    {
-        ElementZuweisen();
 
     }
 }

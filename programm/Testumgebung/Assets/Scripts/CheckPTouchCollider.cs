@@ -65,7 +65,17 @@ public class CheckPTouchCollider : MonoBehaviour {
     /// </summary>
     public void setActiveGameObject()
     {
-        cam.GetComponent<CameraAnimationScript>().playAnimation(this.gameObject);
+
+        if (isPhaseCompleted)
+        {
+            cam.GetComponent<CameraAnimationScript>().playAnimation(this.gameObject);
+        }
+        else
+        {
+            print("Do something else");
+        }
+
+
     }
 
 

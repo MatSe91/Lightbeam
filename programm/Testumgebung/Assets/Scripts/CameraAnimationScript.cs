@@ -36,7 +36,7 @@ public class CameraAnimationScript : MonoBehaviour {
     /// </summary>
     public void isPhase2()
     {
-        checkpoint.GetComponent<CheckPTouchCollider>().setPhaseCompleted(true);
+        checkpoint.GetComponent<CheckPointManager>().setPhaseCompleted(true);
         anim_index = 1;
     }
 
@@ -51,6 +51,6 @@ public class CameraAnimationScript : MonoBehaviour {
     /// </summary>
     public void isPhase3()
     {
-        checkpoint.GetComponent<CheckPTouchCollider>().setPhaseCompleted(true);
+        checkpoint.GetComponent<CheckPointManager>().setPhaseCompleted(true);
     }
 }

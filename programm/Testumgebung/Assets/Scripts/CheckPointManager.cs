@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CheckPTouchCollider : MonoBehaviour {
+public class CheckPointManager : MonoBehaviour {
 
     private bool isBeamconntected;
     private bool isPhaseCompleted;
@@ -23,7 +23,6 @@ public class CheckPTouchCollider : MonoBehaviour {
     public void setBeamConnectivity(bool bol)
     {
         isBeamconntected = bol;
-        setTouchCollider();
     }
 
     /// <summary>
@@ -33,31 +32,6 @@ public class CheckPTouchCollider : MonoBehaviour {
     public void setPhaseCompleted(bool bol)
     {
         isPhaseCompleted = bol;
-        setTouchCollider();
-    }
-
-    /// <summary>
-    /// aktiviert / deaktiviert den eigentlichen TouchCollider vom Checkpoint
-    /// </summary>
-    private void setTouchCollider()
-    {
-        
-        if (!isPhaseCompleted)
-        {
-            if (isBeamconntected)
-            {
-                touchCollider.SetActive(true);
-            }
-            else
-            {
-                touchCollider.SetActive(false);
-            }
-
-        }
-        else
-        {
-            touchCollider.SetActive(false);
-        }
     }
 
     /// <summary>
@@ -66,17 +40,12 @@ public class CheckPTouchCollider : MonoBehaviour {
     public void setActiveGameObject()
     {
 
-        if (isPhaseCompleted)
+        if (isBeamconntected)
         {
-            cam.GetComponent<CameraAnimationScript>().playAnimation(this.gameObject);
+            if (!isPhaseCompleted)
+            {
+                cam.GetComponent<CameraAnimationScript>().playAnimation(this.gameObject);
+            }
         }
-        else
-        {
-            print("Do something else");
-        }
-
-
     }
-
-
 }

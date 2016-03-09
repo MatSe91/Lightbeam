@@ -69,13 +69,15 @@
     <Compile Include="Assets\FastLineRenderer\Script\PathGenerator.cs" />
     <Compile Include="Assets\Scripts\Beamscript.cs" />
     <Compile Include="Assets\Scripts\CameraAnimationScript.cs" />
-    <Compile Include="Assets\Scripts\CheckPTouchCollider.cs" />
+    <Compile Include="Assets\Scripts\CheckPointManager.cs" />
+    <Compile Include="Assets\Scripts\Coll_Pflanze_Script.cs" />
     <Compile Include="Assets\Scripts\ControllingCameraResolution.cs" />
     <Compile Include="Assets\Scripts\ExitGameOnBackButton.cs" />
     <Compile Include="Assets\Scripts\InputManager.cs" />
-    <Compile Include="Assets\Scripts\LightBeam.cs" />
+    <Compile Include="Assets\Scripts\MirrorColorReflection.cs" />
     <Compile Include="Assets\Scripts\MirrorRotator.cs" />
     <Compile Include="Assets\Scripts\PlayerRotator.cs" />
+    <Compile Include="Assets\Scripts\TestCollider.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\FastLineRenderer\Material\FastLineRendererShader.shader" />

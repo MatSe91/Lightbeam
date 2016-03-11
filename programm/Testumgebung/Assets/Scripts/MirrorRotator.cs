@@ -28,17 +28,19 @@ public class MirrorRotator : MonoBehaviour
         minZ = transform.eulerAngles.z - 60;
         maxZ = transform.eulerAngles.z + 60;
 
-     //   Debug.Log("Min Z: " + minZ);
-     //   Debug.Log("Max Z: " + maxZ);
+        //   Debug.Log("Min Z: " + minZ);
+        //   Debug.Log("Max Z: " + maxZ);
 
     }
 
 
-    /**
-    * Setzt das Objekt auf Aktiv oder Passiv,
-    * hierbei wird der Methode true oder false übergeben.
-    *
-    **/
+
+
+   /// <summary>
+   ///  Setzt das Objekt auf Aktiv oder Passiv,
+   ///  hierbei wird der Methode true oder false übergeben.
+   /// </summary>
+   /// <param name="rot"></param>
     public void setActiveGameObject(bool rot)
     {
         active = rot;

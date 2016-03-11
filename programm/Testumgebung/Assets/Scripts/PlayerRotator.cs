@@ -13,7 +13,6 @@ public class PlayerRotator : MonoBehaviour {
     void Start() {
         active = true;
         lightBeam.SetActive(true);
-
     }
 
     void setActiveGameObject(bool rot)

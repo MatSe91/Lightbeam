@@ -54,7 +54,8 @@ namespace DigitalRuby.FastLineRenderer
                         curPosition = hit.point;
                         dir = Vector3.Reflect(dir, hit.normal);
                         //Debug.DrawRay(curPosition, dir * 20, Color.magenta);
-                        property.End = curPosition;                       
+                        property.End = curPosition;
+                        BeamCollider.AddColliderToLine(property.Start, property.End, r);                    
                         r.AddLine(property);
                         property.Color = Color.green;
                         property.Start = curPosition;
@@ -84,9 +85,7 @@ namespace DigitalRuby.FastLineRenderer
                         BeamConnectivity(sameObject, false);
                     }
                 }
-            }
-           
-
+            }        
             addLines();
         }
 
@@ -97,6 +96,7 @@ namespace DigitalRuby.FastLineRenderer
 
         private void addLines()
         {
+            BeamCollider.AddColliderToLine(property.Start, property.End, r);
             r.AddLine(property);
             r.Apply(true);
 
@@ -107,9 +107,6 @@ namespace DigitalRuby.FastLineRenderer
             property.Radius = 0.1f;
             property.Color = Color.red;
         }
-
-
-
     }
 
 }

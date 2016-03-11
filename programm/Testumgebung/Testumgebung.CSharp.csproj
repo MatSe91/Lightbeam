@@ -78,11 +78,31 @@
     <Compile Include="Assets\Scripts\MirrorRotator.cs" />
     <Compile Include="Assets\Scripts\PlayerRotator.cs" />
     <Compile Include="Assets\Scripts\TestCollider.cs" />
+    <Compile Include="Assets\Water2D_Tool\Examples\Scripts\2DCharacterController\Platformer2DUserControl.cs" />
+    <Compile Include="Assets\Water2D_Tool\Examples\Scripts\2DCharacterController\PlatformerCharacter2D.cs" />
+    <Compile Include="Assets\Water2D_Tool\Examples\Scripts\CheckPoint.cs" />
+    <Compile Include="Assets\Water2D_Tool\Examples\Scripts\CloudMovement.cs" />
+    <Compile Include="Assets\Water2D_Tool\Examples\Scripts\Destroyer.cs" />
+    <Compile Include="Assets\Water2D_Tool\Examples\Scripts\Lever.cs" />
+    <Compile Include="Assets\Water2D_Tool\Examples\Scripts\MoveObjects.cs" />
+    <Compile Include="Assets\Water2D_Tool\Examples\Scripts\PolyColliderPoints.cs" />
+    <Compile Include="Assets\Water2D_Tool\Examples\Scripts\SceneMenu.cs" />
+    <Compile Include="Assets\Water2D_Tool\Examples\Scripts\Water2D_Sprite.cs" />
+    <Compile Include="Assets\Water2D_Tool\Examples\Scripts\WaterFlowController.cs" />
+    <Compile Include="Assets\Water2D_Tool\Scripts\ClipperLibrary\Clipper.cs" />
+    <Compile Include="Assets\Water2D_Tool\Scripts\Water2D_Mesh.cs" />
+    <Compile Include="Assets\Water2D_Tool\Scripts\Water2D_PolygonClipping.cs" />
+    <Compile Include="Assets\Water2D_Tool\Scripts\Water2D_Simulation.cs" />
+    <Compile Include="Assets\Water2D_Tool\Scripts\Water2D_Tool.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\FastLineRenderer\Material\FastLineRendererShader.shader" />
     <None Include="Assets\FastLineRenderer\Material\FastLineRendererShaderNoGlow.shader" />
     <None Include="Assets\FastLineRenderer\Readme.txt" />
+    <None Include="Assets\Water2D_Tool\Resources\Readme.txt" />
+    <None Include="Assets\Water2D_Tool\Scripts\ClipperLibrary\License.txt" />
+    <None Include="Assets\Water2D_Tool\Shaders\Water2D_HorizontalWater.shader" />
+    <None Include="Assets\Water2D_Tool\Shaders\Water2D_VerticalWater.shader" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>

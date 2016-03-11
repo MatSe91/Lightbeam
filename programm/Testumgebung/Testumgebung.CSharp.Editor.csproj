@@ -101,11 +101,20 @@
   <ItemGroup>
     <Compile Include="Assets\Editor\CrossPlatformInput\CrossPlatformInputInitialize.cs" />
     <Compile Include="Assets\FastLineRenderer\Script\Editor\FastLineRendererEditor.cs" />
+    <Compile Include="Assets\Water2D_Tool\Editor\Water2D_Menu.cs" />
+    <Compile Include="Assets\Water2D_Tool\Editor\Water2D_SimulationEditor.cs" />
+    <Compile Include="Assets\Water2D_Tool\Editor\Water2D_ToolEditor.cs" />
+    <Compile Include="Assets\Water2D_Tool\Examples\Editor\PolyColliderPoints_Editor.cs" />
+    <Compile Include="Assets\Water2D_Tool\Examples\Editor\Water2D_SpriteEditor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\FastLineRenderer\Material\FastLineRendererShader.shader" />
     <None Include="Assets\FastLineRenderer\Material\FastLineRendererShaderNoGlow.shader" />
     <None Include="Assets\FastLineRenderer\Readme.txt" />
+    <None Include="Assets\Water2D_Tool\Resources\Readme.txt" />
+    <None Include="Assets\Water2D_Tool\Scripts\ClipperLibrary\License.txt" />
+    <None Include="Assets\Water2D_Tool\Shaders\Water2D_HorizontalWater.shader" />
+    <None Include="Assets\Water2D_Tool\Shaders\Water2D_VerticalWater.shader" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>

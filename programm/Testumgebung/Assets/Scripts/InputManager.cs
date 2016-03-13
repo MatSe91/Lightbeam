@@ -30,7 +30,7 @@ public class InputManager : MonoBehaviour {
                 inUse = hit.collider.gameObject;
 
                 // Wenn Hintergrund oder Wand getroffen wurde mache nichts
-                if (inUse.name == "Background" || inUse.tag == "Wall")
+                if (inUse.name == "Background" || inUse.tag == "Wall" || inUse.layer == 4)
                 {
                     return;
                 }

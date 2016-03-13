@@ -180,7 +180,7 @@ namespace DigitalRuby.FastLineRenderer
         /// <summary>
         /// Line radius in world units
         /// </summary>
-        public float Radius = 4.0f;
+        public float Radius = 0.2f;
 
         /// <summary>
         /// Color
@@ -190,12 +190,12 @@ namespace DigitalRuby.FastLineRenderer
         /// <summary>
         /// Glow width multiplier
         /// </summary>
-        public float GlowWidthMultiplier = 4.0f;
+        public float GlowWidthMultiplier = 1.0f;
 
         /// <summary>
         /// Glow intensity multiplier
         /// </summary>
-        public float GlowIntensityMultiplier = 0.5f;
+        public float GlowIntensityMultiplier = 0.1f;
 
         /// <summary>
         /// Life time parameters. Do not modify, instead call SetLifeTime.

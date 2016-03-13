@@ -18,10 +18,12 @@ public class Collectible : MonoBehaviour
 
     }
 
-    void Update()
+    void OnTriggerExit(Collider col)
     {
-        if (collected && !other)
-            collected = false;
+
+        collected = true;
         Debug.Log("exit");
+        other = col;
+
     }
 }

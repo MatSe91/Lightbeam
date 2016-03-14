@@ -31,8 +31,8 @@ namespace DigitalRuby.FastLineRenderer
             box.transform.Rotate(0, 0, angle);
             //box.tag = "BeamCollider";
             box.enabled = true;
-            Debug.Log(box.size);
-            Debug.Log(box.center);
+            //Debug.Log(box.size);
+            //Debug.Log(box.center);
             //Debug.Log(box.tag);
 
 

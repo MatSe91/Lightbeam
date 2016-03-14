@@ -6,24 +6,31 @@ using System.Linq;
 
 public class Collectible : MonoBehaviour
 {
+    [Tooltip ("Angabe ob das Sammelobjekt bereits eingesammelt wurde")]
     public bool collected = false;
     private Collider other;
 
+   /// <summary>
+   /// Collect the collectible  on with trigger
+   /// </summary>
+   /// <param name="col"></param>
     void OnTriggerEnter(Collider col)
     {
 
         collected = true;
-        Debug.Log("enter");
         other = col;
 
     }
-
-    void OnTriggerExit(Collider col)
+    /// <summary>
+    /// Uncollect the collectible if the collider is not the collictble object
+    /// </summary>
+    void Update()
     {
-
-        collected = true;
-        Debug.Log("exit");
-        other = col;
+        if (collected && !other)
+        {
+            collected = false;
+        }
+       
 
     }
 }

@@ -72,13 +72,11 @@ namespace DigitalRuby.FastLineRenderer
                  if(hit.transform.gameObject.layer== 4)
                     {
                         isActive = true;
-                        print("Do something");
 
-                        Vector3 beta = br.refraction_Angle(Vector3.Angle(dir, hit.normal), -hit.normal, Refraction_Medium.air, Refraction_Medium.water);
-                        Debug.Log("Alpha winkel: " + Vector3.Angle(-dir, hit.normal));
-                        Debug.DrawRay(hit.point, beta);
-                        Debug.DrawRay(hit.point, -hit.normal, Color.black);
-                        Debug.Log(-hit.normal);
+                        Vector3 beta = br.refraction_Angle(Vector3.Angle(-dir, hit.normal), hit, Refraction_Medium.air, Refraction_Medium.water);
+                        dir = beta;
+
+
 
                         curPosition = hit.point;
                         property.End = curPosition;
@@ -143,14 +141,7 @@ public class BeamRefraction
     public const float REFRACTION_INDEX_GLASS = 1.52f;
     public const float REFRACTION_INDEX_AIR = 1f;
 
-    private float alpha;                     // Winkel, wie der Lichtstarhl auf das Objekt auftrifft
-    private float beta;                      // Winkel, wie der Lichtstrahl abgeleitet wird
-
-
-
-
-
-
+    private Matrix3x3 rotZ;
 
     /// <summary>
     /// Der Alpha - Winkel, welcher der Eintreffende Lichtstrahl ist. <para/>
@@ -162,9 +153,10 @@ public class BeamRefraction
     /// <param name="n1"> ist immer das aktuelle Refraction_Medium</param>
     /// <param name="n2"> ist immer das neue Refraction_Medium, also wohin das Licht geht</param>
     /// <returns></returns>
-    public Vector3 refraction_Angle(float alpha, Vector3 normale, Refraction_Medium rm1, Refraction_Medium rm2)
+    public Vector3 refraction_Angle(float alpha, RaycastHit hit, Refraction_Medium rm1, Refraction_Medium rm2)
     {
         Vector3 dir;
+        Vector3 normale = -hit.normal;
         float n1 = refraction_Index(rm1);
         float n2 = refraction_Index(rm2);
         float beta = 0;
@@ -173,7 +165,9 @@ public class BeamRefraction
         //  n1 = dünner Stoff, n2 = dichter Stoff
         if (n1 < n2)
         {
+            Debug.Log("Alpha: " + alpha);
             beta = Mathf.Rad2Deg * (Mathf.Asin(((Mathf.Sin(alpha * Mathf.Deg2Rad)) * n1) / n2));
+            Debug.Log("beta: " + beta);
         }
         else //  n1 = dichter Stoff, n2 = dünner Stoff
         {
@@ -182,14 +176,18 @@ public class BeamRefraction
             totalReflection = Mathf.Asin(n2 / n1) * Mathf.Rad2Deg;
             if (totalReflection < alpha)
             {
+                // Reflektion, keine brechung
                 return new Vector3(0,0,0);
             }
             beta = Mathf.Rad2Deg * (Mathf.Asin(((Mathf.Sin(alpha * Mathf.Deg2Rad)) * n1) / n2));
         }
 
-        Quaternion a = Quaternion.AngleAxis(beta, normale);
-        Debug.Log("Winkel Beta: " + beta);
-        return dir = a * Vector3.forward;
+        
+        // Berechnung des neuen Richtungsvektors
+        rotZ = new Matrix3x3(beta, 2);
+        dir = rotZ.MultiplyPoint(normale);
+
+        return dir;
     }
 
     /// <summary>
@@ -211,6 +209,7 @@ public class BeamRefraction
         else
             return -1f;
     }
+
 }
 
 public enum Refraction_Medium
@@ -220,5 +219,4 @@ public enum Refraction_Medium
     glass,
     prism
 }
-
 

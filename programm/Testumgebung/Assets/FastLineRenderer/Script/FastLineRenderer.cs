@@ -24,6 +24,7 @@ namespace DigitalRuby.FastLineRenderer
 
             l.LineRadius = 2.0f;
             l.LineColor = Color.green;
+            l.LineInWater = false;
             l.GlowWidthMultiplier = 0.0f;
             l.GlowIntensity = 0.4f;
             l.AddStartCap = true;
@@ -46,6 +47,10 @@ namespace DigitalRuby.FastLineRenderer
 
         [Tooltip("Line color")]
         public Color32 LineColor;
+
+        // Extension Matthias
+        [Tooltip("Whether Line is in Water")]
+        public bool LineInWater;
 
         [Range(0.0f, 64.0f)]
         [Tooltip("Glow width multiplier")]
@@ -186,6 +191,11 @@ namespace DigitalRuby.FastLineRenderer
         /// Color
         /// </summary>
         public Color32 Color = UnityEngine.Color.white;
+
+        /// <summary>
+        /// Whether Line is in Water
+        /// </summary>
+        public bool LineInWater = false;
 
         /// <summary>
         /// Glow width multiplier
@@ -339,6 +349,7 @@ namespace DigitalRuby.FastLineRenderer
         private readonly List<List<Vector3>> verticesLists = new List<List<Vector3>>(new[] { new List<Vector3>(defaultListCapacity) });
         private readonly List<List<Vector4>> lineDirsLists = new List<List<Vector4>>(new[] { new List<Vector4>(defaultListCapacity) });
         private readonly List<List<Color32>> colorsLists = new List<List<Color32>>(new[] { new List<Color32>(defaultListCapacity) });
+        private readonly List<List<bool>> lineInWaterLists = new List<List<bool>>(new[] { new List<bool>(defaultListCapacity) });
         private readonly List<List<Vector3>> endsLists = new List<List<Vector3>>(new[] { new List<Vector3>(defaultListCapacity) });
         private readonly List<List<Vector4>> lifeTimesLists = new List<List<Vector4>>(new[] { new List<Vector4>(defaultListCapacity) });
         private readonly List<Bounds> boundsList = new List<Bounds>(new[] { new Bounds() });
@@ -350,6 +361,7 @@ namespace DigitalRuby.FastLineRenderer
         private List<Vector3> vertices;
         private List<Vector4> lineDirs;
         private List<Color32> colors;
+        private List<bool> waterLines;
         private List<Vector3> velocities;
         private List<Vector4> lifeTimes;
         private Vector3 currentBoundsMin;
@@ -470,6 +482,7 @@ namespace DigitalRuby.FastLineRenderer
             vertices = new List<Vector3>(defaultListCapacity);
             lineDirs = new List<Vector4>(defaultListCapacity);
             colors = new List<Color32>(defaultListCapacity);
+            waterLines = new List<bool>(defaultListCapacity);
             velocities = new List<Vector3>(defaultListCapacity);
             lifeTimes = new List<Vector4>(defaultListCapacity);
 
@@ -477,6 +490,7 @@ namespace DigitalRuby.FastLineRenderer
             verticesLists.Add(vertices);
             lineDirsLists.Add(lineDirs);
             colorsLists.Add(colors);
+            lineInWaterLists.Add(waterLines);
             endsLists.Add(velocities);
             lifeTimesLists.Add(lifeTimes);
 
@@ -489,6 +503,7 @@ namespace DigitalRuby.FastLineRenderer
             vertices = verticesLists[listIndex];
             lineDirs = lineDirsLists[listIndex];
             colors = colorsLists[listIndex];
+            waterLines = lineInWaterLists[listIndex];
             velocities = endsLists[listIndex];
             lifeTimes = lifeTimesLists[listIndex];
             currentBoundsMin = boundsList[listIndex].min;
@@ -562,6 +577,10 @@ namespace DigitalRuby.FastLineRenderer
                 list.Clear();
             }
             foreach (var list in colorsLists)
+            {
+                list.Clear();
+            }
+            foreach(var list in lineInWaterLists)
             {
                 list.Clear();
             }
@@ -669,6 +688,7 @@ namespace DigitalRuby.FastLineRenderer
                     Vector3 nextPoint = list.Points.List[i];
                     props.Radius = list.LineRadius;
                     props.Color = list.LineColor;
+                    props.LineInWater = list.LineInWater;
                     props.GlowWidthMultiplier = list.GlowWidthMultiplier;
                     props.GlowIntensityMultiplier = list.GlowIntensity;
 
@@ -982,6 +1002,7 @@ namespace DigitalRuby.FastLineRenderer
             texCoordsAndGlow.Add(texCoordAndGlow);
             lineDirs.Add(dirStart);
             colors.Add(props.Color);
+            waterLines.Add(props.LineInWater);
             velocities.Add(props.Velocity);
             lifeTimes.Add(props.LifeTime);
 
@@ -992,6 +1013,7 @@ namespace DigitalRuby.FastLineRenderer
             texCoordsAndGlow.Add(texCoordAndGlow);
             lineDirs.Add(dirEnd);
             colors.Add(props.Color);
+            waterLines.Add(props.LineInWater);
             velocities.Add(props.Velocity);
             lifeTimes.Add(props.LifeTime);
 
@@ -1002,6 +1024,7 @@ namespace DigitalRuby.FastLineRenderer
             texCoordsAndGlow.Add(texCoordAndGlow);
             lineDirs.Add(dirStart);
             colors.Add(props.Color);
+            waterLines.Add(props.LineInWater);
             velocities.Add(props.Velocity);
             lifeTimes.Add(props.LifeTime);
 
@@ -1012,6 +1035,7 @@ namespace DigitalRuby.FastLineRenderer
             texCoordsAndGlow.Add(texCoordAndGlow);
             lineDirs.Add(dirEnd);
             colors.Add(props.Color);
+            waterLines.Add(props.LineInWater);
             velocities.Add(props.Velocity);
             lifeTimes.Add(props.LifeTime);
 
@@ -1148,6 +1172,10 @@ namespace DigitalRuby.FastLineRenderer
             {
                 list.Capacity = capacity;
             }
+            //foreach(var list in waterLines)
+            //{
+            //    list.Capacity = capacity;
+            //}
             foreach (var list in endsLists)
             {
                 list.Capacity = capacity;

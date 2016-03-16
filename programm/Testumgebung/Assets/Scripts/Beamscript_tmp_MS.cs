@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using System.Collections.Generic;
 
 namespace DigitalRuby.FastLineRenderer
 {
@@ -15,21 +16,21 @@ namespace DigitalRuby.FastLineRenderer
         private FastLineRenderer r;
         private FastLineRendererProperties property;
         private BeamRefraction br;
+        private List<FastLineRendererProperties> properties;
 
         private GameObject sameObject;
         private bool isActive;
         private Vector3 curPosition;
         private Vector3 dir;
+        private bool beamIsInWater;
+        Color intensitive;
 
 
         // Use this for initialization
         void Start()
         {
             r = FastLineRenderer.CreateWithParent(null, GetComponent<FastLineRenderer>());
-            property = new FastLineRendererProperties();
-            br = new BeamRefraction();
-            //Refraction_Medium.air;
-            
+            intensitive = new Color(0, 0, 0, 0.7f);            
         }
 
         // Update is called once per frame
@@ -38,9 +39,11 @@ namespace DigitalRuby.FastLineRenderer
             if (r != null)
             {
                 r.Reset();
+                properties = new List<FastLineRendererProperties>();
+                property = new FastLineRendererProperties();
+                property.LineInWater = false;
+                beamIsInWater = false;
             }
-
-
 
             isActive = true;
             curPosition = transform.position;
@@ -59,8 +62,10 @@ namespace DigitalRuby.FastLineRenderer
                         curPosition = hit.point;
                         dir = Vector3.Reflect(dir, hit.normal);
                         property.End = curPosition;
-                        //BeamCollider.AddColliderToLine(property.Start, property.End, r);
-                        r.AddLine(property);
+
+                        properties.Add(property);
+                        property = new FastLineRendererProperties();
+                        standardColor();
                         property.Color = Color.green;
                         property.Start = curPosition;
                     }
@@ -69,21 +74,29 @@ namespace DigitalRuby.FastLineRenderer
                         isActive = false;
                     }
 
-                 if(hit.transform.gameObject.layer== 4)
+                    if(hit.transform.gameObject.layer == 4)
                     {
-                        isActive = true;
-
-                        Vector3 beta = br.refraction_Angle(Vector3.Angle(-dir, hit.normal), hit, Refraction_Medium.air, Refraction_Medium.water);
-                        dir = beta;
-
-
-
                         curPosition = hit.point;
                         property.End = curPosition;
-                        //BeamCollider.AddColliderToLine(property.Start, property.End, r);
-                        r.AddLine(property);
+                        properties.Add(property);
+                        property = new FastLineRendererProperties();
+                        standardColor();
+
+                        if (!beamIsInWater)
+                        {
+                            BeamRefraction br = new BeamRefraction(dir, hit, Refraction_Medium.Refraction_Med.air, Refraction_Medium.Refraction_Med.water);
+                            dir = br.getDir();
+                            beamIsInWater = br.getLineInWater();
+                        }
+                        else
+                        {
+                            BeamRefraction br = new BeamRefraction(dir, hit, Refraction_Medium.Refraction_Med.water, Refraction_Medium.Refraction_Med.air);
+                            dir = br.getDir();
+                            beamIsInWater = br.getLineInWater();
+                        }
                         property.Color = Color.blue;
                         property.Start = curPosition;
+                        isActive = true;
                     }
 
                     // Prüfe ob die angegebene Maske mit der Maske im hit übereinstimmt
@@ -93,6 +106,14 @@ namespace DigitalRuby.FastLineRenderer
                         sameObject = hit.transform.gameObject;
                     }
 
+                    if (beamIsInWater)
+                    {
+                        property.LineInWater = true;
+                    }
+                    else
+                    {
+                        property.LineInWater = false;
+                    }
                     property.End = hit.point;
 
                 }
@@ -107,6 +128,7 @@ namespace DigitalRuby.FastLineRenderer
                     }
                 }
             }
+            properties.Add(property);
             addLines();
         }
 
@@ -115,108 +137,27 @@ namespace DigitalRuby.FastLineRenderer
             checkP.GetComponent<CheckPointManager>().setBeamConnectivity(bo);
         }
 
-        private void addLines()
-        {
-            //BeamCollider.AddColliderToLine(property.Start, property.End, r);
-            r.AddLine(property);
-            r.Apply(true);
-
-        }
-
         private void standardColor()
         {
             property.Radius = 0.1f;
             property.Color = Color.red;
-        //   BeamRefraction br = new BeamRefraction();
-          // br.refraction_Angle(45,Refraction_Medium.water,Refraction_Medium.air);
         }
-    }
 
-}
-
-public class BeamRefraction
-{ 
-    public const float REFRACTION_INDEX_WATER = 1.33f;
-    public const float REFRACTION_INDEX_PRISMA = 2.41f;  // Prisma ist in diesem Fall der Diamant aus Latex Dikument (S.20)
-    public const float REFRACTION_INDEX_GLASS = 1.52f;
-    public const float REFRACTION_INDEX_AIR = 1f;
-
-    private Matrix3x3 rotZ;
-
-    /// <summary>
-    /// Der Alpha - Winkel, welcher der Eintreffende Lichtstrahl ist. <para/>
-    /// n1 ist immer das aktuelle Refraction_Medium.<para/>
-    /// n2 ist immer das neue Refraction_Medium, also wohin das Licht geht. <para/>
-    /// return Austrittswinkel beta, oder 0 wenn keine Brechung stattfindet.
-    /// </summary>
-    /// <param name="alpha"> Alpha - Winkel</param>
-    /// <param name="n1"> ist immer das aktuelle Refraction_Medium</param>
-    /// <param name="n2"> ist immer das neue Refraction_Medium, also wohin das Licht geht</param>
-    /// <returns></returns>
-    public Vector3 refraction_Angle(float alpha, RaycastHit hit, Refraction_Medium rm1, Refraction_Medium rm2)
-    {
-        Vector3 dir;
-        Vector3 normale = -hit.normal;
-        float n1 = refraction_Index(rm1);
-        float n2 = refraction_Index(rm2);
-        float beta = 0;
-        float totalReflection;
-
-        //  n1 = dünner Stoff, n2 = dichter Stoff
-        if (n1 < n2)
+        private void reduceBeamIntencity(FastLineRendererProperties pro)
         {
-            Debug.Log("Alpha: " + alpha);
-            beta = Mathf.Rad2Deg * (Mathf.Asin(((Mathf.Sin(alpha * Mathf.Deg2Rad)) * n1) / n2));
-            Debug.Log("beta: " + beta);
+            if (pro.LineInWater)
+                pro.Color = pro.Color - intensitive;
         }
-        else //  n1 = dichter Stoff, n2 = dünner Stoff
-        {
-            // TODO Prüfen ob der max winkel noch nicht erreicht ist --> wenn doch keine Brechung, nur reflexion
 
-            totalReflection = Mathf.Asin(n2 / n1) * Mathf.Rad2Deg;
-            if (totalReflection < alpha)
+        private void addLines()
+        {
+            foreach (var prop in properties)
             {
-                // Reflektion, keine brechung
-                return new Vector3(0,0,0);
+                reduceBeamIntencity(prop);
+                r.AddLine(prop);
+                //CreateCollider(prop);
             }
-            beta = Mathf.Rad2Deg * (Mathf.Asin(((Mathf.Sin(alpha * Mathf.Deg2Rad)) * n1) / n2));
+            r.Apply(true);
         }
-
-        
-        // Berechnung des neuen Richtungsvektors
-        rotZ = new Matrix3x3(beta, 2);
-        dir = rotZ.MultiplyPoint(normale);
-
-        return dir;
     }
-
-    /// <summary>
-    /// Gibt den Brechungsindex von Wasser, Glas, Luft und Prisma zurück. <para/>
-    /// Wenn nichts passt oder keine Brechung stattfindet --> return -1f (sollte nicht passieren)
-    /// </summary>
-    /// <param name="index"></param>
-    /// <returns></returns>
-    private float refraction_Index(Refraction_Medium index)
-    {
-        if (index == Refraction_Medium.water)
-            return REFRACTION_INDEX_WATER;
-        else if (index == Refraction_Medium.prism)
-            return REFRACTION_INDEX_PRISMA;
-        else if (index == Refraction_Medium.glass)
-            return REFRACTION_INDEX_GLASS;
-        else if (index == Refraction_Medium.air)
-            return REFRACTION_INDEX_AIR;
-        else
-            return -1f;
-    }
-
 }
-
-public enum Refraction_Medium
-{
-    water,
-    air,
-    glass,
-    prism
-}
-

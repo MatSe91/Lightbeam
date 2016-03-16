@@ -31,10 +31,8 @@ namespace DigitalRuby.FastLineRenderer
         {
             r = FastLineRenderer.CreateWithParent(null, GetComponent<FastLineRenderer>());
             property = new FastLineRendererProperties();
-          ;
            
             intensitive = new Color(0, 0, 0, 0.7f);
-            br = new BeamRefraction();
 
         }
 
@@ -86,32 +84,26 @@ namespace DigitalRuby.FastLineRenderer
 
                     if (hit.transform.gameObject.layer == 4)
                     {
-                        //Beam befindet sich noch nicht im Wasser
+                        curPosition = hit.point;
+                        property.End = curPosition;
+                        properties.Add(property);
+                        property = new FastLineRendererProperties();
+                        standardColor();
+
                         if (!beamIsInWater)
                         {
-
-                            dir = br.refraction_Angle(Vector3.Angle(dir, hit.normal), hit, Refraction_Medium.air, Refraction_Medium.water);
-
-                            curPosition = hit.point;
-                            property.End = curPosition;
-                            //BeamCollider.AddColliderToLine(property.Start, property.End, r);
-                            properties.Add(property);
-                            property = new FastLineRendererProperties();
-                            standardColor();
-                            // r.AddLine(property);
-                            property.Color = Color.blue;
-
-                            //property.Color = property.Color - intensitive;
-                            property.Start = curPosition;
-
-                            beamIsInWater = true;
-
+                            br = new BeamRefraction(dir, hit, Refraction_Medium.Refraction_Med.air, Refraction_Medium.Refraction_Med.water);
+                            dir = br.getDir();
+                            beamIsInWater = br.getLineInWater();
                         }
-                        else    // Beam befindet sich bereits im Wasser
+                        else
                         {
-                            beamIsInWater = false;
+                            br = new BeamRefraction(dir, hit, Refraction_Medium.Refraction_Med.water, Refraction_Medium.Refraction_Med.air);
+                            dir = br.getDir();
+                            beamIsInWater = br.getLineInWater();
                         }
-
+                        property.Color = Color.blue;
+                        property.Start = curPosition;
                         isActive = true;
                     }
 

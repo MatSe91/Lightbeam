@@ -84,13 +84,13 @@ namespace DigitalRuby.FastLineRenderer
 
                         if (!beamIsInWater)
                         {
-                            BeamRefraction br = new BeamRefraction(dir, hit, Refraction_Medium.Refraction_Med.air, Refraction_Medium.Refraction_Med.water);
+                            br = new BeamRefraction(dir, hit, Refraction_Medium.Refraction_Med.air, Refraction_Medium.Refraction_Med.water);
                             dir = br.getDir();
                             beamIsInWater = br.getLineInWater();
                         }
                         else
                         {
-                            BeamRefraction br = new BeamRefraction(dir, hit, Refraction_Medium.Refraction_Med.water, Refraction_Medium.Refraction_Med.air);
+                            br = new BeamRefraction(dir, hit, Refraction_Medium.Refraction_Med.water, Refraction_Medium.Refraction_Med.air);
                             dir = br.getDir();
                             beamIsInWater = br.getLineInWater();
                         }

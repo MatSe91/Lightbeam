@@ -70,6 +70,7 @@
     <Compile Include="Assets\Scripts\AnimatedTildetTexture.cs" />
     <Compile Include="Assets\Scripts\BeamCollider.cs" />
     <Compile Include="Assets\Scripts\BeamRefraction.cs" />
+    <Compile Include="Assets\Scripts\BeamScript_RJ.cs" />
     <Compile Include="Assets\Scripts\Beamscript.cs" />
     <Compile Include="Assets\Scripts\Beamscript_tmp_MS.cs" />
     <Compile Include="Assets\Scripts\CameraAnimationScript.cs" />
@@ -79,6 +80,7 @@
     <Compile Include="Assets\Scripts\ControllingCameraResolution.cs" />
     <Compile Include="Assets\Scripts\ExitGameOnBackButton.cs" />
     <Compile Include="Assets\Scripts\InputManager.cs" />
+    <Compile Include="Assets\Scripts\LineDrawer.cs" />
     <Compile Include="Assets\Scripts\Matrix3x3.cs" />
     <Compile Include="Assets\Scripts\MirrorColorReflection.cs" />
     <Compile Include="Assets\Scripts\MirrorMovement.cs" />

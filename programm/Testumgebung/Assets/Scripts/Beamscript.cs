@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using System.Collections.Generic;
 
 namespace DigitalRuby.FastLineRenderer
 {
@@ -14,18 +15,22 @@ namespace DigitalRuby.FastLineRenderer
 
         private FastLineRenderer r;
         private FastLineRendererProperties property;
+        private BeamRefraction br;
+        private List<FastLineRendererProperties> properties;
 
         private GameObject sameObject;
         private bool isActive;
         private Vector3 curPosition;
         private Vector3 dir;
+        private bool beamIsInWater;
+        Color intensitive;
 
 
         // Use this for initialization
         void Start()
         {
-            r = FastLineRenderer.CreateWithParent(null, GetComponent<FastLineRenderer>());       
-            property = new FastLineRendererProperties();
+            r = FastLineRenderer.CreateWithParent(null, GetComponent<FastLineRenderer>());
+            intensitive = new Color(0, 0, 0, 0.7f);
         }
 
         // Update is called once per frame
@@ -34,35 +39,64 @@ namespace DigitalRuby.FastLineRenderer
             if (r != null)
             {
                 r.Reset();
+                properties = new List<FastLineRendererProperties>();
+                property = new FastLineRendererProperties();
+                property.LineInWater = false;
+                beamIsInWater = false;
             }
-
-            standardColor();
-
 
             isActive = true;
             curPosition = transform.position;
             property.Start = curPosition;
+            standardColor();
             dir = transform.right;
 
             while (isActive)
             {
-            RaycastHit hit;
+                RaycastHit hit;
                 if (Physics.Raycast(curPosition, dir, out hit))
                 {
                     if (hit.transform.gameObject.tag == MirrorTag)
                     {
+                        isActive = true;
                         curPosition = hit.point;
                         dir = Vector3.Reflect(dir, hit.normal);
-                        //Debug.DrawRay(curPosition, dir * 20, Color.magenta);
                         property.End = curPosition;
-                        BeamCollider.AddColliderToLine(property.Start, property.End, r);                    
-                        r.AddLine(property);
+
+                        properties.Add(property);
+                        property = new FastLineRendererProperties();
+                        standardColor();
                         property.Color = Color.green;
                         property.Start = curPosition;
                     }
                     else
                     {
                         isActive = false;
+                    }
+
+                    if (hit.transform.gameObject.layer == 4)
+                    {
+                        curPosition = hit.point;
+                        property.End = curPosition;
+                        properties.Add(property);
+                        property = new FastLineRendererProperties();
+                        standardColor();
+
+                        if (!beamIsInWater)
+                        {
+                            br = new BeamRefraction(dir, hit, Refraction_Medium.Refraction_Med.air, Refraction_Medium.Refraction_Med.water);
+                            dir = br.getDir();
+                            beamIsInWater = br.getLineInWater();
+                        }
+                        else
+                        {
+                            br = new BeamRefraction(dir, hit, Refraction_Medium.Refraction_Med.water, Refraction_Medium.Refraction_Med.air);
+                            dir = br.getDir();
+                            beamIsInWater = br.getLineInWater();
+                        }
+                        property.Color = Color.blue;
+                        property.Start = curPosition;
+                        isActive = true;
                     }
 
                     // Prüfe ob die angegebene Maske mit der Maske im hit übereinstimmt
@@ -72,7 +106,15 @@ namespace DigitalRuby.FastLineRenderer
                         sameObject = hit.transform.gameObject;
                     }
 
-                    property.End = hit.point;              
+                    if (beamIsInWater)
+                    {
+                        property.LineInWater = true;
+                    }
+                    else
+                    {
+                        property.LineInWater = false;
+                    }
+                    property.End = hit.point;
 
                 }
                 else
@@ -85,7 +127,8 @@ namespace DigitalRuby.FastLineRenderer
                         BeamConnectivity(sameObject, false);
                     }
                 }
-            }        
+            }
+            properties.Add(property);
             addLines();
         }
 
@@ -94,18 +137,27 @@ namespace DigitalRuby.FastLineRenderer
             checkP.GetComponent<CheckPointManager>().setBeamConnectivity(bo);
         }
 
-        private void addLines()
-        {
-            BeamCollider.AddColliderToLine(property.Start, property.End, r);
-            r.AddLine(property);
-            r.Apply(true);
-
-        }
-
         private void standardColor()
         {
             property.Radius = 0.1f;
             property.Color = Color.red;
+        }
+
+        private void reduceBeamIntencity(FastLineRendererProperties pro)
+        {
+            if (pro.LineInWater)
+                pro.Color = pro.Color - intensitive;
+        }
+
+        private void addLines()
+        {
+            foreach (var prop in properties)
+            {
+                reduceBeamIntencity(prop);
+                BeamCollider.AddColliderToLine(prop.Start, prop.End, r);
+                r.AddLine(prop);
+            }
+            r.Apply(true);
         }
     }
 

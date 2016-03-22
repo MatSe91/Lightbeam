@@ -9,7 +9,7 @@ namespace DigitalRuby.FastLineRenderer
        
         // Use this for initialization
 
-        public static void     AddColliderToLine(Vector3 startPos, Vector3 endPos, FastLineRenderer r)//,GameObject Prefab)
+        public static void AddColliderToLine(Vector3 startPos, Vector3 endPos, FastLineRenderer r)//,GameObject Prefab)
         {
             BoxCollider box = new GameObject("Collider").AddComponent<BoxCollider>();
             box.transform.parent = r.transform;

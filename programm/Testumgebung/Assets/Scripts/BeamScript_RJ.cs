@@ -9,7 +9,7 @@ namespace DigitalRuby.FastLineRenderer
     {
         [Tooltip("Tag an dem der Spiegel reflektiert.")]
         public string MirrorTag;
-       
+
         [Tooltip("Hier wird der Layer des Collectable ausgewählt")]
         public LayerMask checkPointLayer;
 
@@ -22,18 +22,16 @@ namespace DigitalRuby.FastLineRenderer
         private bool isActive;
         private Vector3 curPosition;
         private Vector3 dir;
-        private bool beamIsInWater = false;
+        private bool beamIsInWater;
         Color intensitive;
-      
+        private ColorMirror cm = new ColorMirror();
+        private DoorOpener dk = new DoorOpener();
 
         // Use this for initialization
         void Start()
         {
             r = FastLineRenderer.CreateWithParent(null, GetComponent<FastLineRenderer>());
-            property = new FastLineRendererProperties();
-           
             intensitive = new Color(0, 0, 0, 0.7f);
-
         }
 
         // Update is called once per frame
@@ -43,10 +41,10 @@ namespace DigitalRuby.FastLineRenderer
             {
                 r.Reset();
                 properties = new List<FastLineRendererProperties>();
-                
+                property = new FastLineRendererProperties();
+                property.LineInWater = false;
+                beamIsInWater = false;
             }
-
-
 
             isActive = true;
             curPosition = transform.position;
@@ -65,17 +63,45 @@ namespace DigitalRuby.FastLineRenderer
                         curPosition = hit.point;
                         dir = Vector3.Reflect(dir, hit.normal);
                         property.End = curPosition;
-                        //BeamCollider.AddColliderToLine(property.Start, property.End, r);
                         properties.Add(property);
                         property = new FastLineRendererProperties();
                         standardColor();
-                        // r.AddLine(property);
                         property.Color = Color.green;
-                        if (beamIsInWater)
-                        {
-                            reduceBeamIntencity();
-                        }
                         property.Start = curPosition;
+                    }
+
+                    else if (hit.transform.gameObject.tag == "ColorMirror")
+                    {
+                        isActive = true;
+                        curPosition = hit.point;
+
+                        property.End = curPosition;
+
+                        properties.Add(property);
+                        property = new FastLineRendererProperties();
+                        standardColor();
+                        property.Color = Color.green;
+                        property.Start = curPosition;
+                        cm = hit.transform.gameObject.GetComponentInParent<ColorMirror>();
+                        dir = cm.GetReflection(ColorMirror.GetCustomColor(property.Color), dir, hit);
+
+                    }
+
+                    else if (hit.transform.gameObject.tag == "Doorknop")
+                    {
+                        isActive = true;
+                        curPosition = hit.point;
+
+                        property.End = curPosition;
+
+                        properties.Add(property);
+                        property = new FastLineRendererProperties();
+                        standardColor();
+                        property.Color = Color.green;
+                        property.Start = curPosition;
+                        dk = hit.transform.gameObject.GetComponent<DoorOpener>();
+                        dk.OpenDoor(ColorMirror.GetCustomColor(property.Color));
+
                     }
                     else
                     {
@@ -114,6 +140,14 @@ namespace DigitalRuby.FastLineRenderer
                         sameObject = hit.transform.gameObject;
                     }
 
+                    if (beamIsInWater)
+                    {
+                        property.LineInWater = true;
+                    }
+                    else
+                    {
+                        property.LineInWater = false;
+                    }
                     property.End = hit.point;
 
                 }
@@ -121,7 +155,6 @@ namespace DigitalRuby.FastLineRenderer
                 {
                     isActive = false;
                     property.End = curPosition + dir * 20;
-                    //properties.Add(property);
 
                     if (sameObject != null)
                     {
@@ -129,6 +162,7 @@ namespace DigitalRuby.FastLineRenderer
                     }
                 }
             }
+            properties.Add(property);
             addLines();
         }
 
@@ -137,42 +171,28 @@ namespace DigitalRuby.FastLineRenderer
             checkP.GetComponent<CheckPointManager>().setBeamConnectivity(bo);
         }
 
-
         private void standardColor()
         {
             property.Radius = 0.1f;
             property.Color = Color.red;
         }
 
-       
-
-        private void reduceBeamIntencity()
+        private void reduceBeamIntencity(FastLineRendererProperties pro)
         {
-            property.Color = property.Color - intensitive;
+            if (pro.LineInWater)
+                pro.Color = pro.Color - intensitive;
         }
 
         private void addLines()
         {
-            properties.Add(property);
-
             foreach (var prop in properties)
             {
+                reduceBeamIntencity(prop);
+                BeamCollider.AddColliderToLine(prop.Start, prop.End, r);
                 r.AddLine(prop);
-               
-                 BeamCollider.AddColliderToLine(prop.Start,prop.End,r);
-               
             }
             r.Apply(true);
-
         }
-
-      
-
-
-
     }
 
 }
-
-
-

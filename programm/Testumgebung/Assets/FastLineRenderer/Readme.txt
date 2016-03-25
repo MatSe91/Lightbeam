@@ -3,6 +3,8 @@
 Created by Jeff Johnson
 
 Change Log
+1.0.1	(2016/03/15)	-	Line renderer takes the layer of the parent game object
+						-	Fix shader on mobile
 1.0		(2016/01/21)	-	Initial release
 
 Please read ALL of the following to get the most out of this asset. By reading this documentation, you will avoid a lot of problems and frustrations.

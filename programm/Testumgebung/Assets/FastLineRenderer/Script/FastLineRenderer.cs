@@ -11,8 +11,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-using DigitalRubyShared;
-
 namespace DigitalRuby.FastLineRenderer
 {
     [Serializable]
@@ -24,7 +22,6 @@ namespace DigitalRuby.FastLineRenderer
 
             l.LineRadius = 2.0f;
             l.LineColor = Color.green;
-            l.LineInWater = false;
             l.GlowWidthMultiplier = 0.0f;
             l.GlowIntensity = 0.4f;
             l.AddStartCap = true;
@@ -48,8 +45,7 @@ namespace DigitalRuby.FastLineRenderer
         [Tooltip("Line color")]
         public Color32 LineColor;
 
-        // Extension Matthias
-        [Tooltip("Whether Line is in Water")]
+        [Tooltip("Line in Water")]
         public bool LineInWater;
 
         [Range(0.0f, 64.0f)]
@@ -185,7 +181,7 @@ namespace DigitalRuby.FastLineRenderer
         /// <summary>
         /// Line radius in world units
         /// </summary>
-        public float Radius = 0.2f;
+        public float Radius = 4.0f;
 
         /// <summary>
         /// Color
@@ -193,19 +189,19 @@ namespace DigitalRuby.FastLineRenderer
         public Color32 Color = UnityEngine.Color.white;
 
         /// <summary>
-        /// Whether Line is in Water
+        /// Color
         /// </summary>
         public bool LineInWater = false;
 
         /// <summary>
         /// Glow width multiplier
         /// </summary>
-        public float GlowWidthMultiplier = 1.0f;
+        public float GlowWidthMultiplier = 4.0f;
 
         /// <summary>
         /// Glow intensity multiplier
         /// </summary>
-        public float GlowIntensityMultiplier = 0.1f;
+        public float GlowIntensityMultiplier = 0.5f;
 
         /// <summary>
         /// Life time parameters. Do not modify, instead call SetLifeTime.
@@ -343,13 +339,13 @@ namespace DigitalRuby.FastLineRenderer
         private const int defaultListCapacity = 256;
         private static readonly HashSet<FastLineRenderer> currentLineRenderers = new HashSet<FastLineRenderer>();
         private static readonly LinkedList<FastLineRenderer> cache = new LinkedList<FastLineRenderer>();
-        private readonly List<Mesh> meshes = new List<Mesh>();
+        public readonly List<Mesh> meshes = new List<Mesh>();
         private readonly List<MeshRenderer> meshRenderers = new List<MeshRenderer>();
         private readonly List<List<Vector4>> texCoordsAndGlowLists = new List<List<Vector4>>(new[] { new List<Vector4>(defaultListCapacity) });
         private readonly List<List<Vector3>> verticesLists = new List<List<Vector3>>(new[] { new List<Vector3>(defaultListCapacity) });
         private readonly List<List<Vector4>> lineDirsLists = new List<List<Vector4>>(new[] { new List<Vector4>(defaultListCapacity) });
         private readonly List<List<Color32>> colorsLists = new List<List<Color32>>(new[] { new List<Color32>(defaultListCapacity) });
-        private readonly List<List<bool>> lineInWaterLists = new List<List<bool>>(new[] { new List<bool>(defaultListCapacity) });
+        private readonly List<List<bool>> LineInWaterLists = new List<List<bool>>(new[] { new List<bool>(defaultListCapacity) });
         private readonly List<List<Vector3>> endsLists = new List<List<Vector3>>(new[] { new List<Vector3>(defaultListCapacity) });
         private readonly List<List<Vector4>> lifeTimesLists = new List<List<Vector4>>(new[] { new List<Vector4>(defaultListCapacity) });
         private readonly List<Bounds> boundsList = new List<Bounds>(new[] { new Bounds() });
@@ -361,11 +357,12 @@ namespace DigitalRuby.FastLineRenderer
         private List<Vector3> vertices;
         private List<Vector4> lineDirs;
         private List<Color32> colors;
-        private List<bool> waterLines;
+        private List<bool> lineInWaters;
         private List<Vector3> velocities;
         private List<Vector4> lifeTimes;
         private Vector3 currentBoundsMin;
         private Vector3 currentBoundsMax;
+        private CanvasRenderer canvasRenderer;
 
         [Tooltip("Material to render the lines with")]
         public Material Material;
@@ -482,7 +479,7 @@ namespace DigitalRuby.FastLineRenderer
             vertices = new List<Vector3>(defaultListCapacity);
             lineDirs = new List<Vector4>(defaultListCapacity);
             colors = new List<Color32>(defaultListCapacity);
-            waterLines = new List<bool>(defaultListCapacity);
+            lineInWaters = new List<bool>(defaultListCapacity);
             velocities = new List<Vector3>(defaultListCapacity);
             lifeTimes = new List<Vector4>(defaultListCapacity);
 
@@ -490,7 +487,7 @@ namespace DigitalRuby.FastLineRenderer
             verticesLists.Add(vertices);
             lineDirsLists.Add(lineDirs);
             colorsLists.Add(colors);
-            lineInWaterLists.Add(waterLines);
+            LineInWaterLists.Add(lineInWaters);
             endsLists.Add(velocities);
             lifeTimesLists.Add(lifeTimes);
 
@@ -503,7 +500,7 @@ namespace DigitalRuby.FastLineRenderer
             vertices = verticesLists[listIndex];
             lineDirs = lineDirsLists[listIndex];
             colors = colorsLists[listIndex];
-            waterLines = lineInWaterLists[listIndex];
+            lineInWaters = LineInWaterLists[listIndex];
             velocities = endsLists[listIndex];
             lifeTimes = lifeTimesLists[listIndex];
             currentBoundsMin = boundsList[listIndex].min;
@@ -535,28 +532,23 @@ namespace DigitalRuby.FastLineRenderer
             currentBoundsMax = new Vector3(float.MinValue, float.MinValue, float.MinValue);
         }
 
-        public void CleanUpAll()
-        {
-            Cleanup();
-        }
-
         private void Cleanup()
         {
-            foreach (Mesh mesh in meshes)
-            {
-                if (mesh != null)
-                {
-                    mesh.triangles = null;
-                    mesh.vertices = null;
-                    mesh.colors = null;
-                    mesh.tangents = null;
-                    mesh.normals = null;
-                    mesh.uv = null;
-                    mesh.uv2 = null;
-                    mesh.uv3 = null;
-                    mesh.uv4 = null;
-                }
-            }
+            //foreach (Mesh mesh in meshes)
+            //{
+            //    if (mesh != null)
+            //    {
+            //        mesh.triangles = null;
+            //        mesh.vertices = null;
+            //        mesh.colors = null;
+            //        mesh.tangents = null;
+            //        mesh.normals = null;
+            //        mesh.uv = null;
+            //        mesh.uv2 = null;
+            //        mesh.uv3 = null;
+            //        mesh.uv4 = null;
+            //    }
+            //}
             foreach (MeshRenderer meshRenderer in meshRenderers)
             {
                 if (meshRenderer != null)
@@ -580,7 +572,7 @@ namespace DigitalRuby.FastLineRenderer
             {
                 list.Clear();
             }
-            foreach(var list in lineInWaterLists)
+            foreach (var list in LineInWaterLists)
             {
                 list.Clear();
             }
@@ -658,6 +650,25 @@ namespace DigitalRuby.FastLineRenderer
                 r.sharedMaterial = Material;
                 r.sortingLayerName = SortLayerName;
                 r.sortingOrder = SortOrderInLayer;
+            }
+        }
+
+        private void UpdateCanvasRendererMaterial()
+        {
+            if (canvasRenderer == null)
+            {
+                return;
+            }
+            else if (meshes.Count == 0)
+            {
+                canvasRenderer.SetMesh(null);
+                canvasRenderer.materialCount = 0;
+            }
+            else
+            {
+                canvasRenderer.materialCount = 1;
+                canvasRenderer.SetMaterial(Material, 0);
+                canvasRenderer.SetMesh(meshes[0]);
             }
         }
 
@@ -778,16 +789,22 @@ namespace DigitalRuby.FastLineRenderer
             if (Material == null)
             {
                 previousMaterial = null;
+                UpdateCanvasRendererMaterial();
                 return;
             }
             else if (Material != previousMaterial)
             {
                 Material = (CloneMaterial ? new Material(Material) : Material);
+                //if (Application.isPlaying)
+                //{
+                    // Material.EnableKeyword("DISABLE_CAPS");
+                //}
                 previousMaterial = Material;
                 foreach (MeshRenderer meshRenderer in meshRenderers)
                 {
                     meshRenderer.sharedMaterial = Material;
                 }
+                UpdateCanvasRendererMaterial();
             }
 
             Material.SetTexture(mainTexId, LineTexture);
@@ -859,6 +876,7 @@ namespace DigitalRuby.FastLineRenderer
 
         private void Awake()
         {
+            canvasRenderer = GetComponent<CanvasRenderer>();
             AssignMaterialIds();
             currentLineRenderers.Add(this);
             ResetCurrentBounds();
@@ -883,7 +901,7 @@ namespace DigitalRuby.FastLineRenderer
         {
             currentLineRenderers.Remove(this);
             Cleanup();
-            gameObject.transform.parent = null;
+            gameObject.transform.SetParent(null, true);
             cache.Clear();
         }
 
@@ -905,6 +923,7 @@ namespace DigitalRuby.FastLineRenderer
             obj.transform.localPosition = Vector3.zero;
             obj.transform.rotation = Quaternion.identity;
             obj.transform.localScale = Vector3.one;
+            obj.layer = gameObject.layer;
             obj.AddComponent<MeshFilter>();
             MeshRenderer meshRenderer = obj.AddComponent<MeshRenderer>();
             meshRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
@@ -1002,7 +1021,7 @@ namespace DigitalRuby.FastLineRenderer
             texCoordsAndGlow.Add(texCoordAndGlow);
             lineDirs.Add(dirStart);
             colors.Add(props.Color);
-            waterLines.Add(props.LineInWater);
+            lineInWaters.Add(props.LineInWater);
             velocities.Add(props.Velocity);
             lifeTimes.Add(props.LifeTime);
 
@@ -1013,7 +1032,7 @@ namespace DigitalRuby.FastLineRenderer
             texCoordsAndGlow.Add(texCoordAndGlow);
             lineDirs.Add(dirEnd);
             colors.Add(props.Color);
-            waterLines.Add(props.LineInWater);
+            lineInWaters.Add(props.LineInWater);
             velocities.Add(props.Velocity);
             lifeTimes.Add(props.LifeTime);
 
@@ -1024,7 +1043,7 @@ namespace DigitalRuby.FastLineRenderer
             texCoordsAndGlow.Add(texCoordAndGlow);
             lineDirs.Add(dirStart);
             colors.Add(props.Color);
-            waterLines.Add(props.LineInWater);
+            lineInWaters.Add(props.LineInWater);
             velocities.Add(props.Velocity);
             lifeTimes.Add(props.LifeTime);
 
@@ -1035,7 +1054,7 @@ namespace DigitalRuby.FastLineRenderer
             texCoordsAndGlow.Add(texCoordAndGlow);
             lineDirs.Add(dirEnd);
             colors.Add(props.Color);
-            waterLines.Add(props.LineInWater);
+            lineInWaters.Add(props.LineInWater);
             velocities.Add(props.Velocity);
             lifeTimes.Add(props.LifeTime);
 
@@ -1172,10 +1191,10 @@ namespace DigitalRuby.FastLineRenderer
             {
                 list.Capacity = capacity;
             }
-            //foreach(var list in waterLines)
-            //{
-            //    list.Capacity = capacity;
-            //}
+            foreach (var list in LineInWaterLists)
+            {
+                list.Capacity = capacity;
+            }
             foreach (var list in endsLists)
             {
                 list.Capacity = capacity;
@@ -1407,6 +1426,7 @@ namespace DigitalRuby.FastLineRenderer
             try
             {
                 ApplyListsToMeshes(optimize);
+                UpdateCanvasRendererMaterial();
                 return true;
             }
             catch
@@ -1422,7 +1442,7 @@ namespace DigitalRuby.FastLineRenderer
         public void Reset()
         {
             Cleanup();
-            InitialLineGroups = new LineGroupList[] { LineGroupList.Default() };
+           // InitialLineGroups = new LineGroupList[] { LineGroupList.Default() };
         }
 
         /// <summary>

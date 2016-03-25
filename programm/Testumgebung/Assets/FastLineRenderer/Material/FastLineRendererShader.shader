@@ -129,8 +129,8 @@
 			v2f o;
 
 			float4 worldPos = v.vertex;
-			uint lineType = abs(v.texcoord.x);
-			float2 texcoord = float2(lineType % 2, v.texcoord.y);
+			uint lineType = abs(round(v.texcoord.x));
+			float2 texcoord = float2(fmod(lineType, 2), v.texcoord.y);
 			float dirModifier = (texcoord.x * 2) - 1;
 			float jitter = 1.0 + (_JitterMultiplier * rand(worldPos));
 			float absRadius = abs(v.dir.w);
@@ -178,19 +178,19 @@
 
 				// full line
 				lineType /= 2;
-				o.texcoord2.x = lineType % 2;
+				o.texcoord2.x = fmod(lineType, 2);
 
 				// start cap
 				lineType /= 2;
-				o.texcoord2.y = lineType % 2;
+				o.texcoord2.y = fmod(lineType, 2);
 
 				// end cap
 				lineType /= 2;
-				o.texcoord2.z = lineType % 2;
+				o.texcoord2.z = fmod(lineType, 2);
 
 				// round join
 				lineType /= 2;
-				o.texcoord2.w = lineType % 2;
+				o.texcoord2.w = fmod(lineType, 2);
 			}
 
 #endif

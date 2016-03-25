@@ -1,13 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class DoorOpener : MonoBehaviour {
+public class DoorOpener : MonoBehaviour
+{
 
-	public ColorMirror.CustomColor validColor;
+	public CustomColor.CustomizedColor validColor;
     public GameObject Door;
     public bool WithColor;
 
-     public void OpenDoor(ColorMirror.CustomColor collisionColor)
+    public int counter;
+
+     public void OpenDoor(CustomColor.CustomizedColor collisionColor)
     {
 
         if (!WithColor)

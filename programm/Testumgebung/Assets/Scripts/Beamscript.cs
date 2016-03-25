@@ -42,7 +42,6 @@ namespace DigitalRuby.FastLineRenderer
             {
                 if (r != null)
                 {
-                    costumCleanup(r.meshes);
                     r.Reset();
                     BeamCollider.OnDestroy();
                     properties.Clear();
@@ -166,16 +165,6 @@ namespace DigitalRuby.FastLineRenderer
                 r.AddLine(prop);
             }
             r.Apply(true);
-        }
-        private void costumCleanup(List<Mesh> meshes)
-        {
-            foreach (Mesh mesh in meshes)
-            {
-                if (mesh != null)
-                {
-                    Destroy(mesh);
-                }
-            }
-        }
+        }     
     }
 }

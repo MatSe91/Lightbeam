@@ -534,26 +534,18 @@ namespace DigitalRuby.FastLineRenderer
 
         private void Cleanup()
         {
-            //foreach (Mesh mesh in meshes)
-            //{
-            //    if (mesh != null)
-            //    {
-            //        mesh.triangles = null;
-            //        mesh.vertices = null;
-            //        mesh.colors = null;
-            //        mesh.tangents = null;
-            //        mesh.normals = null;
-            //        mesh.uv = null;
-            //        mesh.uv2 = null;
-            //        mesh.uv3 = null;
-            //        mesh.uv4 = null;
-            //    }
-            //}
+            foreach (Mesh mesh in meshes)
+            {
+                if (mesh != null)
+                {
+                    DestroyImmediate(mesh, true);
+                }
+            }
             foreach (MeshRenderer meshRenderer in meshRenderers)
             {
                 if (meshRenderer != null)
                 {
-                    meshRenderer.enabled = false;
+                    DestroyImmediate(meshRenderer, true);
                 }
             }
             foreach (var list in verticesLists)

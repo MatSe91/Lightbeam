@@ -26,24 +26,32 @@ namespace DigitalRuby.FastLineRenderer
         Color intensitive;
         private ColorMirror cm = new ColorMirror();
         private DoorOpener dk = new DoorOpener();
+        private int doorCounter = 0;
+        private bool collideWithDoor;
 
         // Use this for initialization
         void Start()
         {
             r = FastLineRenderer.CreateWithParent(null, GetComponent<FastLineRenderer>());
             intensitive = new Color(0, 0, 0, 0.7f);
+            properties = new List<FastLineRendererProperties>();
+            intensitive = new Color(0, 0, 0, 0.7f);
         }
 
         // Update is called once per frame
         void Update()
         {
+            collideWithDoor = false;
             if (r != null)
             {
+                costumCleanup(r.meshes);
                 r.Reset();
-                properties = new List<FastLineRendererProperties>();
+                BeamCollider.OnDestroy();
+                properties.Clear();
                 property = new FastLineRendererProperties();
                 property.LineInWater = false;
                 beamIsInWater = false;
+
             }
 
             isActive = true;
@@ -57,8 +65,12 @@ namespace DigitalRuby.FastLineRenderer
                 RaycastHit hit;
                 if (Physics.Raycast(curPosition, dir, out hit))
                 {
+                    
+
+                    #region mirror
                     if (hit.transform.gameObject.tag == MirrorTag)
                     {
+                       
                         isActive = true;
                         curPosition = hit.point;
                         dir = Vector3.Reflect(dir, hit.normal);
@@ -68,10 +80,12 @@ namespace DigitalRuby.FastLineRenderer
                         standardColor();
                         property.Color = Color.green;
                         property.Start = curPosition;
+
                     }
 
                     else if (hit.transform.gameObject.tag == "ColorMirror")
                     {
+                       
                         isActive = true;
                         curPosition = hit.point;
 
@@ -83,12 +97,15 @@ namespace DigitalRuby.FastLineRenderer
                         property.Color = Color.green;
                         property.Start = curPosition;
                         cm = hit.transform.gameObject.GetComponentInParent<ColorMirror>();
-                        dir = cm.GetReflection(ColorMirror.GetCustomColor(property.Color), dir, hit);
+                        dir = cm.GetReflection(CustomColor.GetCustomColor(property.Color), dir, hit);
 
                     }
-
+                    #endregion
+                    #region Door
                     else if (hit.transform.gameObject.tag == "Doorknop")
                     {
+                        collideWithDoor = true;
+                       
                         isActive = true;
                         curPosition = hit.point;
 
@@ -99,16 +116,20 @@ namespace DigitalRuby.FastLineRenderer
                         standardColor();
                         property.Color = Color.green;
                         property.Start = curPosition;
+                       
                         dk = hit.transform.gameObject.GetComponent<DoorOpener>();
-                        dk.OpenDoor(ColorMirror.GetCustomColor(property.Color));
+                        dir = new Vector3(0, 0, 0);
+                        if (doorCounter == dk.counter -1)
+                        {
+                            dk.OpenDoor(CustomColor.GetCustomColor(property.Color));
+                            collideWithDoor = false;
+                        }
 
                     }
-                    else
-                    {
-                        isActive = false;
-                    }
 
-                    if (hit.transform.gameObject.layer == 4)
+                    #endregion
+                    #region water
+                    else if (hit.transform.gameObject.layer == 4)
                     {
                         curPosition = hit.point;
                         property.End = curPosition;
@@ -131,6 +152,13 @@ namespace DigitalRuby.FastLineRenderer
                         property.Color = Color.blue;
                         property.Start = curPosition;
                         isActive = true;
+
+                    }
+                    #endregion
+                    else
+                    {
+                        isActive = false;
+                      
                     }
 
                     // Prüfe ob die angegebene Maske mit der Maske im hit übereinstimmt
@@ -160,10 +188,26 @@ namespace DigitalRuby.FastLineRenderer
                     {
                         BeamConnectivity(sameObject, false);
                     }
+                   
                 }
             }
             properties.Add(property);
             addLines();
+            setDoorCounter();
+        }
+
+        private void setDoorCounter()
+        {
+            if (collideWithDoor)
+            {
+                doorCounter ++;
+            }
+            else
+            {
+                doorCounter=0;
+            }
+
+           
         }
 
         private void BeamConnectivity(GameObject checkP, bool bo)
@@ -192,6 +236,18 @@ namespace DigitalRuby.FastLineRenderer
                 r.AddLine(prop);
             }
             r.Apply(true);
+        }
+
+
+        private void costumCleanup(List<Mesh> meshes)
+        {
+            foreach (Mesh mesh in meshes)
+            {
+                if (mesh != null)
+                {
+                    Destroy(mesh);
+                }
+            }
         }
     }
 

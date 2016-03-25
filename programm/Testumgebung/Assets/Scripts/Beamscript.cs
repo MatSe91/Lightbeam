@@ -25,6 +25,10 @@ namespace DigitalRuby.FastLineRenderer
         private Vector3 dir;
         private bool beamIsInWater;
         Color intensitive;
+        private ColorMirror cm = new ColorMirror();
+        private DoorOpener dk = new DoorOpener();
+        private int doorCounter = 0;
+        private bool collideWithDoor;
 
 
         // Use this for initialization
@@ -38,8 +42,9 @@ namespace DigitalRuby.FastLineRenderer
         // Update is called once per frame
         void Update()
         {
-            if (InputManager.touchInput)
-            {
+            collideWithDoor = false;
+            //if (InputManager.touchInput)
+            //{
                 if (r != null)
                 {
                     costumCleanup(r.meshes);
@@ -62,6 +67,9 @@ namespace DigitalRuby.FastLineRenderer
                     RaycastHit hit;
                     if (Physics.Raycast(curPosition, dir, out hit))
                     {
+
+                      
+                        #region mirror
                         if (hit.transform.gameObject.tag == MirrorTag)
                         {
                             isActive = true;
@@ -75,6 +83,51 @@ namespace DigitalRuby.FastLineRenderer
                             property.Color = Color.green;
                             property.Start = curPosition;
                         }
+
+                        else if (hit.transform.gameObject.tag == "ColorMirror")
+                        {
+                            isActive = true;
+                            curPosition = hit.point;
+
+                            property.End = curPosition;
+
+                            properties.Add(property);
+                            property = new FastLineRendererProperties();
+                            standardColor();
+                            property.Color = Color.green;
+                            property.Start = curPosition;
+                            cm = hit.transform.gameObject.GetComponentInParent<ColorMirror>();
+                            dir = cm.GetReflection(CustomColor.GetCustomColor(property.Color), dir, hit);
+                          
+                        }
+                        #endregion
+                        #region Door
+                        else if (hit.transform.gameObject.tag == "Doorknop")
+                        {
+                            collideWithDoor = true;
+
+                            isActive = true;
+                            curPosition = hit.point;
+
+                            property.End = curPosition;
+
+                            properties.Add(property);
+                            property = new FastLineRendererProperties();
+                            standardColor();
+                            property.Color = Color.green;
+                            property.Start = curPosition;
+
+                            dk = hit.transform.gameObject.GetComponent<DoorOpener>();
+                            dir = new Vector3(0, 0, 0);
+                            if (doorCounter == dk.counter - 1)
+                            {
+                                dk.OpenDoor(CustomColor.GetCustomColor(property.Color));
+                                collideWithDoor = false;
+                            }
+
+                        }
+                        #endregion
+
                         else
                         {
                             isActive = false;
@@ -136,9 +189,10 @@ namespace DigitalRuby.FastLineRenderer
                 }
                 properties.Add(property);
                 addLines();
+                setDoorCounter();
 
             }
-        }
+        //}
 
         private void BeamConnectivity(GameObject checkP, bool bo)
         {
@@ -177,5 +231,20 @@ namespace DigitalRuby.FastLineRenderer
                 }
             }
         }
+        private void setDoorCounter()
+        {
+            if (collideWithDoor)
+            {
+                doorCounter++;
+            }
+            else
+            {
+                doorCounter = 0;
+            }
+        }
+
+
+
+        }
+
     }
-}

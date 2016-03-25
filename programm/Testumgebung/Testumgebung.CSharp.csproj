@@ -79,6 +79,7 @@
     <Compile Include="Assets\Scripts\Collectible.cs" />
     <Compile Include="Assets\Scripts\ColorMirror.cs" />
     <Compile Include="Assets\Scripts\ControllingCameraResolution.cs" />
+    <Compile Include="Assets\Scripts\CustomColor.cs" />
     <Compile Include="Assets\Scripts\DoorOpener.cs" />
     <Compile Include="Assets\Scripts\ExitGameOnBackButton.cs" />
     <Compile Include="Assets\Scripts\InputManager.cs" />

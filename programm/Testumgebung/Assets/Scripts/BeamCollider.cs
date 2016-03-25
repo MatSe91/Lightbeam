@@ -12,7 +12,8 @@ namespace DigitalRuby.FastLineRenderer
 
         public static void AddColliderToLine(Vector3 startPos, Vector3 endPos, FastLineRenderer r)//,GameObject Prefab)
         {
-            BoxCollider box = new GameObject("BeamCollider").AddComponent<BoxCollider>();
+            GameObject go = new GameObject("BeamCollider");
+            BoxCollider box = /*new GameObject("BeamCollider").*/go.AddComponent<BoxCollider>();
             box.transform.parent = r.transform;
             float lineLength = Vector3.Distance(startPos, endPos); // length of line
                         
@@ -33,6 +34,7 @@ namespace DigitalRuby.FastLineRenderer
             box.gameObject.layer = 9;
             box.tag = "BoxColliderTag";
             box.enabled = true;
+            go.hideFlags = HideFlags.DontSave;
         }
 
         public static void OnDestroy()
@@ -42,7 +44,7 @@ namespace DigitalRuby.FastLineRenderer
 
             foreach (var item in ColliderList)
             {
-                Destroy(item);
+                DestroyImmediate(item);
             }
         }
     }

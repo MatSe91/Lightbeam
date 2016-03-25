@@ -1,4 +1,6 @@
-﻿Shader "Water2D/VerticalWater" {
+﻿// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
+
+Shader "Water2D/VerticalWater" {
 Properties {
 	
 		_MainTex ("Main Texture", 2D) = "white" {}
@@ -54,7 +56,7 @@ Properties {
 		{
 			v2f o;
 		
-			half3 worldSpaceVertex = mul(_Object2World,(v.vertex)).xyz;
+			half3 worldSpaceVertex = mul(unity_ObjectToWorld,(v.vertex)).xyz;
 			half3 vtxForAni = (worldSpaceVertex).xzz;
 
 			half3 nrml = half3(0,1,0);

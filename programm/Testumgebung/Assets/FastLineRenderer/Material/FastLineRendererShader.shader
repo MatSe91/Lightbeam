@@ -46,6 +46,7 @@
 		#pragma fragmentoption ARB_precision_hint_fastest
 		#pragma glsl_no_auto_normalization
 		#pragma multi_compile __ DISABLE_CAPS
+		#pragma multi_compile __ ORTHOGRAPHIC_MODE
 
 		float _JitterMultiplier;
 		float _Turbulence;
@@ -140,32 +141,33 @@
 			float3 center = worldPos.xyz + (v.dir.xyz * 0.5 * -dirModifier);
 			float4 pos;
 
-			if (unity_OrthoParams.w == 1.0)
+#if defined(ORTHOGRAPHIC_MODE)
+
+			float2 tangent = normalize(float2(-v.dir.y, v.dir.x));
+			float4 offset = float4((tangent * v.dir.w * radiusMultiplier) + (lengthMultiplier * dirNorm.xy * dirModifier * radiusMultiplier), 0, 0);
+			if (v.lifeTime.w != 0.0)
 			{
-				float2 tangent = normalize(float2(-v.dir.y, v.dir.x));
-				float4 offset = float4((tangent * v.dir.w * radiusMultiplier) + (lengthMultiplier * dirNorm.xy * dirModifier * radiusMultiplier), 0, 0);
-				if (v.lifeTime.w != 0.0)
-				{
-					float modifier = v.lifeTime.w * elapsedSeconds;
-					offset.xy = rotate_vertex_position(offset.xyz, float3(0, 0, 0), float3(0, 0, 1), modifier).xy;
-					worldPos.xy = rotate_vertex_position(worldPos.xyz, center, float3(0, 0, 1), modifier).xy;
-				}
-				pos = worldPos + (offset * jitter) + velocityOffset;
+				float modifier = v.lifeTime.w * elapsedSeconds;
+				offset.xy = rotate_vertex_position(offset.xyz, float3(0, 0, 0), float3(0, 0, 1), modifier).xy;
+				worldPos.xy = rotate_vertex_position(worldPos.xyz, center, float3(0, 0, 1), modifier).xy;
 			}
-			else
+			pos = worldPos + (offset * jitter) + velocityOffset;
+
+#else
+
+			float3 directionToCamera = normalize(_WorldSpaceCameraPos - center);
+			float3 tangent = cross(dirNorm.xyz, directionToCamera.xyz);
+			float4 offset = float4((tangent * v.dir.w * radiusMultiplier) + (lengthMultiplier * dirNorm * dirModifier * radiusMultiplier), 0);
+			if (v.lifeTime.w != 0.0)
 			{
-				float3 directionToCamera = normalize(_WorldSpaceCameraPos - center);
-				float3 tangent = cross(dirNorm.xyz, directionToCamera.xyz);
-				float4 offset = float4((tangent * v.dir.w * radiusMultiplier) + (lengthMultiplier * dirNorm * dirModifier * radiusMultiplier), 0);
-				if (v.lifeTime.w != 0.0)
-				{
-					// to rotate around the lines perpendicular, use tangent instead of directionToCamera for the axis
-					float modifier = v.lifeTime.w * elapsedSeconds;
-					offset.xyz = rotate_vertex_position(offset.xyz, float3(0, 0, 0), directionToCamera, v.lifeTime.w * modifier);
-					worldPos.xyz = rotate_vertex_position(worldPos.xyz, center, directionToCamera, v.lifeTime.w * modifier);
-				}
-				pos = worldPos + (offset * jitter) + velocityOffset;
+				// to rotate around the lines perpendicular, use tangent instead of directionToCamera for the axis
+				float modifier = v.lifeTime.w * elapsedSeconds;
+				offset.xyz = rotate_vertex_position(offset.xyz, float3(0, 0, 0), directionToCamera, v.lifeTime.w * modifier);
+				worldPos.xyz = rotate_vertex_position(worldPos.xyz, center, directionToCamera, v.lifeTime.w * modifier);
 			}
+			pos = worldPos + (offset * jitter) + velocityOffset;
+
+#endif
 
 			o.pos = mul(UNITY_MATRIX_MVP, pos);
 			o.color = (lerpFade(v.lifeTime, _Time2.y) * color * tintColor);
@@ -208,6 +210,7 @@
 		inline fixed4 computeFragmentOutput(v2f i, sampler2D texMain
 
 #if !defined(DISABLE_CAPS)
+
 			, sampler2D texStartCap, sampler2D texEndCap, sampler2D texRoundJoin
 
 #endif

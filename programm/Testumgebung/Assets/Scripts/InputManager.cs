@@ -8,6 +8,7 @@ public class InputManager : MonoBehaviour {
     private GameObject sameObject;
     private bool gameStarted;
     public GameObject PlayerChild;
+    public static bool touchInput;
 
 	// Use this for initialization
 	void Start () {
@@ -20,6 +21,7 @@ public class InputManager : MonoBehaviour {
         // prüfe ob die linke Maustaste gedrückt wird
         if (Input.GetMouseButtonDown(0))
         {
+            touchInput = true;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 
@@ -72,6 +74,10 @@ public class InputManager : MonoBehaviour {
                 sameObject = inUse;
             }
 
+        }
+        else if (Input.GetMouseButtonUp(0))
+        {
+            touchInput = false;
         }
 
     }

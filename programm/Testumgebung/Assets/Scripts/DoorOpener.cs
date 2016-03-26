@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class DoorOpener : MonoBehaviour
+public class DoorOpener: MonoBehaviour
 {
 
 	public CustomColor.CustomizedColor validColor;

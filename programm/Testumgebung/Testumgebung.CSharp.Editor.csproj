@@ -110,6 +110,7 @@
   <ItemGroup>
     <None Include="Assets\FastLineRenderer\Material\FastLineRendererShader.shader" />
     <None Include="Assets\FastLineRenderer\Material\FastLineRendererShaderNoGlow.shader" />
+    <None Include="Assets\FastLineRenderer\Material\FastLineRendererShader_Correct.shader" />
     <None Include="Assets\FastLineRenderer\Readme.txt" />
     <None Include="Assets\Water2D_Tool\Resources\Readme.txt" />
     <None Include="Assets\Water2D_Tool\Scripts\ClipperLibrary\License.txt" />

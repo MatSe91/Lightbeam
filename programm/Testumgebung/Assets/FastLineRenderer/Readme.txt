@@ -3,11 +3,18 @@
 Created by Jeff Johnson
 
 Change Log
+1.1.1	(2016/03/28)	-	Added animating lines to curve / spline demo and "Animation" section to this readme.txt file
+1.1		(2016/03/23)	-	Added prefab for Unity canvas
+							Optimize shader by removing if / else conditional
+							Added ChangePosition method to move line positions
+							Resource leak cleanup
 1.0.1	(2016/03/15)	-	Line renderer takes the layer of the parent game object
 						-	Fix shader on mobile
 1.0		(2016/01/21)	-	Initial release
 
 Please read ALL of the following to get the most out of this asset. By reading this documentation, you will avoid a lot of problems and frustrations.
+
+Make sure to include "using namespace DigitalRuby.FastLineRenderer" in your scripts.
 
 Fast Line Renderer is a very powerful asset for rendering many quads and lines in Unity. With a fantastic shader that leverages the GPU almost entirely, your CPU will be free to do more important tasks.
 
@@ -17,6 +24,7 @@ Use Cases
 - Designer / inspector creation - Create your lines right in the Unity inspector to immediately visualize them without having to run your scene.
 - Soft lines - The Fast Line Renderer shader has a soft particles option. When your lines intersect solid geometry, they will look nice.
 - GUI - Fast Line Renderer works great for a custom, performant GUI as it renders entirely on the GPU.
+- *Note- There are a few Canvas bugs that limit Fast Line Renderer on a Unity Canvas. I have notified Unity of these bugs and they say they hope to have them fixed for Unity 5.4. Namely glow doesn't work, and the lines disappear.
 - More - your imagination is the only limit!
 
 Folders
@@ -29,6 +37,7 @@ Folders
 
 Demo
 --------------------------------------------------------------------------------
+- DemoSceneCanvas: Demonstrates fast line renderer on a Unity canvas. There are a few bugs that I've notified Unity about and they say they will be fixed in Unity 5.4. Namely glow doesn't work, and the lines disappear.
 - DemoSceneCurves: Demonstrates curves and splines
 - DemoSceneDesigner: Shows how to create lines in the inspector
 - DemoSceneEffects: Example of a simple fireball effect
@@ -37,9 +46,10 @@ Demo
 
 Prefab
 --------------------------------------------------------------------------------
-I've setup three prefabs for you to drag right into your scene.
+I've setup some prefabs for you to drag right into your scene.
 
 - FastLineRenderer: Prefab with glow setup ready to go
+- FastLineRendererCanvas: Prefab with glow setup ready to go on a Unity Canvas
 - FastLineRendererCurveSpline: Prefab setup with glow and will look nice with curves and splines
 - FastLineRendererNoGlow: Prefab setup to render lines that don't need glow, curves or splines
 
@@ -73,6 +83,8 @@ FastLineRenderer script is the work horse of this asset. The script has many con
 - Sort Layer Name: For 2D, allows changing the sorting layer
 - Sort Order In Layer: For 2D, allows changing the order within the sorting layer
 
+Moving Line Positions: Call ChangePosition on the FastLineRenderer script. Call Apply once all your changes have been made. Line joins are not supported with this method, for those simply recreate all your lines from scratch.
+
 Designer View
 --------------------------------------------------------------------------------
 Fast Line Renderer supports creating your lines in the Unity inspector. This is great for static content that you want to create visually. See DemoSceneDesigner for a full demo.
@@ -90,14 +102,26 @@ The script contains an "Initial Line Groups" property. Each group represents a s
 - Continuous: Whether the line is one long segment or individual lines. If true, then each point appends a line. If false, every two points represents an individual line and the line join is ignored.
 - Points: The points in the line. For continous lines, each point appends a new line. For non-continous lines, every two points represents an individual line.
 
+Animation
+--------------------------------------------------------------------------------
+Animating a line is really easy. The FastLineRendererProperties class contains an AddCreationTimeSeconds method that delays creation of line segments. Simply call this method on your properties as you add line segments, and they will animate in. See the curves / spline demo for an example.
+
 Line Joins
 --------------------------------------------------------------------------------
-Fast Line Renderer has several different join modes.
+Fast Line Renderer has several different join modes, accessible on the properties object (FastLineRendererProperties).
 
 - None: Ideal for opaque, thin lines as there is no CPU or GPU overhead
 - AdjustPosition: Move each subsequent line back a little bit so it intersects better with the previous line. Great for opaque lines that are not very thick.
 - AttachToPrevious: The best choice for translucent or 3D lines that move in both x, y and z directions. Also the preferred choice for curves and splines. Each line attaches to the two end vertices of the previous line.
-- Round: Great for opaque, thick lines as the join looks nice and smooth. This join mode requires an extra quad + texture to be rendererd for each join, but this is all done on the GPU in one draw call for performance.
+- Round: Great for opaque, thick lines as the join looks nice and smooth.
+
+Line Caps
+--------------------------------------------------------------------------------
+- Start: Add a start cap. Only useful when starting a line
+- End: Add an end cap. Only useful when ending a line
+- None: No cap. Use this for anything other than a start or end segment
+
+Note: All line segments, caps and round joins are rendererd on the GPU in a single draw call, so there is no overhead or performance impact.
 
 Material
 --------------------------------------------------------------------------------
@@ -108,13 +132,15 @@ Fast Line Renderer contains two separate materials.
 
 Shader
 --------------------------------------------------------------------------------
-Fast Line Renderer contains two shaders that match up with the material. FastLineRendererShader is the base shader.
+Fast Line Renderer contains two shaders that match up with the material (glow and no glow). FastLineRendererShader is the base shader.
 
 The shader is an advanced, innovative shader that allows rendering complex effects such as fade in/out, rotation, jitter, turbulence, velocity and billboarding all on the GPU.
 
-Start caps, end caps and round joins are all done in a single draw call to improve performance.
+Start caps, end caps, line segments and round joins are all done in a single draw call to improve performance.
 
-For extra performance, if you know you aren't using glow, make sure to use the no glow material and shader. If you know you aren't using joins or start/end caps, enable the keyword "DISABLE_CAPS" to reduce texture lookups.
+For extra performance:
+- If you aren't using glow, make sure to use the no glow material and shader.
+- If you aren't using round joins, start and end caps, enable the keyword "DISABLE_CAPS" on the material to reduce texture lookups.
 
 Creating lines in script
 --------------------------------------------------------------------------------
@@ -122,11 +148,11 @@ To use the line renderer in script, typically you will call CreateWithParent, pa
 
 Once you have created your Fast Line Renderer, you can create lines in script using the following methods:
 
-- AddLine: Add a distinct single part line segment with no caps or join
-- StartLine: Start a new line segment
-- AppendLine: Append a line to the previous position in the current line segment
-- EndLine: Finish a line segment
-- AppendCurve: Add a curve which smoothly curves using a start point, end point and two control points
+- AddLine: Add a distinct single part line segment with no caps or join.
+- StartLine: Start a new line segment.
+- AppendLine: Append a line to the previous position in the current line segment.
+- EndLine: Finish a line segment.
+- AppendCurve: Add a curve which smoothly curves using a start point, end point and two control points.
 - AppendSpline: Add a spline with a start point and end point that curves smoothly through 4 or more control points.
 
 Each of these methods takes a FastLineRendererProperties object which contains details about how the line should behave. These properties are applied per line segment rather than per line group, allowing for some interesting effects.
@@ -151,9 +177,17 @@ If your lines are temporary, you should free up your Fast Line Renderer after th
 
 To create quads, simply specify a start and end position that is a distance equal to the radius * 2.
 
+Caching and Dynamic Lines
+--------------------------------------------------------------------------------
+FastLineRenderer has a built in caching system to aid with advanced scenarios with particle systems and changing lines.
+
+- CreateWithParent: Use this static method to quickly create FastLineRenderer objects. For dynamic lines that change frequently, simply request a new FastLineRenderer and add the appropriate lines.
+- SendToCacheAfter: Use this method to send FastLineRenderer objects back to the cache after a certain amount of seconds. Great for when you are creating temporary effects.
+- Reset: Use this method to remove all lines immediately.
+
 2D mode
 --------------------------------------------------------------------------------
-Fast Line Renderer has slight optimizations for 2D mode and ignores the z coordinate. If your camera is set to orthographic, 2D mode is enabled automatically.
+Fast Line Renderer has optimizations for 2D mode and ignores the z coordinate. If your camera is set to orthographic, 2D mode is enabled automatically in the shader.
 
 5 million lines at 60 FPS
 --------------------------------------------------------------------------------

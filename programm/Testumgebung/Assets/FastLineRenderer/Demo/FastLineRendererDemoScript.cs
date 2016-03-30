@@ -255,6 +255,8 @@ namespace DigitalRuby.FastLineRenderer
         {
             if (ShowCurves && Application.isPlaying && LineRenderer != null)
             {
+                const float animationTime = 0.025f;
+
                 ShowCurves = false;
                 FastLineRendererProperties props = new FastLineRendererProperties();
                 props.GlowIntensityMultiplier = 0.5f;
@@ -265,7 +267,7 @@ namespace DigitalRuby.FastLineRenderer
                 LineRenderer.AppendCurve(props,
                     new Vector3(Screen.width * 0.33f, Screen.height * 0.67f, 0.0f), // control point 1
                     new Vector3(Screen.width * 0.67f, Screen.height * 0.33f, 0.0f), // control point 2
-                    16, true, true);
+                    16, true, true, animationTime);
 
                 props.Color = UnityEngine.Color.red;
                 props.Start = new Vector3(0.0f, Screen.height * 0.2f, 0.0f);
@@ -281,8 +283,7 @@ namespace DigitalRuby.FastLineRenderer
                     new Vector3(Screen.width, Screen.height * 0.8f, 0.0f),
                     props.End
                 };
-                LineRenderer.AppendSpline(props, spline, 128, FastLineRendererSplineFlags.StartCap | FastLineRendererSplineFlags.EndCap);
-
+                LineRenderer.AppendSpline(props, spline, 128, FastLineRendererSplineFlags.StartCap | FastLineRendererSplineFlags.EndCap, animationTime);
                 LineRenderer.Apply();
             }
         }

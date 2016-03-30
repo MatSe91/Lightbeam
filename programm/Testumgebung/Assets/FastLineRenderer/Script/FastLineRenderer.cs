@@ -45,9 +45,6 @@ namespace DigitalRuby.FastLineRenderer
         [Tooltip("Line color")]
         public Color32 LineColor;
 
-        [Tooltip("Line in Water")]
-        public bool LineInWater;
-
         [Range(0.0f, 64.0f)]
         [Tooltip("Glow width multiplier")]
         public float GlowWidthMultiplier;
@@ -158,7 +155,7 @@ namespace DigitalRuby.FastLineRenderer
     /// <summary>
     /// Properties for creating lines
     /// </summary>
-    public class FastLineRendererProperties
+    public class FastLineRendererProperties : FastLineRendererPropertiesExtended
     {
         /// <summary>
         /// Infinite lifetime and no fading. Line exists until manually destroyed.
@@ -166,6 +163,37 @@ namespace DigitalRuby.FastLineRenderer
         public static Vector4 LifeTimeInfinite()
         {
             return new Vector4(0.0f, 0.0f, float.MaxValue, 0.0f);
+        }
+
+        /// <summary>
+        /// Add n seconds to the creation time of these properties. Useful for animation when you want segments to animate in.
+        /// </summary>
+        /// <param name="seconds">Seconds to add to the creation time</param>
+        public void AddCreationTimeSeconds(float seconds)
+        {
+            LifeTime.x += seconds;
+        }
+
+        /// <summary>
+        /// Clone these properties
+        /// </summary>
+        /// <returns>Cloned FastLineRendererProperties</returns>
+        public FastLineRendererProperties Clone()
+        {
+            return new FastLineRendererProperties
+            {
+                Start = Start,
+                End = End,
+                Radius = Radius,
+                Color = Color,
+                GlowWidthMultiplier = GlowWidthMultiplier,
+                GlowIntensityMultiplier = GlowIntensityMultiplier,
+                LifeTime = LifeTime,
+                Velocity = Velocity,
+                AngularVelocity = AngularVelocity,
+                LineJoin = LineJoin,
+                LineType = LineType
+            };
         }
 
         /// <summary>
@@ -187,11 +215,6 @@ namespace DigitalRuby.FastLineRenderer
         /// Color
         /// </summary>
         public Color32 Color = UnityEngine.Color.white;
-
-        /// <summary>
-        /// Color
-        /// </summary>
-        public bool LineInWater = false;
 
         /// <summary>
         /// Glow width multiplier
@@ -337,15 +360,15 @@ namespace DigitalRuby.FastLineRenderer
         private static int time2Id;
 
         private const int defaultListCapacity = 256;
+        private static readonly LineGroupList[] defaultInitialGroups = new LineGroupList[] { LineGroupList.Default() };
         private static readonly HashSet<FastLineRenderer> currentLineRenderers = new HashSet<FastLineRenderer>();
-        private static readonly LinkedList<FastLineRenderer> cache = new LinkedList<FastLineRenderer>();
-        public readonly List<Mesh> meshes = new List<Mesh>();
+        private static readonly HashSet<FastLineRenderer> cache = new HashSet<FastLineRenderer>();
+        private readonly List<Mesh> meshes = new List<Mesh>();
         private readonly List<MeshRenderer> meshRenderers = new List<MeshRenderer>();
         private readonly List<List<Vector4>> texCoordsAndGlowLists = new List<List<Vector4>>(new[] { new List<Vector4>(defaultListCapacity) });
         private readonly List<List<Vector3>> verticesLists = new List<List<Vector3>>(new[] { new List<Vector3>(defaultListCapacity) });
         private readonly List<List<Vector4>> lineDirsLists = new List<List<Vector4>>(new[] { new List<Vector4>(defaultListCapacity) });
         private readonly List<List<Color32>> colorsLists = new List<List<Color32>>(new[] { new List<Color32>(defaultListCapacity) });
-        private readonly List<List<bool>> LineInWaterLists = new List<List<bool>>(new[] { new List<bool>(defaultListCapacity) });
         private readonly List<List<Vector3>> endsLists = new List<List<Vector3>>(new[] { new List<Vector3>(defaultListCapacity) });
         private readonly List<List<Vector4>> lifeTimesLists = new List<List<Vector4>>(new[] { new List<Vector4>(defaultListCapacity) });
         private readonly List<Bounds> boundsList = new List<Bounds>(new[] { new Bounds() });
@@ -357,7 +380,6 @@ namespace DigitalRuby.FastLineRenderer
         private List<Vector3> vertices;
         private List<Vector4> lineDirs;
         private List<Color32> colors;
-        private List<bool> lineInWaters;
         private List<Vector3> velocities;
         private List<Vector4> lifeTimes;
         private Vector3 currentBoundsMin;
@@ -479,7 +501,6 @@ namespace DigitalRuby.FastLineRenderer
             vertices = new List<Vector3>(defaultListCapacity);
             lineDirs = new List<Vector4>(defaultListCapacity);
             colors = new List<Color32>(defaultListCapacity);
-            lineInWaters = new List<bool>(defaultListCapacity);
             velocities = new List<Vector3>(defaultListCapacity);
             lifeTimes = new List<Vector4>(defaultListCapacity);
 
@@ -487,7 +508,6 @@ namespace DigitalRuby.FastLineRenderer
             verticesLists.Add(vertices);
             lineDirsLists.Add(lineDirs);
             colorsLists.Add(colors);
-            LineInWaterLists.Add(lineInWaters);
             endsLists.Add(velocities);
             lifeTimesLists.Add(lifeTimes);
 
@@ -500,7 +520,6 @@ namespace DigitalRuby.FastLineRenderer
             vertices = verticesLists[listIndex];
             lineDirs = lineDirsLists[listIndex];
             colors = colorsLists[listIndex];
-            lineInWaters = LineInWaterLists[listIndex];
             velocities = endsLists[listIndex];
             lifeTimes = lifeTimesLists[listIndex];
             currentBoundsMin = boundsList[listIndex].min;
@@ -564,10 +583,6 @@ namespace DigitalRuby.FastLineRenderer
             {
                 list.Clear();
             }
-            foreach (var list in LineInWaterLists)
-            {
-                list.Clear();
-            }
             foreach (var list in endsLists)
             {
                 list.Clear();
@@ -586,7 +601,7 @@ namespace DigitalRuby.FastLineRenderer
                 GameObject obj = gameObject.transform.GetChild(0).gameObject;
                 if (obj != null)
                 {
-                    GameObject.DestroyImmediate(obj);
+                    GameObject.DestroyImmediate(obj, true);
                 }
             }
             meshes.Clear();
@@ -691,7 +706,6 @@ namespace DigitalRuby.FastLineRenderer
                     Vector3 nextPoint = list.Points.List[i];
                     props.Radius = list.LineRadius;
                     props.Color = list.LineColor;
-                    props.LineInWater = list.LineInWater;
                     props.GlowWidthMultiplier = list.GlowWidthMultiplier;
                     props.GlowIntensityMultiplier = list.GlowIntensity;
 
@@ -818,9 +832,17 @@ namespace DigitalRuby.FastLineRenderer
             Material.SetFloat(glowLengthMultiplierId, GlowLengthMultiplier);
             Material.SetFloat(jitterMultiplierId, JitterMultiplier);
             Material.SetFloat(turbulenceMultiplierId, Turbulence);
-
             float t = Time.timeSinceLevelLoad;
             Material.SetVector(time2Id, new Vector4(t / 20.0f, t, t * 2.0f, t * 3.0f));
+
+            if (Camera == null || !Camera.orthographic)
+            {
+                Material.DisableKeyword("ORTHOGRAPHIC_MODE");
+            }
+            else
+            {
+                Material.EnableKeyword("ORTHOGRAPHIC_MODE");
+            }
         }
 
         private void ResetVariables()
@@ -1013,7 +1035,6 @@ namespace DigitalRuby.FastLineRenderer
             texCoordsAndGlow.Add(texCoordAndGlow);
             lineDirs.Add(dirStart);
             colors.Add(props.Color);
-            lineInWaters.Add(props.LineInWater);
             velocities.Add(props.Velocity);
             lifeTimes.Add(props.LifeTime);
 
@@ -1024,7 +1045,6 @@ namespace DigitalRuby.FastLineRenderer
             texCoordsAndGlow.Add(texCoordAndGlow);
             lineDirs.Add(dirEnd);
             colors.Add(props.Color);
-            lineInWaters.Add(props.LineInWater);
             velocities.Add(props.Velocity);
             lifeTimes.Add(props.LifeTime);
 
@@ -1035,7 +1055,6 @@ namespace DigitalRuby.FastLineRenderer
             texCoordsAndGlow.Add(texCoordAndGlow);
             lineDirs.Add(dirStart);
             colors.Add(props.Color);
-            lineInWaters.Add(props.LineInWater);
             velocities.Add(props.Velocity);
             lifeTimes.Add(props.LifeTime);
 
@@ -1046,7 +1065,6 @@ namespace DigitalRuby.FastLineRenderer
             texCoordsAndGlow.Add(texCoordAndGlow);
             lineDirs.Add(dirEnd);
             colors.Add(props.Color);
-            lineInWaters.Add(props.LineInWater);
             velocities.Add(props.Velocity);
             lifeTimes.Add(props.LifeTime);
 
@@ -1162,7 +1180,7 @@ namespace DigitalRuby.FastLineRenderer
         /// <summary>
         /// Set the capacity of all internal lists.
         /// </summary>
-        /// <param name="capacity"></param>
+        /// <param name="capacity">Capacity</param>
         public void SetCapacity(int capacity)
         {
             capacity = Mathf.Clamp(capacity, 0, MaxVerticesPerMesh);
@@ -1180,10 +1198,6 @@ namespace DigitalRuby.FastLineRenderer
                 list.Capacity = capacity;
             }
             foreach (var list in colorsLists)
-            {
-                list.Capacity = capacity;
-            }
-            foreach (var list in LineInWaterLists)
             {
                 list.Capacity = capacity;
             }
@@ -1315,8 +1329,10 @@ namespace DigitalRuby.FastLineRenderer
         /// <param name="numberOfSegments">Number of segments. The higher the better quality but more CPU and GPU usage.</param>
         /// <param name="startCap">Whether to add a start cap</param>
         /// <param name="endCap">Whether to add an end cap</param>
-        public void AppendCurve(FastLineRendererProperties props, Vector3 ctr1, Vector3 ctr2, int numberOfSegments, bool startCap, bool endCap)
+        /// <param name="animationTime">The time it takes for each line segment of the spline to animate in</param>
+        public void AppendCurve(FastLineRendererProperties props, Vector3 ctr1, Vector3 ctr2, int numberOfSegments, bool startCap, bool endCap, float animationTime = 0.0f)
         {
+            float xLifeTime = props.LifeTime.x;
             PathGenerator.Is2D = Camera.orthographic;
             FastLineRendererLineJoin prevJoin = props.LineJoin;
             props.LineJoin = FastLineRendererLineJoin.AttachToPrevious;
@@ -1332,6 +1348,7 @@ namespace DigitalRuby.FastLineRenderer
                 props.End = path[1];
                 props.LineType = FastLineRendererLineSegmentType.StartCap;
                 StartLine(props);
+                props.LifeTime.x += animationTime;
             }
 
             for (; index < path.Count; index++)
@@ -1341,15 +1358,18 @@ namespace DigitalRuby.FastLineRenderer
                 {
                     props.LineType = FastLineRendererLineSegmentType.EndCap;
                     EndLine(props);
+                    props.LifeTime.x += animationTime;
                 }
                 else
                 {
                     AppendLine(props);
+                    props.LifeTime.x += animationTime;
                 }
             }
 
             path.Clear();
             props.LineJoin = prevJoin;
+            props.LifeTime.x = xLifeTime;
         }
 
         /// <summary>
@@ -1359,8 +1379,9 @@ namespace DigitalRuby.FastLineRenderer
         /// <param name="points">Points for the spline to follow</param>
         /// <param name="numberOfSegments">Total number of line segments for the spline. The higher this number, the higher quality, but more CPU / GPU time.</param>
         /// <param name="flags">Flags determining how the spline behaves</param>
+        /// <param name="animationTime">The time it takes for each line segment of the spline to animate in</param>
         /// <returns>True if success, false if points length is too small</returns>
-        public bool AppendSpline(FastLineRendererProperties props, IList<Vector3> points, int numberOfSegments, FastLineRendererSplineFlags flags)
+        public bool AppendSpline(FastLineRendererProperties props, IList<Vector3> points, int numberOfSegments, FastLineRendererSplineFlags flags, float animationTime = 0.0f)
         {
             PathGenerator.Is2D = Camera.orthographic;
             bool closePath = (flags & FastLineRendererSplineFlags.ClosePath) == FastLineRendererSplineFlags.ClosePath;
@@ -1372,6 +1393,7 @@ namespace DigitalRuby.FastLineRenderer
                 return false;
             }
 
+            float xLifeTime = props.LifeTime.x;
             int index = 0;
             int lastIndexMinusOne = path.Count - 1;
 
@@ -1386,6 +1408,7 @@ namespace DigitalRuby.FastLineRenderer
                 props.End = path[1];
                 props.LineType = FastLineRendererLineSegmentType.StartCap;
                 StartLine(props);
+                props.LifeTime.x += animationTime;
             }
 
             for (; index < path.Count; index++)
@@ -1395,17 +1418,46 @@ namespace DigitalRuby.FastLineRenderer
                 {
                     props.LineType = FastLineRendererLineSegmentType.EndCap;
                     EndLine(props);
+                    props.LifeTime.x += animationTime;
                 }
                 else
                 {
                     AppendLine(props);
+                    props.LifeTime.x += animationTime;
                 }
             }
 
             path.Clear();
             props.LineJoin = prevJoin;
+            props.LifeTime.x = xLifeTime;
 
             return true;
+        }
+
+        /// <summary>
+        /// Changes the position of a single line segment.
+        /// This method does not support join styles.
+        /// You must call Apply to make the changes permanent.
+        /// </summary>
+        /// <param name="index">Line segment index. Each line segment has it's own start and end position.</param>
+        /// <param name="newStart">The new start position of the line segment</param>
+        /// <param name="newEnd">The new end position of the line segment</param>
+        public void ChangePosition(int index, Vector3 newStart, Vector3 newEnd)
+        {
+            index *= 4;
+            int listIndex = index % MaxVerticesPerMesh;
+            float radius = lineDirs[index].w;
+            Vector4 dir = new Vector4(newEnd.x - newStart.x, newEnd.y - newStart.y, newEnd.z - newStart.z, radius);
+            List<Vector3> vertices = verticesLists[listIndex];
+            lineDirs[index] = dir;
+            vertices[index++] = newStart;
+            lineDirs[index] = dir;
+            vertices[index++] = newEnd;
+            dir.w = -radius;
+            lineDirs[index] = dir;
+            vertices[index++] = newStart;
+            lineDirs[index] = dir;
+            vertices[index] = newEnd;
         }
 
         /// <summary>
@@ -1434,7 +1486,7 @@ namespace DigitalRuby.FastLineRenderer
         public void Reset()
         {
             Cleanup();
-           // InitialLineGroups = new LineGroupList[] { LineGroupList.Default() };
+            InitialLineGroups = defaultInitialGroups;
         }
 
         /// <summary>
@@ -1475,8 +1527,11 @@ namespace DigitalRuby.FastLineRenderer
         /// </summary>
         public void SendToCache()
         {
-            Reset();
-            cache.AddLast(this);
+            if (this != null)
+            {
+                Reset();
+                cache.Add(this);
+            }
         }
 
         /// <summary>
@@ -1497,7 +1552,7 @@ namespace DigitalRuby.FastLineRenderer
         /// <returns>FastLineRenderer from cache or new</returns>
         public static FastLineRenderer CreateWithParent(GameObject parent, FastLineRenderer template)
         {
-            FastLineRenderer r;
+            FastLineRenderer r = null;
             if (cache.Count == 0)
             {
                 GameObject obj = new GameObject();
@@ -1512,8 +1567,12 @@ namespace DigitalRuby.FastLineRenderer
             }
             else
             {
-                r = cache.First.Value;
-                cache.RemoveFirst();
+                foreach (FastLineRenderer rr in cache)
+                {
+                    r = rr;
+                    break;
+                }
+                cache.Remove(r);
             }
             r.InitialLineGroups = null;
             template.CopyTo(r);

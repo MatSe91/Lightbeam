@@ -103,7 +103,7 @@ public class Beamscript_tmp_MS : MonoBehaviour
                 }
 
                 #endregion
-                // if beam hits dorrKnop
+                // if beam hits dorKnop
                 #region Door               
                 if (hit.transform.gameObject.tag == doorKnopTag)
                 {
@@ -144,8 +144,8 @@ public class Beamscript_tmp_MS : MonoBehaviour
                 }
 
                 // if beam hit checkPoint
-                if ((checkPointLayer.value & 1 << hit.transform.gameObject.layer) == 1 << hit.transform.gameObject.layer)
-                {
+                if (hit.transform.gameObject.layer.Equals(checkPointLayer))
+                { 
                     BeamConnectivity(hit.transform.gameObject, true);
                     sameObject = hit.transform.gameObject;
                 }

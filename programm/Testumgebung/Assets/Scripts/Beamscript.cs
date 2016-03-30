@@ -3,248 +3,237 @@ using System.Collections;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DigitalRuby.FastLineRenderer;
 
-namespace DigitalRuby.FastLineRenderer
+public class Beamscript : MonoBehaviour
 {
-    public class Beamscript : MonoBehaviour
+    // necessary Tags
+    private string mirrorTag;
+    private string colorMirrorTag;
+    private string doorKnopTag;
+
+    // necessary Layers
+    private LayerMask checkPointLayer;
+    private LayerMask waterLayer;
+
+    // Lines
+    private FastLineRenderer r;
+    private FastLineRendererProperties property;
+    private List<FastLineRendererProperties> properties;
+
+    // Line proberties
+    private Vector3 curPosition;
+    private Vector3 dir;
+    private bool beamIsInWater;
+
+    // external Scripts
+    private BeamRefraction br;
+    private DoorOpener doorOpener;
+
+
+    private GameObject sameObject;
+    private bool isActive;
+    private Color intensitive;
+    private int doorCounter = 0;
+    private bool collideWithDoor;
+
+
+    // Use this for initialization
+    void Start()
     {
-        [Tooltip("Tag an dem der Spiegel reflektiert.")]
-        public string MirrorTag;
+        r = FastLineRenderer.CreateWithParent(null, GetComponent<FastLineRenderer>());
+        properties = new List<FastLineRendererProperties>();
+        intensitive = new Color(0, 0, 0, 0.7f);
 
-        [Tooltip("Hier wird der Layer des Collectable ausgewählt")]
-        public LayerMask checkPointLayer;
+        // layer
+        checkPointLayer = LayerMask.NameToLayer("Checkpoint");
+        waterLayer = LayerMask.NameToLayer("Water");
 
-        private FastLineRenderer r;
-        private FastLineRendererProperties property;
-        private BeamRefraction br;
-        private List<FastLineRendererProperties> properties;
+        // tags
+        mirrorTag = "Mirror";
+        colorMirrorTag = "ColorMirror";
+        doorKnopTag = "Doorknop";
+    }
 
-        private GameObject sameObject;
-        private bool isActive;
-        private Vector3 curPosition;
-        private Vector3 dir;
-        private bool beamIsInWater;
-        Color intensitive;
-        private ColorMirror cm = new ColorMirror();
-        private DoorOpener dk = new DoorOpener();
-        private int doorCounter = 0;
-        private bool collideWithDoor;
-
-
-        // Use this for initialization
-        void Start()
+    // Update is called once per frame
+    void Update()
+    {
+        collideWithDoor = false;
+        //if (InputManager.touchInput)
+        //{
+        if (r != null)
         {
-            r = FastLineRenderer.CreateWithParent(null, GetComponent<FastLineRenderer>());
-            properties = new List<FastLineRendererProperties>();
-            intensitive = new Color(0, 0, 0, 0.7f);
+            r.Reset();
+            BeamCollider.OnDestroy();
+            properties.Clear();
+
+            property = new FastLineRendererProperties();
+            beamIsInWater = false;
         }
 
-        // Update is called once per frame
-        void Update()
+        isActive = true;
+        curPosition = transform.position;
+        property.Start = curPosition;
+        standardColor();
+        dir = transform.right;
+
+        while (isActive)
         {
-            collideWithDoor = false;
-            //if (InputManager.touchInput)
-            //{
-                if (r != null)
+            RaycastHit hit;
+            if (Physics.Raycast(curPosition, dir, out hit))
+            {
+
+
+                // if beam hits a mirror in general
+                #region mirror
+                if (hit.transform.gameObject.tag == mirrorTag)
                 {
-                    costumCleanup(r.meshes);
-                    r.Reset();
-                    BeamCollider.OnDestroy();
-                    properties.Clear();
-                    property = new FastLineRendererProperties();
-                    property.LineInWater = false;
-                    beamIsInWater = false;
+                    setMirrorReflection(hit, true, Vector3.Reflect(dir, hit.normal), CustomColor.CustomizedColor.green);
                 }
 
-                isActive = true;
-                curPosition = transform.position;
-                property.Start = curPosition;
-                standardColor();
-                dir = transform.right;
-
-                while (isActive)
+                // if beam hits a colored Mirror
+                else if (hit.transform.gameObject.tag == colorMirrorTag)
                 {
-                    RaycastHit hit;
-                    if (Physics.Raycast(curPosition, dir, out hit))
+                    dir = hit.transform.gameObject.GetComponentInParent<ColorMirror>().GetReflection(CustomColor.GetCustomColor(property.Color), dir, hit);
+                    setMirrorReflection(hit, true, dir, CustomColor.CustomizedColor.green);
+                }
+                else
+                {
+                    isActive = false;
+                }
+
+                #endregion
+                // if beam hits dorrKnop
+                #region Door               
+                if (hit.transform.gameObject.tag == doorKnopTag)
+                {
+                    doorOpener = hit.transform.gameObject.GetComponent<DoorOpener>();
+                    collideWithDoor = true;
+
+                    setEndPointOfLine(hit, false);
+
+                    if (doorCounter == doorOpener.counter - 1)
                     {
+                        doorOpener.OpenDoor(CustomColor.GetCustomColor(property.Color));
+                        collideWithDoor = false;
+                    }
+                    setStartPointOfLine(CustomColor.CustomizedColor.green);
+                }
+                #endregion
 
-                      
-                        #region mirror
-                        if (hit.transform.gameObject.tag == MirrorTag)
-                        {
-                            isActive = true;
-                            curPosition = hit.point;
-                            dir = Vector3.Reflect(dir, hit.normal);
-                            property.End = curPosition;
 
-                            properties.Add(property);
-                            property = new FastLineRendererProperties();
-                            standardColor();
-                            property.Color = Color.green;
-                            property.Start = curPosition;
-                        }
 
-                        else if (hit.transform.gameObject.tag == "ColorMirror")
-                        {
-                            isActive = true;
-                            curPosition = hit.point;
+                // If beam hit Water surface
+                if (hit.transform.gameObject.layer.Equals(waterLayer))
+                {
+                    setEndPointOfLine(hit, true);
 
-                            property.End = curPosition;
-
-                            properties.Add(property);
-                            property = new FastLineRendererProperties();
-                            standardColor();
-                            property.Color = Color.green;
-                            property.Start = curPosition;
-                            cm = hit.transform.gameObject.GetComponentInParent<ColorMirror>();
-                            dir = cm.GetReflection(CustomColor.GetCustomColor(property.Color), dir, hit);
-                          
-                        }
-                        #endregion
-                        #region Door
-                        else if (hit.transform.gameObject.tag == "Doorknop")
-                        {
-                            collideWithDoor = true;
-
-                            isActive = true;
-                            curPosition = hit.point;
-
-                            property.End = curPosition;
-
-                            properties.Add(property);
-                            property = new FastLineRendererProperties();
-                            standardColor();
-                            property.Color = Color.green;
-                            property.Start = curPosition;
-
-                            dk = hit.transform.gameObject.GetComponent<DoorOpener>();
-                            dir = new Vector3(0, 0, 0);
-                            if (doorCounter == dk.counter - 1)
-                            {
-                                dk.OpenDoor(CustomColor.GetCustomColor(property.Color));
-                                collideWithDoor = false;
-                            }
-
-                        }
-                        #endregion
-
-                        else
-                        {
-                            isActive = false;
-                        }
-
-                        if (hit.transform.gameObject.layer == 4)
-                        {
-                            curPosition = hit.point;
-                            property.End = curPosition;
-                            properties.Add(property);
-                            property = new FastLineRendererProperties();
-                            standardColor();
-
-                            if (!beamIsInWater)
-                            {
-                                br = new BeamRefraction(dir, hit, Refraction_Medium.Refraction_Med.air, Refraction_Medium.Refraction_Med.water);
-                                dir = br.getDir();
-                                beamIsInWater = br.getLineInWater();
-                            }
-                            else
-                            {
-                                br = new BeamRefraction(dir, hit, Refraction_Medium.Refraction_Med.water, Refraction_Medium.Refraction_Med.air);
-                                dir = br.getDir();
-                                beamIsInWater = br.getLineInWater();
-                            }
-                            property.Color = Color.blue;
-                            property.Start = curPosition;
-                            isActive = true;
-                        }
-
-                        // Prüfe ob die angegebene Maske mit der Maske im hit übereinstimmt
-                        if ((checkPointLayer.value & 1 << hit.transform.gameObject.layer) == 1 << hit.transform.gameObject.layer)
-                        {
-                            BeamConnectivity(hit.transform.gameObject, true);
-                            sameObject = hit.transform.gameObject;
-                        }
-
-                        if (beamIsInWater)
-                        {
-                            property.LineInWater = true;
-                        }
-                        else
-                        {
-                            property.LineInWater = false;
-                        }
-                        property.End = hit.point;
-
+                    if (!beamIsInWater)
+                    {
+                        br = new BeamRefraction(dir, hit, Refraction_Medium.Refraction_Med.air, Refraction_Medium.Refraction_Med.water);
+                        dir = br.getDir();
+                        beamIsInWater = br.getLineInWater();
                     }
                     else
                     {
-                        isActive = false;
-                        property.End = curPosition + dir * 20;
-
-                        if (sameObject != null)
-                        {
-                            BeamConnectivity(sameObject, false);
-                        }
+                        br = new BeamRefraction(dir, hit, Refraction_Medium.Refraction_Med.water, Refraction_Medium.Refraction_Med.air);
+                        dir = br.getDir();
+                        beamIsInWater = br.getLineInWater();
                     }
+                    setStartPointOfLine(CustomColor.CustomizedColor.blue);
                 }
-                properties.Add(property);
-                addLines();
-                setDoorCounter();
 
-            }
-        //}
-
-        private void BeamConnectivity(GameObject checkP, bool bo)
-        {
-            checkP.GetComponent<CheckPointManager>().setBeamConnectivity(bo);
-        }
-
-        private void standardColor()
-        {
-            property.Radius = 0.1f;
-            property.Color = Color.red;
-        }
-
-        private void reduceBeamIntencity(FastLineRendererProperties pro)
-        {
-            if (pro.LineInWater)
-                pro.Color = pro.Color - intensitive;
-        }
-
-        private void addLines()
-        {
-            foreach (var prop in properties)
-            {
-                reduceBeamIntencity(prop);
-                BeamCollider.AddColliderToLine(prop.Start, prop.End, r);
-                r.AddLine(prop);
-            }
-            r.Apply(true);
-        }
-        private void costumCleanup(List<Mesh> meshes)
-        {
-            foreach (Mesh mesh in meshes)
-            {
-                if (mesh != null)
+                // if beam hit checkPoint
+                if ((checkPointLayer.value & 1 << hit.transform.gameObject.layer) == 1 << hit.transform.gameObject.layer)
                 {
-                    Destroy(mesh);
+                    BeamConnectivity(hit.transform.gameObject, true);
+                    sameObject = hit.transform.gameObject;
                 }
-            }
-        }
-        private void setDoorCounter()
-        {
-            if (collideWithDoor)
-            {
-                doorCounter++;
+
+                // is beam in water?
+                if (beamIsInWater)
+                {
+                    property.lineInWater = true;
+                }
+                property.End = hit.point;
+
             }
             else
             {
-                doorCounter = 0;
+                isActive = false;
+                property.End = curPosition + dir * 20;
+
+                if (sameObject != null)
+                {
+                    BeamConnectivity(sameObject, false);
+                }
             }
         }
-
-
-
-        }
+        properties.Add(property);
+        addLines();
+        setDoorCounter();
 
     }
+    //}
+    private void setMirrorReflection(RaycastHit hit, bool isAcitve, Vector3 direction, CustomColor.CustomizedColor color)
+    {
+        setEndPointOfLine(hit, isAcitve);
+        dir = direction;
+        setStartPointOfLine(color);
+
+    }
+
+    private void setEndPointOfLine(RaycastHit hit, bool isActive)
+    {
+        this.isActive = isActive;
+        curPosition = hit.point;
+        property.End = curPosition;
+    }
+    private void setStartPointOfLine(CustomColor.CustomizedColor customColor)
+    {
+        properties.Add(property);
+        property = new FastLineRendererProperties();
+        standardColor();
+        property.Color = CustomColor.GetColor(customColor);
+        property.Start = curPosition;
+    }
+
+    private void BeamConnectivity(GameObject checkP, bool bo)
+    {
+        checkP.GetComponent<CheckPointManager>().setBeamConnectivity(bo);
+    }
+    private void standardColor()
+    {
+        property.Radius = 0.1f;
+        property.Color = CustomColor.GetColor(CustomColor.CustomizedColor.red);
+    }
+
+    private void reduceBeamIntencity(FastLineRendererProperties pro)
+    {
+        if (pro.lineInWater)
+        {
+            pro.Color -= intensitive;
+        }
+    }
+    private void addLines()
+    {
+        foreach (var prop in properties)
+        {
+            reduceBeamIntencity(prop);
+            BeamCollider.AddColliderToLine(prop.Start, prop.End, r);
+            r.AddLine(prop);
+        }
+        r.Apply(true);
+    }
+    private void setDoorCounter()
+    {
+        if (collideWithDoor)
+        {
+            doorCounter++;
+        }
+        else
+        {
+            doorCounter = 0;
+        }
+    }
+}

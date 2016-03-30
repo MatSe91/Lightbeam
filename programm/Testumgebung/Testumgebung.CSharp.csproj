@@ -82,6 +82,7 @@
     <Compile Include="Assets\Scripts\CustomColor.cs" />
     <Compile Include="Assets\Scripts\DoorOpener.cs" />
     <Compile Include="Assets\Scripts\ExitGameOnBackButton.cs" />
+    <Compile Include="Assets\Scripts\FastLineRendererPropertiesExtended.cs" />
     <Compile Include="Assets\Scripts\InputManager.cs" />
     <Compile Include="Assets\Scripts\LineDrawer.cs" />
     <Compile Include="Assets\Scripts\Matrix3x3.cs" />

@@ -5,14 +5,12 @@ public class CheckPointManager : MonoBehaviour {
 
     private bool isBeamconntected;
     private bool isPhaseCompleted;
-    private GameObject touchCollider;
     private GameObject cam;
 
     public void Start()
     {
         isBeamconntected = false;
         isPhaseCompleted = false;
-        touchCollider = transform.GetChild(0).gameObject;
         cam = GameObject.Find("Main Camera");
     }
 
@@ -39,7 +37,6 @@ public class CheckPointManager : MonoBehaviour {
     /// </summary>
     public void setActiveGameObject()
     {
-
         if (isBeamconntected)
         {
             if (!isPhaseCompleted)

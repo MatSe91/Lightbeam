@@ -11,7 +11,7 @@ namespace Water2DTool
     [CustomEditor(typeof(Water2D_Tool))]
     public class Water2D_ToolEditor : Editor
     {
-        private Texture2D texDot;//= GetGizmo("water2D_circle.png");
+        private Texture2D texDot = GetGizmo("water2D_circle.png");
         private List<int> selectedPoints = new List<int>();
         private bool prevChanged = false;
         private bool showVisuals = true;
@@ -20,7 +20,6 @@ namespace Water2DTool
 
         void OnEnable()
         {
-            texDot = GetGizmo("water2D_circle.png");
             selectedPoints.Clear();
             Water2D_Tool water2D_Tool = (Water2D_Tool)target;
             if (water2D_Tool.GetComponent<MeshFilter>().sharedMesh == null)

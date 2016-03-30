@@ -1,5 +1,6 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 namespace Water2DTool
 {
@@ -13,37 +14,37 @@ namespace Water2DTool
         {
             if (GUI.Button(new Rect(Screen.width / 2f - 380, 25, 100f, 30f), "2D Water"))
             {
-                Application.LoadLevel("2D_Water");
+                SceneManager.LoadScene("2D_Water");
             }
 
             if (GUI.Button(new Rect(Screen.width / 2f - 270, 25, 100f, 30f), "2.5D Water"))
             {
-                Application.LoadLevel("2.5D_Water");
+                SceneManager.LoadScene("2.5D_Water");
             }
 
             if (GUI.Button(new Rect(Screen.width / 2f - 160, 25, 100f, 30f), "Water Flow"))
             {
-                Application.LoadLevel("WaterFlow");
+                SceneManager.LoadScene("WaterFlow");
             }
 
             if (GUI.Button(new Rect(Screen.width / 2f - 50, 25, 100f, 30f), "Big Waves"))
             {
-                Application.LoadLevel("BigWavesInteraction");
+                SceneManager.LoadScene("BigWavesInteraction");
             }
 
             if (GUI.Button(new Rect(Screen.width / 2f + 60, 25, 100f, 30f), "Control Point"))
             {
-                Application.LoadLevel("ControlPoints");
+                SceneManager.LoadScene("ControlPoints");
             }
 
             if (GUI.Button(new Rect(Screen.width / 2f + 170, 25, 100f, 30f), "Animation 1"))
             {
-                Application.LoadLevel("SandBox_01");
+                SceneManager.LoadScene("SandBox_01");
             }
 
             if (GUI.Button(new Rect(Screen.width / 2f + 280, 25, 100f, 30f), "Animation 2"))
             {
-                Application.LoadLevel("SandBox_02");
+                SceneManager.LoadScene("SandBox_02");
             }
         }
     }

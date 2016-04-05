@@ -27,7 +27,7 @@
     <IntermediateOutputPath>Temp\UnityVS_obj\Debug\</IntermediateOutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DefineConstants>DEBUG;TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_4_0;UNITY_5_4;UNITY_5;ENABLE_NEW_BUGREPORTER;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_EDITOR_RETINA;ENABLE_RETINA_GUISTYLES;ENABLE_FRAME_DEBUGGER;ENABLE_GENERICS;ENABLE_HOME_SCREEN;ENABLE_IMAGEEFFECTS;ENABLE_LIGHT_PROBES_LEGACY;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_PLUGIN_INSPECTOR;ENABLE_SHADOWS;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_SPRITE_POLYGON;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_UNET;ENABLE_UNITYEVENTS;ENABLE_VR;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;INCLUDE_DYNAMIC_GI;INCLUDE_GI;INCLUDE_IL2CPP;INCLUDE_DIRECTX12;PLATFORM_SUPPORTS_MONO;INCLUDE_PUBNUB;ENABLE_LOCALIZATION;ENABLE_ANDROID_ATLAS_ETC1_COMPRESSION;ENABLE_EDITOR_TESTS_RUNNER;UNITY_ANDROID;UNITY_ANDROID_API;ENABLE_SUBSTANCE;UNITY_ANDROID_API;ENABLE_TEXTUREID_MAP;ENABLE_EGL;ENABLE_NETWORK;ENABLE_RUNTIME_GI;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;PLATFORM_SUPPORTS_ADS_ID;UNITY_CAN_SHOW_SPLASH_SCREEN;ENABLE_UNITYADS_RUNTIME;UNITY_UNITYADS_API;ENABLE_MONO;DEVELOPMENT_BUILD;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_VSTU;CROSS_PLATFORM_INPUT;MOBILE_INPUT</DefineConstants>
+    <DefineConstants>DEBUG;TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_4_0;UNITY_5_4;UNITY_5;ENABLE_NEW_BUGREPORTER;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_EDITOR_RETINA;ENABLE_RETINA_GUISTYLES;ENABLE_FRAME_DEBUGGER;ENABLE_GENERICS;ENABLE_HOME_SCREEN;ENABLE_IMAGEEFFECTS;ENABLE_LIGHT_PROBES_LEGACY;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_PLUGIN_INSPECTOR;ENABLE_SHADOWS;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_SPRITE_POLYGON;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_UNET;ENABLE_UNITYEVENTS;ENABLE_VR;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;INCLUDE_DYNAMIC_GI;INCLUDE_GI;INCLUDE_IL2CPP;INCLUDE_DIRECTX12;PLATFORM_SUPPORTS_MONO;INCLUDE_PUBNUB;ENABLE_LOCALIZATION;ENABLE_ANDROID_ATLAS_ETC1_COMPRESSION;ENABLE_EDITOR_TESTS_RUNNER;UNITY_ANDROID;UNITY_ANDROID_API;ENABLE_SUBSTANCE;UNITY_ANDROID_API;ENABLE_TEXTUREID_MAP;ENABLE_EGL;ENABLE_NETWORK;ENABLE_RUNTIME_GI;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;PLATFORM_SUPPORTS_ADS_ID;UNITY_CAN_SHOW_SPLASH_SCREEN;ENABLE_UNITYADS_RUNTIME;UNITY_UNITYADS_API;ENABLE_MONO;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_VSTU;CROSS_PLATFORM_INPUT;MOBILE_INPUT</DefineConstants>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -37,7 +37,7 @@
     <IntermediateOutputPath>Temp\UnityVS_obj\Release\</IntermediateOutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DefineConstants>TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_4_0;UNITY_5_4;UNITY_5;ENABLE_NEW_BUGREPORTER;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_EDITOR_RETINA;ENABLE_RETINA_GUISTYLES;ENABLE_FRAME_DEBUGGER;ENABLE_GENERICS;ENABLE_HOME_SCREEN;ENABLE_IMAGEEFFECTS;ENABLE_LIGHT_PROBES_LEGACY;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_PLUGIN_INSPECTOR;ENABLE_SHADOWS;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_SPRITE_POLYGON;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_UNET;ENABLE_UNITYEVENTS;ENABLE_VR;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;INCLUDE_DYNAMIC_GI;INCLUDE_GI;INCLUDE_IL2CPP;INCLUDE_DIRECTX12;PLATFORM_SUPPORTS_MONO;INCLUDE_PUBNUB;ENABLE_LOCALIZATION;ENABLE_ANDROID_ATLAS_ETC1_COMPRESSION;ENABLE_EDITOR_TESTS_RUNNER;UNITY_ANDROID;UNITY_ANDROID_API;ENABLE_SUBSTANCE;UNITY_ANDROID_API;ENABLE_TEXTUREID_MAP;ENABLE_EGL;ENABLE_NETWORK;ENABLE_RUNTIME_GI;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;PLATFORM_SUPPORTS_ADS_ID;UNITY_CAN_SHOW_SPLASH_SCREEN;ENABLE_UNITYADS_RUNTIME;UNITY_UNITYADS_API;ENABLE_MONO;DEVELOPMENT_BUILD;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_VSTU;CROSS_PLATFORM_INPUT;MOBILE_INPUT</DefineConstants>
+    <DefineConstants>TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_4_0;UNITY_5_4;UNITY_5;ENABLE_NEW_BUGREPORTER;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_EDITOR_RETINA;ENABLE_RETINA_GUISTYLES;ENABLE_FRAME_DEBUGGER;ENABLE_GENERICS;ENABLE_HOME_SCREEN;ENABLE_IMAGEEFFECTS;ENABLE_LIGHT_PROBES_LEGACY;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_PLUGIN_INSPECTOR;ENABLE_SHADOWS;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_SPRITE_POLYGON;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_UNET;ENABLE_UNITYEVENTS;ENABLE_VR;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;INCLUDE_DYNAMIC_GI;INCLUDE_GI;INCLUDE_IL2CPP;INCLUDE_DIRECTX12;PLATFORM_SUPPORTS_MONO;INCLUDE_PUBNUB;ENABLE_LOCALIZATION;ENABLE_ANDROID_ATLAS_ETC1_COMPRESSION;ENABLE_EDITOR_TESTS_RUNNER;UNITY_ANDROID;UNITY_ANDROID_API;ENABLE_SUBSTANCE;UNITY_ANDROID_API;ENABLE_TEXTUREID_MAP;ENABLE_EGL;ENABLE_NETWORK;ENABLE_RUNTIME_GI;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;PLATFORM_SUPPORTS_ADS_ID;UNITY_CAN_SHOW_SPLASH_SCREEN;ENABLE_UNITYADS_RUNTIME;UNITY_UNITYADS_API;ENABLE_MONO;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_VSTU;CROSS_PLATFORM_INPUT;MOBILE_INPUT</DefineConstants>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
@@ -61,12 +61,35 @@
     <Reference Include="UnityEditor">
       <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
     </Reference>
+    <Reference Include="SmartLocalization_Runtime">
+      <HintPath>Assets\ExternalRessources\SmartLocalization\SmartLocalization_Runtime.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\FastLineRenderer\Demo\FastLineRendererDemoScript.cs" />
-    <Compile Include="Assets\FastLineRenderer\Script\FastLineRenderer.cs" />
-    <Compile Include="Assets\FastLineRenderer\Script\FastLineRendererEditorUtilities.cs" />
-    <Compile Include="Assets\FastLineRenderer\Script\PathGenerator.cs" />
+    <Compile Include="Assets\ExternalRessources\FastLineRenderer\Script\FastLineRenderer.cs" />
+    <Compile Include="Assets\ExternalRessources\FastLineRenderer\Script\FastLineRendererEditorUtilities.cs" />
+    <Compile Include="Assets\ExternalRessources\FastLineRenderer\Script\PathGenerator.cs" />
+    <Compile Include="Assets\ExternalRessources\SmartLocalization\Examples\LoadAllLanguages.cs" />
+    <Compile Include="Assets\ExternalRessources\SmartLocalization\Scripts\NGUI\SL_NGUILabel.cs" />
+    <Compile Include="Assets\ExternalRessources\SmartLocalization\Scripts\NGUI\SL_NGUISpriteAtlas.cs" />
+    <Compile Include="Assets\ExternalRessources\SmartLocalization\Scripts\NGUI\SL_NGUISpriteName.cs" />
+    <Compile Include="Assets\ExternalRessources\SmartLocalization\Scripts\uGUI\LocalizedText.cs" />
+    <Compile Include="Assets\ExternalRessources\Water2D_Tool\Examples\Scripts\2DCharacterController\Platformer2DUserControl.cs" />
+    <Compile Include="Assets\ExternalRessources\Water2D_Tool\Examples\Scripts\2DCharacterController\PlatformerCharacter2D.cs" />
+    <Compile Include="Assets\ExternalRessources\Water2D_Tool\Examples\Scripts\CheckPoint.cs" />
+    <Compile Include="Assets\ExternalRessources\Water2D_Tool\Examples\Scripts\CloudMovement.cs" />
+    <Compile Include="Assets\ExternalRessources\Water2D_Tool\Examples\Scripts\Destroyer.cs" />
+    <Compile Include="Assets\ExternalRessources\Water2D_Tool\Examples\Scripts\Lever.cs" />
+    <Compile Include="Assets\ExternalRessources\Water2D_Tool\Examples\Scripts\MoveObjects.cs" />
+    <Compile Include="Assets\ExternalRessources\Water2D_Tool\Examples\Scripts\PolyColliderPoints.cs" />
+    <Compile Include="Assets\ExternalRessources\Water2D_Tool\Examples\Scripts\SceneMenu.cs" />
+    <Compile Include="Assets\ExternalRessources\Water2D_Tool\Examples\Scripts\Water2D_Sprite.cs" />
+    <Compile Include="Assets\ExternalRessources\Water2D_Tool\Examples\Scripts\WaterFlowController.cs" />
+    <Compile Include="Assets\ExternalRessources\Water2D_Tool\Scripts\ClipperLibrary\Clipper.cs" />
+    <Compile Include="Assets\ExternalRessources\Water2D_Tool\Scripts\Water2D_Mesh.cs" />
+    <Compile Include="Assets\ExternalRessources\Water2D_Tool\Scripts\Water2D_PolygonClipping.cs" />
+    <Compile Include="Assets\ExternalRessources\Water2D_Tool\Scripts\Water2D_Simulation.cs" />
+    <Compile Include="Assets\ExternalRessources\Water2D_Tool\Scripts\Water2D_Tool.cs" />
     <Compile Include="Assets\Scripts\AnimatedTildetTexture.cs" />
     <Compile Include="Assets\Scripts\BeamCollider.cs" />
     <Compile Include="Assets\Scripts\BeamRefraction.cs" />
@@ -74,6 +97,7 @@
     <Compile Include="Assets\Scripts\Beamscript.cs" />
     <Compile Include="Assets\Scripts\Beamscript_tmp_MS.cs" />
     <Compile Include="Assets\Scripts\CameraAnimationScript.cs" />
+    <Compile Include="Assets\Scripts\ChangeBeamColor.cs" />
     <Compile Include="Assets\Scripts\CheckPointManager.cs" />
     <Compile Include="Assets\Scripts\Coll_Pflanze_Script.cs" />
     <Compile Include="Assets\Scripts\Collectible.cs" />
@@ -83,40 +107,36 @@
     <Compile Include="Assets\Scripts\DoorOpener.cs" />
     <Compile Include="Assets\Scripts\ExitGameOnBackButton.cs" />
     <Compile Include="Assets\Scripts\FastLineRendererPropertiesExtended.cs" />
+    <Compile Include="Assets\Scripts\GameManager.cs" />
+    <Compile Include="Assets\Scripts\GlobalStatus.cs" />
     <Compile Include="Assets\Scripts\InputManager.cs" />
     <Compile Include="Assets\Scripts\LineDrawer.cs" />
     <Compile Include="Assets\Scripts\Matrix3x3.cs" />
-    <Compile Include="Assets\Scripts\MirrorColorReflection.cs" />
     <Compile Include="Assets\Scripts\MirrorMovement.cs" />
     <Compile Include="Assets\Scripts\MirrorRotator.cs" />
     <Compile Include="Assets\Scripts\PlayerRotator.cs" />
     <Compile Include="Assets\Scripts\Refraction_Medium.cs" />
-    <Compile Include="Assets\Water2D_Tool\Examples\Scripts\2DCharacterController\Platformer2DUserControl.cs" />
-    <Compile Include="Assets\Water2D_Tool\Examples\Scripts\2DCharacterController\PlatformerCharacter2D.cs" />
-    <Compile Include="Assets\Water2D_Tool\Examples\Scripts\CheckPoint.cs" />
-    <Compile Include="Assets\Water2D_Tool\Examples\Scripts\CloudMovement.cs" />
-    <Compile Include="Assets\Water2D_Tool\Examples\Scripts\Destroyer.cs" />
-    <Compile Include="Assets\Water2D_Tool\Examples\Scripts\Lever.cs" />
-    <Compile Include="Assets\Water2D_Tool\Examples\Scripts\MoveObjects.cs" />
-    <Compile Include="Assets\Water2D_Tool\Examples\Scripts\PolyColliderPoints.cs" />
-    <Compile Include="Assets\Water2D_Tool\Examples\Scripts\SceneMenu.cs" />
-    <Compile Include="Assets\Water2D_Tool\Examples\Scripts\Water2D_Sprite.cs" />
-    <Compile Include="Assets\Water2D_Tool\Examples\Scripts\WaterFlowController.cs" />
-    <Compile Include="Assets\Water2D_Tool\Scripts\ClipperLibrary\Clipper.cs" />
-    <Compile Include="Assets\Water2D_Tool\Scripts\Water2D_Mesh.cs" />
-    <Compile Include="Assets\Water2D_Tool\Scripts\Water2D_PolygonClipping.cs" />
-    <Compile Include="Assets\Water2D_Tool\Scripts\Water2D_Simulation.cs" />
-    <Compile Include="Assets\Water2D_Tool\Scripts\Water2D_Tool.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\FastLineRenderer\Material\FastLineRendererShader.shader" />
-    <None Include="Assets\FastLineRenderer\Material\FastLineRendererShaderNoGlow.shader" />
-    <None Include="Assets\FastLineRenderer\Material\FastLineRendererShader_Correct.shader" />
-    <None Include="Assets\FastLineRenderer\Readme.txt" />
-    <None Include="Assets\Water2D_Tool\Resources\Readme.txt" />
-    <None Include="Assets\Water2D_Tool\Scripts\ClipperLibrary\License.txt" />
-    <None Include="Assets\Water2D_Tool\Shaders\Water2D_HorizontalWater.shader" />
-    <None Include="Assets\Water2D_Tool\Shaders\Water2D_VerticalWater.shader" />
+    <None Include="Assets\ExternalRessources\FastLineRenderer\Material\FastLineRendererShader.shader" />
+    <None Include="Assets\ExternalRessources\FastLineRenderer\Material\FastLineRendererShaderNoGlow.shader" />
+    <None Include="Assets\ExternalRessources\FastLineRenderer\Material\FastLineRendererShader_Correct.shader" />
+    <None Include="Assets\ExternalRessources\FastLineRenderer\Readme.txt" />
+    <None Include="Assets\ExternalRessources\SmartLocalization\Editor\SmartLocalization_Editor.XML" />
+    <None Include="Assets\ExternalRessources\SmartLocalization\README.txt" />
+    <None Include="Assets\ExternalRessources\SmartLocalization\Resources\EmptyResourceHeader.txt" />
+    <None Include="Assets\ExternalRessources\SmartLocalization\SmartLocalization_Runtime.XML" />
+    <None Include="Assets\ExternalRessources\SmartLocalization\smartloc_licenses.txt" />
+    <None Include="Assets\ExternalRessources\SmartLocalizationWorkspace\AutoGenerated\Resources\AvailableCultures.xml" />
+    <None Include="Assets\ExternalRessources\SmartLocalizationWorkspace\AutoGenerated\Resources\Language.de.txt" />
+    <None Include="Assets\ExternalRessources\SmartLocalizationWorkspace\AutoGenerated\Resources\Language.en.txt" />
+    <None Include="Assets\ExternalRessources\SmartLocalizationWorkspace\AutoGenerated\Resources\Language.txt" />
+    <None Include="Assets\ExternalRessources\SmartLocalizationWorkspace\Data\SmartCultureInfoData\SmartCultureInfo.xml" />
+    <None Include="Assets\ExternalRessources\Water2D_Tool\Resources\Readme.txt" />
+    <None Include="Assets\ExternalRessources\Water2D_Tool\Scripts\ClipperLibrary\License.txt" />
+    <None Include="Assets\ExternalRessources\Water2D_Tool\Shaders\Water2D_HorizontalWater.shader" />
+    <None Include="Assets\ExternalRessources\Water2D_Tool\Shaders\Water2D_VerticalWater.shader" />
+    <None Include="Assets\Shaders\Gem.shader" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>

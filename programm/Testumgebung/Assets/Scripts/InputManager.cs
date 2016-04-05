@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System;
 
@@ -9,6 +9,7 @@ public class InputManager : MonoBehaviour {
     private bool gameStarted;
     public GameObject PlayerChild;
     public static bool touchInput;
+    public static GameObject lastObjectBevorePause;
 
 	// Use this for initialization
 	void Start () {
@@ -67,18 +68,15 @@ public class InputManager : MonoBehaviour {
                         inUse.SendMessage("setActiveGameObject", true);
 
                     }
-
+                    lastObjectBevorePause = inUse;
                 }
-
                 // speichere das GameObject zwischen zur Überprüfung
                 sameObject = inUse;
             }
-
         }
         else if (Input.GetMouseButtonUp(0))
         {
             touchInput = false;
         }
-
-    }
+    }   
 }

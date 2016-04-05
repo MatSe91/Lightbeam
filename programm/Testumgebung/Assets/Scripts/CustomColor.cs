@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public  class  CustomColor : MonoBehaviour   {
@@ -28,7 +28,7 @@ public  class  CustomColor : MonoBehaviour   {
         }
         if (color == CustomizedColor.orange)
         {
-            return new Color(255, 165, 0, 1);
+            return new Color(1, 0.65f, 0, 1);
         }
         if (color == CustomizedColor.yellow)
         {
@@ -44,11 +44,11 @@ public  class  CustomColor : MonoBehaviour   {
         }
         if (color == CustomizedColor.indigo)
         {
-            return new Color(75, 0, 130, 1);
+            return new Color(0.29f, 0, 0.51f, 1);
         }
         if (color == CustomizedColor.violet)
         {
-            return new Color(128, 0, 128, 1);
+            return new Color(0.5f, 0, 0.5f, 1);
         }
         return Color.white;
     }

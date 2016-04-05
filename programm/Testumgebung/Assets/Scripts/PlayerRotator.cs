@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class PlayerRotator : MonoBehaviour {
@@ -6,7 +6,9 @@ public class PlayerRotator : MonoBehaviour {
     private Vector3 pos;
     private Vector3 dir;
     private float angle;
+    public int framesTillMovable = 8;
     public GameObject lightBeam;
+    private int pressed = 0;
 
 
     // Use this for initialization
@@ -22,17 +24,23 @@ public class PlayerRotator : MonoBehaviour {
 
     void Update() {
 
-       if (Input.GetKey(KeyCode.Mouse0) || Input.GetKeyUp(KeyCode.Mouse0))
-       {
-         if (active)
-           {
-                // positioniert die Anzeige genau auf die Maus / Touch
-                pos = Camera.main.WorldToScreenPoint(transform.position);
-                dir = Input.mousePosition - pos;
-                angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-                transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
 
+        if (active)
+        {
+            if (Input.GetMouseButton(0))
+            {
+                if (pressed < framesTillMovable) pressed++;
+                else
+                {
+                    // positioniert die Anzeige genau auf die Maus / Touch
+                    pos = Camera.main.WorldToScreenPoint(transform.position);
+                    dir = Input.mousePosition - pos;
+                    angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+                    transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+                }
             }
+            else
+                pressed = 0;
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 public class MirrorRotator : MonoBehaviour
 {
@@ -10,8 +10,7 @@ public class MirrorRotator : MonoBehaviour
     private float minZ;
     private float maxZ;
     private int heldDown = 0;
-
-
+    public int framesTillMovable = 8;
 
     // Use this for initialization
     void Start()
@@ -27,14 +26,7 @@ public class MirrorRotator : MonoBehaviour
     {
         minZ = transform.eulerAngles.z - 60;
         maxZ = transform.eulerAngles.z + 60;
-
-        //   Debug.Log("Min Z: " + minZ);
-        //   Debug.Log("Max Z: " + maxZ);
-
     }
-
-
-
 
    /// <summary>
    ///  Setzt das Objekt auf Aktiv oder Passiv,
@@ -57,36 +49,23 @@ public class MirrorRotator : MonoBehaviour
             // Wenn Linnke Maustaste gedrückt wird mache...
             if (Input.GetMouseButton(0))
             {
-                // print(heldDown);
-
                 // wenn heldDown == 7 dann kann man das Obejkt bewegen
-                // problem hierbei ist das jedes Frame eine Abfrage gemacht wird und dadurch bei jedem Touch das Objekt bewegt werden würde
-                // um das zu verhindert muss insgesamt 7 Frames gewartet werden, damit man das Objekt bewegen kann.
-                if (heldDown < 7) heldDown++;
+                if (heldDown < framesTillMovable) heldDown++;
                 else
                 {
                     pos = Camera.main.WorldToScreenPoint(transform.position);
                     dir = Input.mousePosition - pos;
                     angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
                     angle = SmoothAngle(angle);
-                    // print("Winkel: "+angle);
                     transform.rotation = Quaternion.AngleAxis(ClampAngle(angle, minZ, maxZ), transform.forward);
 
-                    //TODO: Spiegel können überdrehen, dadurch fangen sie erneut bei min / max an --> muss unterbunden werden
                 }
             }
-            // .. ansonsten setze den heldDown-Zähler zurück auf null (0)
             else
             {
-                setHeldDownToZero();
+                heldDown = 0;
             }
-        }
-        else
-        {
-            setHeldDownToZero();
-        }
-
-
+        }     
     }
 
     /*
@@ -111,12 +90,4 @@ public class MirrorRotator : MonoBehaviour
             angle += 360;
         return angle;
     }
-
-
-    // Setze den heldDown auf 0
-    private void setHeldDownToZero()
-    {
-        heldDown = 0;
-    }
-
 }

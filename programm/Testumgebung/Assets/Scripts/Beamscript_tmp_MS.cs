@@ -11,6 +11,7 @@ public class Beamscript_tmp_MS : MonoBehaviour
     private string mirrorTag;
     private string colorMirrorTag;
     private string doorKnopTag;
+    private string colorChangerTag;
 
     // necessary Layers
     private LayerMask checkPointLayer;
@@ -25,6 +26,7 @@ public class Beamscript_tmp_MS : MonoBehaviour
     private Vector3 curPosition;
     private Vector3 dir;
     private bool beamIsInWater;
+    public float lineRadius = 0.1f;
 
     // external Scripts
     private BeamRefraction br;
@@ -53,6 +55,7 @@ public class Beamscript_tmp_MS : MonoBehaviour
         mirrorTag = "Mirror";
         colorMirrorTag = "ColorMirror";
         doorKnopTag = "Doorknop";
+        colorChangerTag = "ColorChanger";
     }
 
     // Update is called once per frame
@@ -62,7 +65,7 @@ public class Beamscript_tmp_MS : MonoBehaviour
         //if (InputManager.touchInput)
         //{
             if (r != null)
-        {
+            {
             r.Reset();
             BeamCollider.OnDestroy();
             properties.Clear();
@@ -74,7 +77,8 @@ public class Beamscript_tmp_MS : MonoBehaviour
         isActive = true;
         curPosition = transform.position;
         property.Start = curPosition;
-        standardColor();
+        standardPropertyOfBeam();
+        property.Color = CustomColor.GetColor(CustomColor.CustomizedColor.red);
         dir = transform.right;
 
         while (isActive)
@@ -90,13 +94,12 @@ public class Beamscript_tmp_MS : MonoBehaviour
                 {
                     setMirrorReflection(hit, true, Vector3.Reflect(dir, hit.normal), CustomColor.CustomizedColor.green);
                 }
-
                 // if beam hits a colored Mirror
                 else if (hit.transform.gameObject.tag == colorMirrorTag)
                 {
                     dir = hit.transform.gameObject.GetComponentInParent<ColorMirror>().GetReflection(CustomColor.GetCustomColor(property.Color), dir, hit);
                     setMirrorReflection(hit, true, dir, CustomColor.CustomizedColor.green);
-                }
+                }                
                 else
                 {
                     isActive = false;
@@ -104,6 +107,13 @@ public class Beamscript_tmp_MS : MonoBehaviour
 
                 #endregion
                 // if beam hits dorKnop
+
+                // if beam hit Color Changer Gem
+                if (hit.transform.gameObject.tag == colorChangerTag)
+                {
+                    setMirrorReflection(hit, true, dir, hit.transform.gameObject.GetComponent<ChangeBeamColor>().getNewBeamColor());
+                }
+
                 #region Door               
                 if (hit.transform.gameObject.tag == doorKnopTag)
                 {
@@ -120,8 +130,6 @@ public class Beamscript_tmp_MS : MonoBehaviour
                     setStartPointOfLine(CustomColor.CustomizedColor.green);
                 }
                 #endregion
-
-
 
                 // If beam hit Water surface
                 if (hit.transform.gameObject.layer.Equals(waterLayer))
@@ -175,6 +183,8 @@ public class Beamscript_tmp_MS : MonoBehaviour
 
     }
     //}
+
+    #region helpers
     private void setMirrorReflection(RaycastHit hit, bool isAcitve, Vector3 direction, CustomColor.CustomizedColor color)
     {
         setEndPointOfLine(hit, isAcitve);
@@ -193,7 +203,7 @@ public class Beamscript_tmp_MS : MonoBehaviour
     {
         properties.Add(property);
         property = new FastLineRendererProperties();
-        standardColor();
+        standardPropertyOfBeam();
         property.Color = CustomColor.GetColor(customColor);
         property.Start = curPosition;
     }
@@ -202,10 +212,9 @@ public class Beamscript_tmp_MS : MonoBehaviour
     {
         checkP.GetComponent<CheckPointManager>().setBeamConnectivity(bo);
     }
-    private void standardColor()
+    private void standardPropertyOfBeam()
     {
-        property.Radius = 0.1f;
-        property.Color = CustomColor.GetColor(CustomColor.CustomizedColor.red);
+        property.Radius = lineRadius;
     }
 
     private void reduceBeamIntencity(FastLineRendererProperties pro)
@@ -236,4 +245,5 @@ public class Beamscript_tmp_MS : MonoBehaviour
             doorCounter = 0;
         }
     }
+    #endregion
 }

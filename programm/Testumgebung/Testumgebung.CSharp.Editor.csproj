@@ -91,14 +91,14 @@
     <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
       <HintPath>Library\UnityAssemblies\SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
     </Reference>
-    <Reference Include="CsvHelper">
-      <HintPath>Assets\ExternalRessources\SmartLocalization\Scripts\Editor\ThirdParty\CSVHelper\CsvHelper.dll</HintPath>
+    <Reference Include="SmartLocalization_Runtime">
+      <HintPath>Assets\ExternalRessources\SmartLocalization\SmartLocalization_Runtime.dll</HintPath>
     </Reference>
     <Reference Include="SmartLocalization_Editor">
       <HintPath>Assets\ExternalRessources\SmartLocalization\Editor\SmartLocalization_Editor.dll</HintPath>
     </Reference>
-    <Reference Include="SmartLocalization_Runtime">
-      <HintPath>Assets\ExternalRessources\SmartLocalization\SmartLocalization_Runtime.dll</HintPath>
+    <Reference Include="CsvHelper">
+      <HintPath>Assets\ExternalRessources\SmartLocalization\Scripts\Editor\ThirdParty\CSVHelper\CsvHelper.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -110,6 +110,72 @@
   <ItemGroup>
     <Compile Include="Assets\ExternalRessources\Editor\CrossPlatformInput\CrossPlatformInputInitialize.cs" />
     <Compile Include="Assets\ExternalRessources\FastLineRenderer\Script\Editor\FastLineRendererEditor.cs" />
+    <Compile Include="Assets\ExternalRessources\Mad Level Manager\Examples\Editor\ExampleGenerator.cs" />
+    <Compile Include="Assets\ExternalRessources\Mad Level Manager\Scripts\Editor\IMadLevelGenerator.cs" />
+    <Compile Include="Assets\ExternalRessources\Mad Level Manager\Scripts\Editor\Inspectors\MadAnimColorInspector.cs" />
+    <Compile Include="Assets\ExternalRessources\Mad Level Manager\Scripts\Editor\Inspectors\MadAnimInspector.cs" />
+    <Compile Include="Assets\ExternalRessources\Mad Level Manager\Scripts\Editor\Inspectors\MadAnimMoveInspector.cs" />
+    <Compile Include="Assets\ExternalRessources\Mad Level Manager\Scripts\Editor\Inspectors\MadAnimRotateInspector.cs" />
+    <Compile Include="Assets\ExternalRessources\Mad Level Manager\Scripts\Editor\Inspectors\MadAnimScaleInspector.cs" />
+    <Compile Include="Assets\ExternalRessources\Mad Level Manager\Scripts\Editor\Inspectors\MadAnimatorInspector.cs" />
+    <Compile Include="Assets\ExternalRessources\Mad Level Manager\Scripts\Editor\Inspectors\MadLevelAbstractLayoutInspector.cs" />
+    <Compile Include="Assets\ExternalRessources\Mad Level Manager\Scripts\Editor\Inspectors\MadLevelAnimatorInspector.cs" />
+    <Compile Include="Assets\ExternalRessources\Mad Level Manager\Scripts\Editor\Inspectors\MadLevelBackgroundInspector.cs" />
+    <Compile Include="Assets\ExternalRessources\Mad Level Manager\Scripts\Editor\Inspectors\MadLevelBackgroundLayerInspector.cs" />
+    <Compile Include="Assets\ExternalRessources\Mad Level Manager\Scripts\Editor\Inspectors\MadLevelFreeLayoutInspector.cs" />
+    <Compile Include="Assets\ExternalRessources\Mad Level Manager\Scripts\Editor\Inspectors\MadLevelGridLayoutInspector.cs" />
+    <Compile Include="Assets\ExternalRessources\Mad Level Manager\Scripts\Editor\Inspectors\MadLevelIconInspector.cs" />
+    <Compile Include="Assets\ExternalRessources\Mad Level Manager\Scripts\Editor\Inspectors\MadLevelImageInspector.cs" />
+    <Compile Include="Assets\ExternalRessources\Mad Level Manager\Scripts\Editor\Inspectors\MadLevelInputControlInspector.cs" />
+    <Compile Include="Assets\ExternalRessources\Mad Level Manager\Scripts\Editor\Inspectors\MadLevelPropertyInspector.cs" />
+    <Compile Include="Assets\ExternalRessources\Mad Level Manager\Scripts\Editor\Inspectors\MadLevelPropertyTextInspector.cs" />
+    <Compile Include="Assets\ExternalRessources\Mad Level Manager\Scripts\Editor\Inspectors\MadLevelSettingsInspector.cs" />
+    <Compile Include="Assets\ExternalRessources\Mad Level Manager\Scripts\Editor\MadLevelConfigurationEditor.cs" />
+    <Compile Include="Assets\ExternalRessources\Mad Level Manager\Scripts\Editor\MadLevelUpdater.cs" />
+    <Compile Include="Assets\ExternalRessources\Mad Level Manager\Scripts\Editor\MadLevelWatcher.cs" />
+    <Compile Include="Assets\ExternalRessources\Mad Level Manager\Scripts\Editor\Tools\IMadLevelConfigurationInspectorAddon.cs" />
+    <Compile Include="Assets\ExternalRessources\Mad Level Manager\Scripts\Editor\Tools\MadLevelBackgroundTool.cs" />
+    <Compile Include="Assets\ExternalRessources\Mad Level Manager\Scripts\Editor\Tools\MadLevelConfigurationInspector.cs" />
+    <Compile Include="Assets\ExternalRessources\Mad Level Manager\Scripts\Editor\Tools\MadLevelExtensionEditor.cs" />
+    <Compile Include="Assets\ExternalRessources\Mad Level Manager\Scripts\Editor\Tools\MadLevelFreeTool.cs" />
+    <Compile Include="Assets\ExternalRessources\Mad Level Manager\Scripts\Editor\Tools\MadLevelGeneratorTool.cs" />
+    <Compile Include="Assets\ExternalRessources\Mad Level Manager\Scripts\Editor\Tools\MadLevelGridBulletsTool.cs" />
+    <Compile Include="Assets\ExternalRessources\Mad Level Manager\Scripts\Editor\Tools\MadLevelGridTool.cs" />
+    <Compile Include="Assets\ExternalRessources\Mad Level Manager\Scripts\Editor\Tools\MadLevelGroupsEditTool.cs" />
+    <Compile Include="Assets\ExternalRessources\Mad Level Manager\Scripts\Editor\Tools\MadLevelIconTool.cs" />
+    <Compile Include="Assets\ExternalRessources\Mad Level Manager\Scripts\Editor\Tools\MadLevelInitTool.cs" />
+    <Compile Include="Assets\ExternalRessources\Mad Level Manager\Scripts\Editor\Tools\MadLevelMenu.cs" />
+    <Compile Include="Assets\ExternalRessources\Mad Level Manager\Scripts\Editor\Tools\MadLevelMoveAssetsTool.cs" />
+    <Compile Include="Assets\ExternalRessources\Mad Level Manager\Scripts\Editor\Tools\MadLevelProfileBrowser.cs" />
+    <Compile Include="Assets\ExternalRessources\Mad Level Manager\Scripts\Editor\Tools\MadLevelProfileTool.cs" />
+    <Compile Include="Assets\ExternalRessources\Mad Level Manager\Scripts\Editor\Tools\MadLevelPropertyEmptyTool.cs" />
+    <Compile Include="Assets\ExternalRessources\Mad Level Manager\Scripts\Editor\Tools\MadLevelPropertySpriteTool.cs" />
+    <Compile Include="Assets\ExternalRessources\Mad Level Manager\Scripts\Editor\Tools\MadLevelPropertyTextTool.cs" />
+    <Compile Include="Assets\ExternalRessources\Mad Level Manager\Scripts\Editor\Tools\TextureAlphaMultiplier.cs" />
+    <Compile Include="Assets\ExternalRessources\Mad Level Manager\Scripts\Editor\TrialInfo.cs" />
+    <Compile Include="Assets\ExternalRessources\Mad Level Manager\Scripts\Mad2D\Editor\Inspectors\MadAnchorInspector.cs" />
+    <Compile Include="Assets\ExternalRessources\Mad Level Manager\Scripts\Mad2D\Editor\Inspectors\MadAtlasInspector.cs" />
+    <Compile Include="Assets\ExternalRessources\Mad Level Manager\Scripts\Mad2D\Editor\Inspectors\MadDragStopDraggableInspector.cs" />
+    <Compile Include="Assets\ExternalRessources\Mad Level Manager\Scripts\Mad2D\Editor\Inspectors\MadFontInspector.cs" />
+    <Compile Include="Assets\ExternalRessources\Mad Level Manager\Scripts\Mad2D\Editor\Inspectors\MadFreeDraggableInspector.cs" />
+    <Compile Include="Assets\ExternalRessources\Mad Level Manager\Scripts\Mad2D\Editor\Inspectors\MadSpriteInspector.cs" />
+    <Compile Include="Assets\ExternalRessources\Mad Level Manager\Scripts\Mad2D\Editor\Inspectors\MadTextInspector.cs" />
+    <Compile Include="Assets\ExternalRessources\Mad Level Manager\Scripts\Mad2D\Editor\MadAtlasBrowser.cs" />
+    <Compile Include="Assets\ExternalRessources\Mad Level Manager\Scripts\Mad2D\Editor\MadAtlasBuilder.cs" />
+    <Compile Include="Assets\ExternalRessources\Mad Level Manager\Scripts\Mad2D\Editor\MadAtlasConverter.cs" />
+    <Compile Include="Assets\ExternalRessources\Mad Level Manager\Scripts\Mad2D\Editor\MadAtlasUtil.cs" />
+    <Compile Include="Assets\ExternalRessources\Mad Level Manager\Scripts\Mad2D\Editor\MadExternalTools.cs" />
+    <Compile Include="Assets\ExternalRessources\Mad Level Manager\Scripts\Mad2D\Editor\MadFontBuilder.cs" />
+    <Compile Include="Assets\ExternalRessources\Mad Level Manager\Scripts\Mad2D\Editor\MadInitTool.cs" />
+    <Compile Include="Assets\ExternalRessources\Mad Level Manager\Scripts\Mad2D\Editor\MadTexturePacker.cs" />
+    <Compile Include="Assets\ExternalRessources\Mad Level Manager\Scripts\MadCommons\Editor\MadAssets.cs" />
+    <Compile Include="Assets\ExternalRessources\Mad Level Manager\Scripts\MadCommons\Editor\MadEditorBase.cs" />
+    <Compile Include="Assets\ExternalRessources\Mad Level Manager\Scripts\MadCommons\Editor\MadGUI.cs" />
+    <Compile Include="Assets\ExternalRessources\Mad Level Manager\Scripts\MadCommons\Editor\MadInputDialog.cs" />
+    <Compile Include="Assets\ExternalRessources\Mad Level Manager\Scripts\MadCommons\Editor\MadPath.cs" />
+    <Compile Include="Assets\ExternalRessources\Mad Level Manager\Scripts\MadCommons\Editor\MadTrialEditor.cs" />
+    <Compile Include="Assets\ExternalRessources\Mad Level Manager\Scripts\MadCommons\Editor\MadUpdater.cs" />
+    <Compile Include="Assets\ExternalRessources\Mad Level Manager\Scripts\MadCommons\Editor\MadWWWFormSender.cs" />
     <Compile Include="Assets\ExternalRessources\SmartLocalization\Scripts\NGUI\Editor\SL_NGUILabelInspector.cs" />
     <Compile Include="Assets\ExternalRessources\SmartLocalization\Scripts\NGUI\Editor\SL_NGUISpriteAtlasInspector.cs" />
     <Compile Include="Assets\ExternalRessources\SmartLocalization\Scripts\NGUI\Editor\SL_NGUISpriteNameInspector.cs" />
@@ -125,21 +191,37 @@
     <None Include="Assets\ExternalRessources\FastLineRenderer\Material\FastLineRendererShaderNoGlow.shader" />
     <None Include="Assets\ExternalRessources\FastLineRenderer\Material\FastLineRendererShader_Correct.shader" />
     <None Include="Assets\ExternalRessources\FastLineRenderer\Readme.txt" />
+    <None Include="Assets\ExternalRessources\Mad Level Manager\Examples\Example 5 - Unity 5\README.txt" />
+    <None Include="Assets\ExternalRessources\Mad Level Manager\Examples\Stuff\Fonts\Boogaloo New\SIL OFL Font License Boogaloo.txt" />
+    <None Include="Assets\ExternalRessources\Mad Level Manager\Examples\Stuff\Fonts\Boogaloo New\boogaloo.txt" />
+    <None Include="Assets\ExternalRessources\Mad Level Manager\Examples\Stuff\Fonts\Boogaloo\SIL OFL Font License Boogaloo.txt" />
+    <None Include="Assets\ExternalRessources\Mad Level Manager\README.TXT" />
+    <None Include="Assets\ExternalRessources\Mad Level Manager\Scripts\Mad2D\Resources\Shaders\Font DB.shader" />
+    <None Include="Assets\ExternalRessources\Mad Level Manager\Scripts\Mad2D\Resources\Shaders\Font White DB.shader" />
+    <None Include="Assets\ExternalRessources\Mad Level Manager\Scripts\Mad2D\Resources\Shaders\Font White.shader" />
+    <None Include="Assets\ExternalRessources\Mad Level Manager\Scripts\Mad2D\Resources\Shaders\Font.shader" />
+    <None Include="Assets\ExternalRessources\Mad Level Manager\Scripts\Mad2D\Resources\Shaders\UnlitTransparentTint DB.shader" />
+    <None Include="Assets\ExternalRessources\Mad Level Manager\Scripts\Mad2D\Resources\Shaders\UnlitTransparentTint.shader" />
+    <None Include="Assets\ExternalRessources\Mad Level Manager\Scripts\Mad2D\Resources\Shaders\UnlitTransparentTintPre DB.shader" />
+    <None Include="Assets\ExternalRessources\Mad Level Manager\Scripts\Mad2D\Resources\Shaders\UnlitTransparentTintPre.shader" />
+    <None Include="Assets\ExternalRessources\Mad Level Manager\Themes\Theme1\Fonts\font.txt" />
+    <None Include="Assets\ExternalRessources\Mad Level Manager\Themes\Theme2\Font\abeezee-glyphs.txt" />
+    <None Include="Assets\ExternalRessources\Mad Level Manager\Themes\Theme2\Font\abeezee-license.txt" />
     <None Include="Assets\ExternalRessources\SmartLocalization\Editor\SmartLocalization_Editor.XML" />
     <None Include="Assets\ExternalRessources\SmartLocalization\README.txt" />
     <None Include="Assets\ExternalRessources\SmartLocalization\Resources\EmptyResourceHeader.txt" />
     <None Include="Assets\ExternalRessources\SmartLocalization\SmartLocalization_Runtime.XML" />
     <None Include="Assets\ExternalRessources\SmartLocalization\smartloc_licenses.txt" />
-    <None Include="Assets\ExternalRessources\SmartLocalizationWorkspace\AutoGenerated\Resources\AvailableCultures.xml" />
-    <None Include="Assets\ExternalRessources\SmartLocalizationWorkspace\AutoGenerated\Resources\Language.de.txt" />
-    <None Include="Assets\ExternalRessources\SmartLocalizationWorkspace\AutoGenerated\Resources\Language.en.txt" />
-    <None Include="Assets\ExternalRessources\SmartLocalizationWorkspace\AutoGenerated\Resources\Language.txt" />
-    <None Include="Assets\ExternalRessources\SmartLocalizationWorkspace\Data\SmartCultureInfoData\SmartCultureInfo.xml" />
     <None Include="Assets\ExternalRessources\Water2D_Tool\Resources\Readme.txt" />
     <None Include="Assets\ExternalRessources\Water2D_Tool\Scripts\ClipperLibrary\License.txt" />
     <None Include="Assets\ExternalRessources\Water2D_Tool\Shaders\Water2D_HorizontalWater.shader" />
     <None Include="Assets\ExternalRessources\Water2D_Tool\Shaders\Water2D_VerticalWater.shader" />
     <None Include="Assets\Shaders\Gem.shader" />
+    <None Include="Assets\SmartLocalizationWorkspace\AutoGenerated\Resources\AvailableCultures.xml" />
+    <None Include="Assets\SmartLocalizationWorkspace\AutoGenerated\Resources\Language.de.txt" />
+    <None Include="Assets\SmartLocalizationWorkspace\AutoGenerated\Resources\Language.en.txt" />
+    <None Include="Assets\SmartLocalizationWorkspace\AutoGenerated\Resources\Language.txt" />
+    <None Include="Assets\SmartLocalizationWorkspace\Data\SmartCultureInfoData\SmartCultureInfo.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>

@@ -86,8 +86,6 @@ public class Beamscript_tmp_MS : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(curPosition, dir, out hit))
             {
-
-
                 // if beam hits a mirror in general
                 #region mirror
                 if (hit.transform.gameObject.tag == mirrorTag)
@@ -111,7 +109,15 @@ public class Beamscript_tmp_MS : MonoBehaviour
                 // if beam hit Color Changer Gem
                 if (hit.transform.gameObject.tag == colorChangerTag)
                 {
-                    setMirrorReflection(hit, true, dir, hit.transform.gameObject.GetComponent<ChangeBeamColor>().getNewBeamColor());
+                    Vector3 newDir = dir;
+                    setEndPointOfLine(hit, true);
+
+                    dir = newDir;
+
+                    setStartPointOfLine(hit.transform.gameObject.GetComponent<ChangeBeamColor>().getNewBeamColor());
+
+
+                  //  setMirrorReflection(hit, true, dir, hit.transform.gameObject.GetComponent<ChangeBeamColor>().getNewBeamColor());
                 }
 
                 #region Door               

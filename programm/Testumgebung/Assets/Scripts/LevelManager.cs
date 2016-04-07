@@ -1,10 +1,19 @@
 using UnityEngine;
 using System.Collections;
 using System;
+using System.Collections.Generic;
 
-public class GameManager : MonoBehaviour {
+public class LevelManager : MonoBehaviour {
+    private GameObject inputManager;
     private GameObject lastActiveGameObject;
     private GameObject pauseObject;
+
+    private List<GameObject> waterDropList;
+
+    void Awake()
+    {
+        inputManager = GameObject.Find("Main Camera");
+    }
 
     public void Pause(GameObject obj)
     {
@@ -32,7 +41,19 @@ public class GameManager : MonoBehaviour {
     private void De_ActivateGameObjects(bool bo)
     {
         if (lastActiveGameObject != null)
-             lastActiveGameObject.SendMessage("setActiveGameObject", bo);
-        GetComponentInParent<InputManager>().enabled = bo;
+        {
+            lastActiveGameObject.SendMessage("setActiveGameObject", bo);
+            inputManager.GetComponent<InputManager>().enabled = bo;
+        }
+    }
+
+    public void addWaterDrop(GameObject water)
+    {
+        waterDropList.Add(water);
+    }
+
+    private void gainWaterDrop(List<GameObject> waterDropList)
+    {
+        // TODO jeder Waterdrop, der in der Liste steht, soll persistiert werden
     }
 }

@@ -1,8 +1,5 @@
 using UnityEngine;
-using System.Collections;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using DigitalRuby.FastLineRenderer;
 
 public class Beamscript_tmp_MS : MonoBehaviour
@@ -34,6 +31,7 @@ public class Beamscript_tmp_MS : MonoBehaviour
 
 
     private GameObject oldCheckPoint;
+    private GameObject sameDoorKnop;
     private bool isActive;
     private Color intensitive;
     private int doorCounter = 0;
@@ -113,7 +111,8 @@ public class Beamscript_tmp_MS : MonoBehaviour
                 }
 
                 #region Door 
-                // if beam hits dorKnop              
+                // if beam hits dorKnop    
+                // TODO Fixen Roman :)          
                 if (hit.transform.gameObject.tag == doorKnopTag)
                 {
                     doorOpener = hit.transform.gameObject.GetComponent<DoorOpener>();
@@ -125,6 +124,7 @@ public class Beamscript_tmp_MS : MonoBehaviour
                     {
                         doorOpener.OpenDoor(CustomColor.GetCustomColor(property.Color));
                         collideWithDoor = false;
+                        sameDoorKnop = hit.transform.gameObject;
                     }
                     setStartPointOfLine(previousColor);
                 }
@@ -178,6 +178,17 @@ public class Beamscript_tmp_MS : MonoBehaviour
                 if (oldCheckPoint != null)
                 {
                     BeamConnectivity(oldCheckPoint, false);
+                }
+
+                if (sameDoorKnop != null)
+                {
+                    doorOpener = sameDoorKnop.GetComponent<DoorOpener>();
+                    if (doorOpener.ConstantTrigger && doorOpener.dooIsOpen)
+                    {
+                        Debug.Log("Animation Door close");
+                        doorOpener.dooIsOpen = false;
+                    }
+                    
                 }
             }
         }

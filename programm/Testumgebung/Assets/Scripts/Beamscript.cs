@@ -1,8 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using DigitalRuby.FastLineRenderer;
 
 public class Beamscript : MonoBehaviour
@@ -11,6 +8,7 @@ public class Beamscript : MonoBehaviour
     private string mirrorTag;
     private string colorMirrorTag;
     private string doorKnopTag;
+    private string colorChangerTag;
 
     // necessary Layers
     private LayerMask checkPointLayer;
@@ -25,17 +23,20 @@ public class Beamscript : MonoBehaviour
     private Vector3 curPosition;
     private Vector3 dir;
     private bool beamIsInWater;
+    public float lineRadius = 0.1f;
 
     // external Scripts
     private BeamRefraction br;
     private DoorOpener doorOpener;
 
 
-    private GameObject sameObject;
+    private GameObject oldCheckPoint;
+    private GameObject sameDoorKnop;
     private bool isActive;
     private Color intensitive;
     private int doorCounter = 0;
     private bool collideWithDoor;
+    private CustomColor.CustomizedColor previousColor;
 
 
     // Use this for initialization
@@ -53,6 +54,7 @@ public class Beamscript : MonoBehaviour
         mirrorTag = "Mirror";
         colorMirrorTag = "ColorMirror";
         doorKnopTag = "Doorknop";
+        colorChangerTag = "ColorChanger";
     }
 
     // Update is called once per frame
@@ -74,28 +76,27 @@ public class Beamscript : MonoBehaviour
         isActive = true;
         curPosition = transform.position;
         property.Start = curPosition;
-        standardColor();
+        standardPropertyOfBeam();
+        property.Color = CustomColor.GetColor(CustomColor.CustomizedColor.red);
         dir = transform.right;
 
         while (isActive)
         {
+            previousColor = CustomColor.GetCustomColor(property.Color);
             RaycastHit hit;
             if (Physics.Raycast(curPosition, dir, out hit))
             {
-
-
                 // if beam hits a mirror in general
                 #region mirror
                 if (hit.transform.gameObject.tag == mirrorTag)
                 {
-                    setMirrorReflection(hit, true, Vector3.Reflect(dir, hit.normal), CustomColor.CustomizedColor.green);
+                    setMirrorReflection(hit, true, Vector3.Reflect(dir, hit.normal), previousColor);
                 }
-
                 // if beam hits a colored Mirror
                 else if (hit.transform.gameObject.tag == colorMirrorTag)
                 {
                     dir = hit.transform.gameObject.GetComponentInParent<ColorMirror>().GetReflection(CustomColor.GetCustomColor(property.Color), dir, hit);
-                    setMirrorReflection(hit, true, dir, CustomColor.CustomizedColor.green);
+                    setMirrorReflection(hit, true, dir, previousColor);
                 }
                 else
                 {
@@ -103,8 +104,15 @@ public class Beamscript : MonoBehaviour
                 }
 
                 #endregion
-                // if beam hits dorrKnop
-                #region Door               
+                // if beam hit Color Changer Gem
+                if (hit.transform.gameObject.tag == colorChangerTag)
+                {
+                    setMirrorReflection(hit, true, dir, hit.transform.gameObject.GetComponent<ChangeBeamColor>().getNewBeamColor());
+                }
+
+                #region Door 
+                // if beam hits dorKnop    
+                // TODO Fixen Roman :)          
                 if (hit.transform.gameObject.tag == doorKnopTag)
                 {
                     doorOpener = hit.transform.gameObject.GetComponent<DoorOpener>();
@@ -116,12 +124,11 @@ public class Beamscript : MonoBehaviour
                     {
                         doorOpener.OpenDoor(CustomColor.GetCustomColor(property.Color));
                         collideWithDoor = false;
+                        sameDoorKnop = hit.transform.gameObject;
                     }
-                    setStartPointOfLine(CustomColor.CustomizedColor.green);
+                    setStartPointOfLine(previousColor);
                 }
                 #endregion
-
-
 
                 // If beam hit Water surface
                 if (hit.transform.gameObject.layer.Equals(waterLayer))
@@ -140,14 +147,19 @@ public class Beamscript : MonoBehaviour
                         dir = br.getDir();
                         beamIsInWater = br.getLineInWater();
                     }
-                    setStartPointOfLine(CustomColor.CustomizedColor.blue);
+                    setStartPointOfLine(previousColor);
                 }
 
                 // if beam hit checkPoint
-                if ((checkPointLayer.value & 1 << hit.transform.gameObject.layer) == 1 << hit.transform.gameObject.layer)
+                if (hit.transform.gameObject.layer.Equals(checkPointLayer))
                 {
                     BeamConnectivity(hit.transform.gameObject, true);
-                    sameObject = hit.transform.gameObject;
+                    oldCheckPoint = hit.transform.gameObject;
+                }
+                else
+                {
+                    if (oldCheckPoint != null)
+                        BeamConnectivity(oldCheckPoint, false);
                 }
 
                 // is beam in water?
@@ -163,9 +175,20 @@ public class Beamscript : MonoBehaviour
                 isActive = false;
                 property.End = curPosition + dir * 20;
 
-                if (sameObject != null)
+                if (oldCheckPoint != null)
                 {
-                    BeamConnectivity(sameObject, false);
+                    BeamConnectivity(oldCheckPoint, false);
+                }
+
+                if (sameDoorKnop != null)
+                {
+                    doorOpener = sameDoorKnop.GetComponent<DoorOpener>();
+                    if (doorOpener.ConstantTrigger && doorOpener.dooIsOpen)
+                    {
+                        Debug.Log("Animation Door close");
+                        doorOpener.dooIsOpen = false;
+                    }
+
                 }
             }
         }
@@ -175,6 +198,8 @@ public class Beamscript : MonoBehaviour
 
     }
     //}
+
+    #region helpers
     private void setMirrorReflection(RaycastHit hit, bool isAcitve, Vector3 direction, CustomColor.CustomizedColor color)
     {
         setEndPointOfLine(hit, isAcitve);
@@ -193,7 +218,7 @@ public class Beamscript : MonoBehaviour
     {
         properties.Add(property);
         property = new FastLineRendererProperties();
-        standardColor();
+        standardPropertyOfBeam();
         property.Color = CustomColor.GetColor(customColor);
         property.Start = curPosition;
     }
@@ -202,10 +227,9 @@ public class Beamscript : MonoBehaviour
     {
         checkP.GetComponent<CheckPointManager>().setBeamConnectivity(bo);
     }
-    private void standardColor()
+    private void standardPropertyOfBeam()
     {
-        property.Radius = 0.1f;
-        property.Color = CustomColor.GetColor(CustomColor.CustomizedColor.red);
+        property.Radius = lineRadius;
     }
 
     private void reduceBeamIntencity(FastLineRendererProperties pro)
@@ -236,4 +260,5 @@ public class Beamscript : MonoBehaviour
             doorCounter = 0;
         }
     }
+    #endregion
 }

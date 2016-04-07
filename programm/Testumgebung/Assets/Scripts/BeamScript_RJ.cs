@@ -36,6 +36,7 @@ public class BeamScript_RJ : MonoBehaviour
     private Color intensitive;
     private int doorCounter = 0;
     private bool collideWithDoor;
+    private GameObject sameDoorKnop;
 
 
     // Use this for initialization
@@ -107,15 +108,18 @@ public class BeamScript_RJ : MonoBehaviour
                 #region Door               
                 if (hit.transform.gameObject.tag == doorKnopTag)
                 {
+                    
                     doorOpener = hit.transform.gameObject.GetComponent<DoorOpener>();
                     collideWithDoor = true;
-
+                    
                     setEndPointOfLine(hit, false);
 
                     if (doorCounter == doorOpener.counter - 1)
                     {
                         doorOpener.OpenDoor(CustomColor.GetCustomColor(property.Color));
                         collideWithDoor = false;
+                        sameDoorKnop = hit.transform.gameObject;
+
                     }
                     setStartPointOfLine(CustomColor.CustomizedColor.green);
                 }
@@ -166,6 +170,16 @@ public class BeamScript_RJ : MonoBehaviour
                 if (sameObject != null)
                 {
                     BeamConnectivity(sameObject, false);
+                }
+
+                if(sameDoorKnop!= null)
+                {
+                    doorOpener = sameDoorKnop.GetComponent<DoorOpener>();
+                    if (doorOpener.ConstantTrigger && doorOpener.dooIsOpen)
+                    {
+                        Debug.Log("Animation Door close");
+                        doorOpener.dooIsOpen =false;
+                    }
                 }
             }
         }

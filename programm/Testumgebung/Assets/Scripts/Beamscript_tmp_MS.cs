@@ -33,11 +33,12 @@ public class Beamscript_tmp_MS : MonoBehaviour
     private DoorOpener doorOpener;
 
 
-    private GameObject sameObject;
+    private GameObject oldCheckPoint;
     private bool isActive;
     private Color intensitive;
     private int doorCounter = 0;
     private bool collideWithDoor;
+    private CustomColor.CustomizedColor previousColor;
 
 
     // Use this for initialization
@@ -83,6 +84,7 @@ public class Beamscript_tmp_MS : MonoBehaviour
 
         while (isActive)
         {
+            previousColor = CustomColor.GetCustomColor(property.Color);
             RaycastHit hit;
             if (Physics.Raycast(curPosition, dir, out hit))
             {
@@ -90,13 +92,13 @@ public class Beamscript_tmp_MS : MonoBehaviour
                 #region mirror
                 if (hit.transform.gameObject.tag == mirrorTag)
                 {
-                    setMirrorReflection(hit, true, Vector3.Reflect(dir, hit.normal), CustomColor.CustomizedColor.green);
+                    setMirrorReflection(hit, true, Vector3.Reflect(dir, hit.normal), previousColor);
                 }
                 // if beam hits a colored Mirror
                 else if (hit.transform.gameObject.tag == colorMirrorTag)
                 {
                     dir = hit.transform.gameObject.GetComponentInParent<ColorMirror>().GetReflection(CustomColor.GetCustomColor(property.Color), dir, hit);
-                    setMirrorReflection(hit, true, dir, CustomColor.CustomizedColor.green);
+                    setMirrorReflection(hit, true, dir, previousColor);
                 }                
                 else
                 {
@@ -104,23 +106,14 @@ public class Beamscript_tmp_MS : MonoBehaviour
                 }
 
                 #endregion
-                // if beam hits dorKnop
-
                 // if beam hit Color Changer Gem
                 if (hit.transform.gameObject.tag == colorChangerTag)
                 {
-                    Vector3 newDir = dir;
-                    setEndPointOfLine(hit, true);
-
-                    dir = newDir;
-
-                    setStartPointOfLine(hit.transform.gameObject.GetComponent<ChangeBeamColor>().getNewBeamColor());
-
-
-                  //  setMirrorReflection(hit, true, dir, hit.transform.gameObject.GetComponent<ChangeBeamColor>().getNewBeamColor());
+                    setMirrorReflection(hit, true, dir, hit.transform.gameObject.GetComponent<ChangeBeamColor>().getNewBeamColor());
                 }
 
-                #region Door               
+                #region Door 
+                // if beam hits dorKnop              
                 if (hit.transform.gameObject.tag == doorKnopTag)
                 {
                     doorOpener = hit.transform.gameObject.GetComponent<DoorOpener>();
@@ -133,7 +126,7 @@ public class Beamscript_tmp_MS : MonoBehaviour
                         doorOpener.OpenDoor(CustomColor.GetCustomColor(property.Color));
                         collideWithDoor = false;
                     }
-                    setStartPointOfLine(CustomColor.CustomizedColor.green);
+                    setStartPointOfLine(previousColor);
                 }
                 #endregion
 
@@ -154,14 +147,19 @@ public class Beamscript_tmp_MS : MonoBehaviour
                         dir = br.getDir();
                         beamIsInWater = br.getLineInWater();
                     }
-                    setStartPointOfLine(CustomColor.CustomizedColor.blue);
+                    setStartPointOfLine(previousColor);
                 }
 
                 // if beam hit checkPoint
                 if (hit.transform.gameObject.layer.Equals(checkPointLayer))
                 { 
                     BeamConnectivity(hit.transform.gameObject, true);
-                    sameObject = hit.transform.gameObject;
+                    oldCheckPoint = hit.transform.gameObject;
+                }
+                else
+                {
+                    if (oldCheckPoint != null)
+                        BeamConnectivity(oldCheckPoint, false);
                 }
 
                 // is beam in water?
@@ -177,9 +175,9 @@ public class Beamscript_tmp_MS : MonoBehaviour
                 isActive = false;
                 property.End = curPosition + dir * 20;
 
-                if (sameObject != null)
+                if (oldCheckPoint != null)
                 {
-                    BeamConnectivity(sameObject, false);
+                    BeamConnectivity(oldCheckPoint, false);
                 }
             }
         }

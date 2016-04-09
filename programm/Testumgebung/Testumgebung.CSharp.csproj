@@ -69,6 +69,11 @@
     <Compile Include="Assets\ExternalRessources\FastLineRenderer\Script\FastLineRenderer.cs" />
     <Compile Include="Assets\ExternalRessources\FastLineRenderer\Script\FastLineRendererEditorUtilities.cs" />
     <Compile Include="Assets\ExternalRessources\FastLineRenderer\Script\PathGenerator.cs" />
+    <Compile Include="Assets\ExternalRessources\Jungle Pack - 2D Handcrafted Art\Script\BackgroundParallax.cs" />
+    <Compile Include="Assets\ExternalRessources\Jungle Pack - 2D Handcrafted Art\Script\CameraFollow.cs" />
+    <Compile Include="Assets\ExternalRessources\Jungle Pack - 2D Handcrafted Art\Script\Kill.cs" />
+    <Compile Include="Assets\ExternalRessources\Jungle Pack - 2D Handcrafted Art\Script\PlayerControlUnity.cs" />
+    <Compile Include="Assets\ExternalRessources\Jungle Pack - 2D Handcrafted Art\Script\PlayerController.cs" />
     <Compile Include="Assets\ExternalRessources\Mad Level Manager\Examples\Stuff\Scripts\Box.cs" />
     <Compile Include="Assets\ExternalRessources\Mad Level Manager\Examples\Stuff\Scripts\Instruction.cs" />
     <Compile Include="Assets\ExternalRessources\Mad Level Manager\Examples\Stuff\Scripts\LoseScript.cs" />
@@ -169,7 +174,6 @@
     <Compile Include="Assets\ExternalRessources\Water2D_Tool\Scripts\Water2D_PolygonClipping.cs" />
     <Compile Include="Assets\ExternalRessources\Water2D_Tool\Scripts\Water2D_Simulation.cs" />
     <Compile Include="Assets\ExternalRessources\Water2D_Tool\Scripts\Water2D_Tool.cs" />
-    <Compile Include="Assets\Scripts\AnimatedTildetTexture.cs" />
     <Compile Include="Assets\Scripts\BeamCollider.cs" />
     <Compile Include="Assets\Scripts\BeamRefraction.cs" />
     <Compile Include="Assets\Scripts\BeamScript_RJ.cs" />
@@ -190,7 +194,6 @@
     <Compile Include="Assets\Scripts\InputManager.cs" />
     <Compile Include="Assets\Scripts\LevelManager.cs" />
     <Compile Include="Assets\Scripts\LineDrawer.cs" />
-    <Compile Include="Assets\Scripts\Matrix3x3.cs" />
     <Compile Include="Assets\Scripts\MirrorMovement.cs" />
     <Compile Include="Assets\Scripts\MirrorRotator.cs" />
     <Compile Include="Assets\Scripts\PlayerRotator.cs" />

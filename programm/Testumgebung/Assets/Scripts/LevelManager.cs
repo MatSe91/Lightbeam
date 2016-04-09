@@ -8,7 +8,7 @@ public class LevelManager : MonoBehaviour {
     private GameObject lastActiveGameObject;
     private GameObject pauseObject;
 
-    private List<GameObject> waterDropList;
+    //private List<GameObject> waterDropList;
 
     void Awake()
     {
@@ -49,7 +49,7 @@ public class LevelManager : MonoBehaviour {
 
     public void addWaterDrop(GameObject water)
     {
-        waterDropList.Add(water);
+       // waterDropList.Add(water);
     }
 
     private void gainWaterDrop(List<GameObject> waterDropList)

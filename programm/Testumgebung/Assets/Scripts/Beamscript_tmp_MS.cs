@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using DigitalRuby.FastLineRenderer;
+using System;
 
 public class Beamscript_tmp_MS : MonoBehaviour
 {
@@ -29,14 +30,16 @@ public class Beamscript_tmp_MS : MonoBehaviour
     private BeamRefraction br;
     private DoorOpener doorOpener;
 
-
     private GameObject oldCheckPoint;
     private GameObject sameDoorKnop;
-    private bool isActive;
-    private Color intensitive;
     private int doorCounter = 0;
     private bool collideWithDoor;
+
+    private bool isActive;
+    private Color intensitive;
     private CustomColor.CustomizedColor previousColor;
+
+
 
 
     // Use this for initialization
@@ -60,10 +63,10 @@ public class Beamscript_tmp_MS : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        collideWithDoor = false;
+
         //if (InputManager.touchInput)
         //{
-            if (r != null)
+        if (r != null)
             {
             r.Reset();
             BeamCollider.OnDestroy();
@@ -73,6 +76,7 @@ public class Beamscript_tmp_MS : MonoBehaviour
             beamIsInWater = false;
         }
 
+        collideWithDoor = false;
         isActive = true;
         curPosition = transform.position;
         property.Start = curPosition;
@@ -111,22 +115,27 @@ public class Beamscript_tmp_MS : MonoBehaviour
                 }
 
                 #region Door 
-                // if beam hits dorKnop    
-                // TODO Fixen Roman :)          
+                // if beam hits doorKnop       
+
+                // Hier ist noch ein Bug. Wenn BeamConnectivity in der if steht, dann wird Door open und close gleichzeitig gesetzt
                 if (hit.transform.gameObject.tag == doorKnopTag)
                 {
-                    doorOpener = hit.transform.gameObject.GetComponent<DoorOpener>();
                     collideWithDoor = true;
-
-                    setEndPointOfLine(hit, false);
-
+                    sameDoorKnop = hit.transform.gameObject;
+                    doorOpener = hit.transform.gameObject.GetComponent<DoorOpener>();
                     if (doorCounter == doorOpener.counter - 1)
                     {
-                        doorOpener.OpenDoor(CustomColor.GetCustomColor(property.Color));
-                        collideWithDoor = false;
-                        sameDoorKnop = hit.transform.gameObject;
+                        BeamConnectivity(hit.transform.gameObject, true);
+                        doorOpener.CollisionColor = CustomColor.GetCustomColor(property.Color);
                     }
-                    setStartPointOfLine(previousColor);
+                }
+
+                else
+                {
+                    if (sameDoorKnop != null)
+                    {
+                        BeamConnectivity(sameDoorKnop, false);
+                    }
                 }
                 #endregion
 
@@ -182,19 +191,13 @@ public class Beamscript_tmp_MS : MonoBehaviour
 
                 if (sameDoorKnop != null)
                 {
-                    doorOpener = sameDoorKnop.GetComponent<DoorOpener>();
-                    if (doorOpener.ConstantTrigger && doorOpener.dooIsOpen)
-                    {
-                        Debug.Log("Animation Door close");
-                        doorOpener.dooIsOpen = false;
-                    }
-                    
+                    BeamConnectivity(sameDoorKnop, false);
                 }
             }
         }
         properties.Add(property);
-        addLines();
         setDoorCounter();
+        addLines();
 
     }
     //}
@@ -223,10 +226,20 @@ public class Beamscript_tmp_MS : MonoBehaviour
         property.Start = curPosition;
     }
 
-    private void BeamConnectivity(GameObject checkP, bool bo)
+    private void BeamConnectivity(GameObject gObject, bool value)
     {
-        checkP.GetComponent<CheckPointManager>().setBeamConnectivity(bo);
+        try
+        {
+        gObject.GetComponent<CheckPointManager>().setBeamConnectivity(value);
+
+        }
+        catch (NullReferenceException)
+        {
+            gObject.GetComponent<DoorOpener>().SetBeamConnected(value);
+        }
+
     }
+
     private void standardPropertyOfBeam()
     {
         property.Radius = lineRadius;
@@ -260,5 +273,6 @@ public class Beamscript_tmp_MS : MonoBehaviour
             doorCounter = 0;
         }
     }
+
     #endregion
 }

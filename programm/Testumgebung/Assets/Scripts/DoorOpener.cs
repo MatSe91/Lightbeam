@@ -9,25 +9,85 @@ public class DoorOpener: MonoBehaviour
     public bool WithColor;
     public int counter;
     public bool ConstantTrigger;
-    public bool dooIsOpen =false;
+    private bool doorIsOpen =false;
+    private bool isBeamconnected;
+    private CustomColor.CustomizedColor collisionColor;
     private Collider other;
 
-    public void OpenDoor(CustomColor.CustomizedColor collisionColor)
+    public CustomColor.CustomizedColor CollisionColor
+    {
+        get
+        {
+            return collisionColor;
+        }
+
+        set
+        {
+            collisionColor = value;
+        }
+    }
+
+    public bool DoorIsOpen
+    {
+        get
+        {
+            return doorIsOpen;
+        }
+
+        set
+        {
+            doorIsOpen = value;
+        }
+    }
+
+    public void OpenDoor()
     {
 
-        if (!WithColor && !dooIsOpen)
+        if (!WithColor && !DoorIsOpen && isBeamconnected)
         {
            
             Debug.Log("Animation Door open");
-            dooIsOpen = true;
+            DoorIsOpen = true;
         }
 
-        if (collisionColor == validColor && WithColor && !dooIsOpen)
+        if (CollisionColor == validColor && WithColor && !DoorIsOpen && isBeamconnected)
         {
            
             Debug.Log("Animation Door open");
-            dooIsOpen = true;
+            DoorIsOpen = true;
         }
+
+     
  
+    }
+
+    public void SetBeamConnected(bool value)
+    {
+        isBeamconnected = value;
+    }
+
+    void OnCollisionEnter(Collision col)
+    {
+
+        Debug.Log("Collison");
+        OpenDoor();
+        other = col.collider;
+
+    }
+    void Update()
+    {
+        if(!other && DoorIsOpen)
+        { 
+            CloseDoor();
+        }
+    }
+
+    public void CloseDoor()
+    {
+        if (DoorIsOpen && !isBeamconnected)
+        {
+            Debug.Log("Animation Door close");
+            DoorIsOpen = false;
+        }
     }
 }

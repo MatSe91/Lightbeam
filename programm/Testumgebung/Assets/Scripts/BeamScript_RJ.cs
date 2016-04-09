@@ -108,21 +108,37 @@ public class BeamScript_RJ : MonoBehaviour
                 #region Door               
                 if (hit.transform.gameObject.tag == doorKnopTag)
                 {
-                    
+                    DoorKnopPressed(hit.transform.gameObject, true);
+                    sameDoorKnop = hit.transform.gameObject;
                     doorOpener = hit.transform.gameObject.GetComponent<DoorOpener>();
-                    collideWithDoor = true;
-                    
-                    setEndPointOfLine(hit, false);
+                    //collideWithDoor = true;
 
-                    if (doorCounter == doorOpener.counter - 1)
-                    {
-                        doorOpener.OpenDoor(CustomColor.GetCustomColor(property.Color));
-                        collideWithDoor = false;
-                        sameDoorKnop = hit.transform.gameObject;
+                    //setEndPointOfLine(hit, false);
 
-                    }
-                    setStartPointOfLine(CustomColor.CustomizedColor.green);
+                    //if (doorCounter == doorOpener.counter - 1)
+                    //{
+                        doorOpener.CollisionColor=CustomColor.GetCustomColor(property.Color);
+                    //    doorOpener.OpenDoor();
+                    //    collideWithDoor = false;
+                    //    sameDoorKnop = hit.transform.gameObject;
+
+                    //}
+                    //setStartPointOfLine(CustomColor.CustomizedColor.green);
                 }
+
+                else
+                {
+                    if (sameDoorKnop != null)
+                    {
+                        DoorKnopPressed(sameDoorKnop, false);
+                        //doorOpener = sameDoorKnop.transform.gameObject.GetComponent<DoorOpener>();
+                        //doorOpener.CloseDoor();
+                    }
+                }
+
+
+
+
                 #endregion
 
 
@@ -162,6 +178,7 @@ public class BeamScript_RJ : MonoBehaviour
                 property.End = hit.point;
 
             }
+
             else
             {
                 isActive = false;
@@ -172,15 +189,14 @@ public class BeamScript_RJ : MonoBehaviour
                     BeamConnectivity(sameObject, false);
                 }
 
-                if(sameDoorKnop!= null)
+                if (sameDoorKnop != null)
                 {
-                    doorOpener = sameDoorKnop.GetComponent<DoorOpener>();
-                    if (doorOpener.ConstantTrigger && doorOpener.dooIsOpen)
-                    {
-                        Debug.Log("Animation Door close");
-                        doorOpener.dooIsOpen =false;
-                    }
+                    DoorKnopPressed(sameDoorKnop, false);
+                    //doorOpener = sameDoorKnop.transform.gameObject.GetComponent<DoorOpener>();
+                    //doorOpener.CloseDoor();
                 }
+
+
             }
         }
         properties.Add(property);
@@ -216,6 +232,12 @@ public class BeamScript_RJ : MonoBehaviour
     {
         checkP.GetComponent<CheckPointManager>().setBeamConnectivity(bo);
     }
+
+    private void DoorKnopPressed(GameObject DoorKnop, bool value)
+    {
+        DoorKnop.GetComponent<DoorOpener>().SetBeamConnected(value);
+    }
+
     private void standardColor()
     {
         property.Radius = 0.1f;

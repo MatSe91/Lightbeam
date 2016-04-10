@@ -21,8 +21,8 @@ public class DoorOpener: MonoBehaviour
     private bool isBeamconnected;
     private CustomColor.CustomizedColor collisionColor;
     private Collider other;
-
-    public int counter = 60;
+    public float counter = 60f;
+    private float timecounter = 0f;
 
     public CustomColor.CustomizedColor CollisionColor
     {
@@ -69,13 +69,25 @@ public class DoorOpener: MonoBehaviour
     public void SetBeamConnected(bool value)
     {
         isBeamconnected = value;
+        if (value)
+        {
+           
+        }
+        
     }
 
     void OnCollisionEnter(Collision col)
     {
-        OpenDoor();
-        other = col.collider;
+        if (timecounter%60 <= 0)
+        {
+            
+            OpenDoor();
+            other = col.collider;
+        }
+        Debug.Log(Mathf.Floor(timecounter % 60));
     }
+
+  
 
 
     void Update()
@@ -84,6 +96,12 @@ public class DoorOpener: MonoBehaviour
         { 
             CloseDoor(); 
         }
+        if(isBeamconnected)
+        {
+            timecounter -= Time.deltaTime;
+        }
+        else timecounter = counter;
+
     }
 
     public void CloseDoor()
@@ -92,7 +110,12 @@ public class DoorOpener: MonoBehaviour
         {
             Debug.Log("Animation Door close");
             DoorIsOpen = false;
+           
         }
+    }
+    void Start()
+    {
+        timecounter = counter;
     }
 }
 

@@ -34,7 +34,7 @@ public class BeamScript_RJ : MonoBehaviour
     private GameObject sameObject;
     private bool isActive;
     private Color intensitive;
-    private int doorCounter = 0;
+   
     private bool collideWithDoor;
     private GameObject sameDoorKnop;
 
@@ -201,7 +201,7 @@ public class BeamScript_RJ : MonoBehaviour
         }
         properties.Add(property);
         addLines();
-        setDoorCounter();
+       // setDoorCounter();
 
     }
     //}
@@ -261,15 +261,15 @@ public class BeamScript_RJ : MonoBehaviour
         }
         r.Apply(true);
     }
-    private void setDoorCounter()
-    {
-        if (collideWithDoor)
-        {
-            doorCounter++;
-        }
-        else
-        {
-            doorCounter = 0;
-        }
-    }
+    //private void setDoorCounter()
+    //{
+    //    if (collideWithDoor)
+    //    {
+    //        doorCounter++;
+    //    }
+    //    else
+    //    {
+    //        doorCounter = 0;
+    //    }
+    //}
 }

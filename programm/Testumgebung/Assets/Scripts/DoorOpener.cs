@@ -16,12 +16,14 @@ public class DoorOpener: MonoBehaviour
     [Tooltip("Soll der Türschalter dauerhaft angeleuchtet werden?")]
     public bool ConstantTrigger;
 
+    [Tooltip("Sekunden bis Schalter aktiviert")]
+    public float secTillActivation = 60f;
+
 
     private bool doorIsOpen =false;
     private bool isBeamconnected;
     private CustomColor.CustomizedColor collisionColor;
     private Collider other;
-    public float counter = 60f;
     private float timecounter = 0f;
 
     public CustomColor.CustomizedColor CollisionColor
@@ -100,7 +102,7 @@ public class DoorOpener: MonoBehaviour
         {
             timecounter -= Time.deltaTime;
         }
-        else timecounter = counter;
+        else timecounter = secTillActivation;
 
     }
 
@@ -115,7 +117,7 @@ public class DoorOpener: MonoBehaviour
     }
     void Start()
     {
-        timecounter = counter;
+        timecounter = secTillActivation;
     }
 }
 

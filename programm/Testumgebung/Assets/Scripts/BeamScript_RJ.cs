@@ -1,9 +1,7 @@
-﻿using UnityEngine;
-using System.Collections;
-using System;
+using UnityEngine;
 using System.Collections.Generic;
-using System.Linq;
 using DigitalRuby.FastLineRenderer;
+using System;
 
 public class BeamScript_RJ : MonoBehaviour
 {
@@ -11,6 +9,7 @@ public class BeamScript_RJ : MonoBehaviour
     private string mirrorTag;
     private string colorMirrorTag;
     private string doorKnopTag;
+    private string colorChangerTag;
 
     // necessary Layers
     private LayerMask checkPointLayer;
@@ -25,18 +24,20 @@ public class BeamScript_RJ : MonoBehaviour
     private Vector3 curPosition;
     private Vector3 dir;
     private bool beamIsInWater;
+    public float lineRadius = 0.1f;
 
     // external Scripts
     private BeamRefraction br;
     private DoorOpener doorOpener;
 
+    private GameObject oldCheckPoint;
+    private GameObject sameDoorKnop;
 
-    private GameObject sameObject;
     private bool isActive;
     private Color intensitive;
-   
-    private bool collideWithDoor;
-    private GameObject sameDoorKnop;
+    private CustomColor.CustomizedColor previousColor;
+
+
 
 
     // Use this for initialization
@@ -54,12 +55,13 @@ public class BeamScript_RJ : MonoBehaviour
         mirrorTag = "Mirror";
         colorMirrorTag = "ColorMirror";
         doorKnopTag = "Doorknop";
+        colorChangerTag = "ColorChanger";
     }
 
     // Update is called once per frame
     void Update()
     {
-        collideWithDoor = false;
+
         //if (InputManager.touchInput)
         //{
         if (r != null)
@@ -75,28 +77,27 @@ public class BeamScript_RJ : MonoBehaviour
         isActive = true;
         curPosition = transform.position;
         property.Start = curPosition;
-        standardColor();
+        standardPropertyOfBeam();
+        property.Color = CustomColor.GetColor(CustomColor.CustomizedColor.red);
         dir = transform.right;
 
         while (isActive)
         {
+            previousColor = CustomColor.GetCustomColor(property.Color);
             RaycastHit hit;
             if (Physics.Raycast(curPosition, dir, out hit))
             {
-
-
                 // if beam hits a mirror in general
                 #region mirror
                 if (hit.transform.gameObject.tag == mirrorTag)
                 {
-                    setMirrorReflection(hit, true, Vector3.Reflect(dir, hit.normal), CustomColor.CustomizedColor.green);
+                    setMirrorReflection(hit, true, Vector3.Reflect(dir, hit.normal), previousColor);
                 }
-
                 // if beam hits a colored Mirror
                 else if (hit.transform.gameObject.tag == colorMirrorTag)
                 {
                     dir = hit.transform.gameObject.GetComponentInParent<ColorMirror>().GetReflection(CustomColor.GetCustomColor(property.Color), dir, hit);
-                    setMirrorReflection(hit, true, dir, CustomColor.CustomizedColor.green);
+                    setMirrorReflection(hit, true, dir, previousColor);
                 }
                 else
                 {
@@ -104,44 +105,30 @@ public class BeamScript_RJ : MonoBehaviour
                 }
 
                 #endregion
-                // if beam hits dorrKnop
-                #region Door               
+                // if beam hit Color Changer Gem
+                if (hit.transform.gameObject.tag == colorChangerTag)
+                {
+                    setMirrorReflection(hit, true, dir, hit.transform.gameObject.GetComponent<ChangeBeamColor>().getNewBeamColor());
+                }
+
+                #region Door 
+                // if beam hits doorKnop       
                 if (hit.transform.gameObject.tag == doorKnopTag)
                 {
-                    DoorKnopPressed(hit.transform.gameObject, true);
+                    BeamConnectivity(hit.transform.gameObject, true);
                     sameDoorKnop = hit.transform.gameObject;
                     doorOpener = hit.transform.gameObject.GetComponent<DoorOpener>();
-                    //collideWithDoor = true;
-
-                    //setEndPointOfLine(hit, false);
-
-                    //if (doorCounter == doorOpener.counter - 1)
-                    //{
-                        doorOpener.CollisionColor=CustomColor.GetCustomColor(property.Color);
-                    //    doorOpener.OpenDoor();
-                    //    collideWithDoor = false;
-                    //    sameDoorKnop = hit.transform.gameObject;
-
-                    //}
-                    //setStartPointOfLine(CustomColor.CustomizedColor.green);
+                    doorOpener.CollisionColor = CustomColor.GetCustomColor(property.Color);
                 }
 
                 else
                 {
                     if (sameDoorKnop != null)
                     {
-                        DoorKnopPressed(sameDoorKnop, false);
-                        //doorOpener = sameDoorKnop.transform.gameObject.GetComponent<DoorOpener>();
-                        //doorOpener.CloseDoor();
+                        BeamConnectivity(sameDoorKnop, false);
                     }
                 }
-
-
-
-
                 #endregion
-
-
 
                 // If beam hit Water surface
                 if (hit.transform.gameObject.layer.Equals(waterLayer))
@@ -160,14 +147,19 @@ public class BeamScript_RJ : MonoBehaviour
                         dir = br.getDir();
                         beamIsInWater = br.getLineInWater();
                     }
-                    setStartPointOfLine(CustomColor.CustomizedColor.blue);
+                    setStartPointOfLine(previousColor);
                 }
 
                 // if beam hit checkPoint
-                if ((checkPointLayer.value & 1 << hit.transform.gameObject.layer) == 1 << hit.transform.gameObject.layer)
+                if (hit.transform.gameObject.layer.Equals(checkPointLayer))
                 {
                     BeamConnectivity(hit.transform.gameObject, true);
-                    sameObject = hit.transform.gameObject;
+                    oldCheckPoint = hit.transform.gameObject;
+                }
+                else
+                {
+                    if (oldCheckPoint != null)
+                        BeamConnectivity(oldCheckPoint, false);
                 }
 
                 // is beam in water?
@@ -178,33 +170,29 @@ public class BeamScript_RJ : MonoBehaviour
                 property.End = hit.point;
 
             }
-
             else
             {
                 isActive = false;
                 property.End = curPosition + dir * 20;
 
-                if (sameObject != null)
+                if (oldCheckPoint != null)
                 {
-                    BeamConnectivity(sameObject, false);
+                    BeamConnectivity(oldCheckPoint, false);
                 }
 
                 if (sameDoorKnop != null)
                 {
-                    DoorKnopPressed(sameDoorKnop, false);
-                    //doorOpener = sameDoorKnop.transform.gameObject.GetComponent<DoorOpener>();
-                    //doorOpener.CloseDoor();
+                    BeamConnectivity(sameDoorKnop, false);
                 }
-
-
             }
         }
         properties.Add(property);
         addLines();
-       // setDoorCounter();
 
     }
     //}
+
+    #region helpers
     private void setMirrorReflection(RaycastHit hit, bool isAcitve, Vector3 direction, CustomColor.CustomizedColor color)
     {
         setEndPointOfLine(hit, isAcitve);
@@ -223,25 +211,28 @@ public class BeamScript_RJ : MonoBehaviour
     {
         properties.Add(property);
         property = new FastLineRendererProperties();
-        standardColor();
+        standardPropertyOfBeam();
         property.Color = CustomColor.GetColor(customColor);
         property.Start = curPosition;
     }
 
-    private void BeamConnectivity(GameObject checkP, bool bo)
+    private void BeamConnectivity(GameObject gObject, bool value)
     {
-        checkP.GetComponent<CheckPointManager>().setBeamConnectivity(bo);
+        try
+        {
+            gObject.GetComponent<CheckPointManager>().setBeamConnectivity(value);
+
+        }
+        catch (NullReferenceException)
+        {
+            gObject.GetComponent<DoorOpener>().SetBeamConnected(value);
+        }
+
     }
 
-    private void DoorKnopPressed(GameObject DoorKnop, bool value)
+    private void standardPropertyOfBeam()
     {
-        DoorKnop.GetComponent<DoorOpener>().SetBeamConnected(value);
-    }
-
-    private void standardColor()
-    {
-        property.Radius = 0.1f;
-        property.Color = CustomColor.GetColor(CustomColor.CustomizedColor.red);
+        property.Radius = lineRadius;
     }
 
     private void reduceBeamIntencity(FastLineRendererProperties pro)
@@ -261,15 +252,5 @@ public class BeamScript_RJ : MonoBehaviour
         }
         r.Apply(true);
     }
-    //private void setDoorCounter()
-    //{
-    //    if (collideWithDoor)
-    //    {
-    //        doorCounter++;
-    //    }
-    //    else
-    //    {
-    //        doorCounter = 0;
-    //    }
-    //}
+    #endregion
 }

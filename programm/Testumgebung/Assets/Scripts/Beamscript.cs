@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections.Generic;
 using DigitalRuby.FastLineRenderer;
+using System;
 
 public class Beamscript : MonoBehaviour
 {
@@ -29,14 +30,14 @@ public class Beamscript : MonoBehaviour
     private BeamRefraction br;
     private DoorOpener doorOpener;
 
-
     private GameObject oldCheckPoint;
     private GameObject sameDoorKnop;
+
     private bool isActive;
     private Color intensitive;
-    private int doorCounter = 0;
-    private bool collideWithDoor;
     private CustomColor.CustomizedColor previousColor;
+
+
 
 
     // Use this for initialization
@@ -60,7 +61,7 @@ public class Beamscript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        collideWithDoor = false;
+
         //if (InputManager.touchInput)
         //{
         if (r != null)
@@ -111,22 +112,21 @@ public class Beamscript : MonoBehaviour
                 }
 
                 #region Door 
-                // if beam hits dorKnop    
-                // TODO Fixen Roman :)          
+                // if beam hits doorKnop       
                 if (hit.transform.gameObject.tag == doorKnopTag)
                 {
+                    BeamConnectivity(hit.transform.gameObject, true);
+                    sameDoorKnop = hit.transform.gameObject;
                     doorOpener = hit.transform.gameObject.GetComponent<DoorOpener>();
-                    collideWithDoor = true;
+                    doorOpener.CollisionColor = CustomColor.GetCustomColor(property.Color);
+                }
 
-                    setEndPointOfLine(hit, false);
-
-                    if (doorCounter == doorOpener.counter - 1)
+                else
+                {
+                    if (sameDoorKnop != null)
                     {
-                        doorOpener.OpenDoor(CustomColor.GetCustomColor(property.Color));
-                        collideWithDoor = false;
-                        sameDoorKnop = hit.transform.gameObject;
+                        BeamConnectivity(sameDoorKnop, false);
                     }
-                    setStartPointOfLine(previousColor);
                 }
                 #endregion
 
@@ -182,19 +182,12 @@ public class Beamscript : MonoBehaviour
 
                 if (sameDoorKnop != null)
                 {
-                    doorOpener = sameDoorKnop.GetComponent<DoorOpener>();
-                    if (doorOpener.ConstantTrigger && doorOpener.dooIsOpen)
-                    {
-                        Debug.Log("Animation Door close");
-                        doorOpener.dooIsOpen = false;
-                    }
-
+                    BeamConnectivity(sameDoorKnop, false);
                 }
             }
         }
         properties.Add(property);
         addLines();
-        setDoorCounter();
 
     }
     //}
@@ -223,10 +216,20 @@ public class Beamscript : MonoBehaviour
         property.Start = curPosition;
     }
 
-    private void BeamConnectivity(GameObject checkP, bool bo)
+    private void BeamConnectivity(GameObject gObject, bool value)
     {
-        checkP.GetComponent<CheckPointManager>().setBeamConnectivity(bo);
+        try
+        {
+            gObject.GetComponent<CheckPointManager>().setBeamConnectivity(value);
+
+        }
+        catch (NullReferenceException)
+        {
+            gObject.GetComponent<DoorOpener>().SetBeamConnected(value);
+        }
+
     }
+
     private void standardPropertyOfBeam()
     {
         property.Radius = lineRadius;
@@ -248,17 +251,6 @@ public class Beamscript : MonoBehaviour
             r.AddLine(prop);
         }
         r.Apply(true);
-    }
-    private void setDoorCounter()
-    {
-        if (collideWithDoor)
-        {
-            doorCounter++;
-        }
-        else
-        {
-            doorCounter = 0;
-        }
     }
     #endregion
 }

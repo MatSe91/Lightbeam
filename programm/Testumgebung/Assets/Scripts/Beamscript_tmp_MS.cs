@@ -32,8 +32,6 @@ public class Beamscript_tmp_MS : MonoBehaviour
 
     private GameObject oldCheckPoint;
     private GameObject sameDoorKnop;
-    private int doorCounter = 0;
-    private bool collideWithDoor;
 
     private bool isActive;
     private Color intensitive;
@@ -76,7 +74,6 @@ public class Beamscript_tmp_MS : MonoBehaviour
             beamIsInWater = false;
         }
 
-        collideWithDoor = false;
         isActive = true;
         curPosition = transform.position;
         property.Start = curPosition;
@@ -116,18 +113,12 @@ public class Beamscript_tmp_MS : MonoBehaviour
 
                 #region Door 
                 // if beam hits doorKnop       
-
-                // Hier ist noch ein Bug. Wenn BeamConnectivity in der if steht, dann wird Door open und close gleichzeitig gesetzt
                 if (hit.transform.gameObject.tag == doorKnopTag)
                 {
-                    collideWithDoor = true;
+                    BeamConnectivity(hit.transform.gameObject, true);
                     sameDoorKnop = hit.transform.gameObject;
                     doorOpener = hit.transform.gameObject.GetComponent<DoorOpener>();
-                    if (doorCounter == doorOpener.counter - 1)
-                    {
-                        BeamConnectivity(hit.transform.gameObject, true);
-                        doorOpener.CollisionColor = CustomColor.GetCustomColor(property.Color);
-                    }
+                    doorOpener.CollisionColor = CustomColor.GetCustomColor(property.Color);
                 }
 
                 else
@@ -196,7 +187,6 @@ public class Beamscript_tmp_MS : MonoBehaviour
             }
         }
         properties.Add(property);
-        setDoorCounter();
         addLines();
 
     }
@@ -261,18 +251,6 @@ public class Beamscript_tmp_MS : MonoBehaviour
             r.AddLine(prop);
         }
         r.Apply(true);
-    }
-    private void setDoorCounter()
-    {
-        if (collideWithDoor)
-        {
-            doorCounter++;
-        }
-        else
-        {
-            doorCounter = 0;
-        }
-    }
-
+    }   
     #endregion
 }

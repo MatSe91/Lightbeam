@@ -28,11 +28,12 @@ public class MirrorMovement : MonoBehaviour {
     {
         if (active)
         {
-            if (Input.GetMouseButton(0) )//&& IsPointOnLine())
+            if (Input.GetMouseButton(0))
             {
-                Vector3 nearPoint = FindNearPoint(GetWorldPositionOnPlane(Input.mousePosition,0));
-               
-                this.transform.position = nearPoint ;      
+                Vector3 nearPoint = FindNearPoint(GetWorldPositionOnPlane(Input.mousePosition, 0));
+
+
+                this.transform.position = nearPoint;
             }
         }
     }
@@ -53,10 +54,7 @@ public class MirrorMovement : MonoBehaviour {
         return ray.GetPoint(distance);
     }
 
-    //    public bool IsPointOnLine()
-    //    {
-    //        MAtr
-    //    }
+  
     public Vector3 FindNearPoint( Vector3 nearPoint)
     {
         float shortestDistance = 100f;
@@ -70,8 +68,8 @@ public class MirrorMovement : MonoBehaviour {
                 shortestDistance = distance;
             }
         }
-
-        return index.transform.position;
+       
+        return index.transform.position;//
    }
 
 }

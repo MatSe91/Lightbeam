@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DigitalRuby.FastLineRenderer
 {
@@ -9,9 +10,10 @@ namespace DigitalRuby.FastLineRenderer
        
         // Use this for initialization
 
-        public static void     AddColliderToLine(Vector3 startPos, Vector3 endPos, FastLineRenderer r)//,GameObject Prefab)
+        public static void AddColliderToLine(Vector3 startPos, Vector3 endPos, FastLineRenderer r)//,GameObject Prefab)
         {
-            BoxCollider box = new GameObject("Collider").AddComponent<BoxCollider>();
+            GameObject go = new GameObject("BeamCollider");
+            BoxCollider box = /*new GameObject("BeamCollider").*/go.AddComponent<BoxCollider>();
             box.transform.parent = r.transform;
             float lineLength = Vector3.Distance(startPos, endPos); // length of line
                         
@@ -30,7 +32,20 @@ namespace DigitalRuby.FastLineRenderer
             angle = Mathf.Rad2Deg * Mathf.Atan(angle);            
             box.transform.eulerAngles = new Vector3(0, 0, angle);
             box.gameObject.layer = 9;
+            box.tag = "BoxColliderTag";
             box.enabled = true;
+            go.hideFlags = HideFlags.DontSave;
+        }
+
+        public static void OnDestroy()
+        {
+            List<GameObject> ColliderList = new List<GameObject>();
+            ColliderList = GameObject.FindGameObjectsWithTag("BoxColliderTag").ToList();
+
+            foreach (var item in ColliderList)
+            {
+                DestroyImmediate(item);
+            }
         }
     }
 }

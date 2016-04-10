@@ -47,8 +47,6 @@ public class BeamRefraction
     /// <param name="rm2"></param>
     public BeamRefraction(Vector3 direction, RaycastHit hit, Refraction_Medium.Refraction_Med rm1, Refraction_Medium.Refraction_Med rm2)
     {
-
-        Vector3 dir = new Vector3(0, 0, 0);
         float alpha = Vector3.Angle(-direction, hit.normal);
         Vector3 normale = -hit.normal;
         float n1 = medium.refraction_Index(rm1);    // ist das gut? evtl. Refactoring

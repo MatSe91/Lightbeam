@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System;
 
@@ -8,6 +8,8 @@ public class InputManager : MonoBehaviour {
     private GameObject sameObject;
     private bool gameStarted;
     public GameObject PlayerChild;
+    public static bool touchInput;
+    public static GameObject lastObjectBevorePause;
 
 	// Use this for initialization
 	void Start () {
@@ -20,6 +22,7 @@ public class InputManager : MonoBehaviour {
         // prüfe ob die linke Maustaste gedrückt wird
         if (Input.GetMouseButtonDown(0))
         {
+            touchInput = true;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 
@@ -65,14 +68,15 @@ public class InputManager : MonoBehaviour {
                         inUse.SendMessage("setActiveGameObject", true);
 
                     }
-
+                    lastObjectBevorePause = inUse;
                 }
-
                 // speichere das GameObject zwischen zur Überprüfung
                 sameObject = inUse;
             }
-
         }
-
-    }
+        else if (Input.GetMouseButtonUp(0))
+        {
+            touchInput = false;
+        }
+    }   
 }

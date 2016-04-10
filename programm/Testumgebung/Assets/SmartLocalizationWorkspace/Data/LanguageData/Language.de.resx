@@ -128,4 +128,7 @@
 	<data name="pauseMenu.Resume" xml:space="preserve">
 		<value>zum Spiel</value>
 	</data>
+	<data name="menu.Reset" xml:space="preserve">
+		<value />
+	</data>
 </root>

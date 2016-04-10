@@ -122,6 +122,9 @@
 	<data name="menu.Music" xml:space="preserve">
 		<value>Music</value>
 	</data>
+	<data name="menu.Reset" xml:space="preserve">
+		<value>Reset progress</value>
+	</data>
 	<data name="pauseMenu.Header" xml:space="preserve">
 		<value>Pause</value>
 	</data>

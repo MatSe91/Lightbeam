@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using MadLevelManager;
 
 public class MainMenuHandler : MonoBehaviour
 {
@@ -48,6 +49,11 @@ public class MainMenuHandler : MonoBehaviour
         activeMenu.SetActive(false);
         nextMenu.SetActive(true);
         activeMenu = nextMenu;
+    }
+
+    public void ClickPlay()
+    {
+        MadLevel.LoadLevelByName("Select Level");
     }
 
 }

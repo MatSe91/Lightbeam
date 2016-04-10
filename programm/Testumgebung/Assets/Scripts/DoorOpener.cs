@@ -19,6 +19,12 @@ public class DoorOpener: MonoBehaviour
     [Tooltip("Sekunden bis Schalter aktiviert")]
     public float secTillActivation = 60f;
 
+    public GameObject activated;
+    public GameObject loading;
+
+    private ParticleSystem activatedParticle;
+    private Animator anim;
+
 
     private bool doorIsOpen =false;
     private bool isBeamconnected;
@@ -54,6 +60,7 @@ public class DoorOpener: MonoBehaviour
 
     public void OpenDoor()
     {
+        if (activatedParticle.isPlaying) activatedParticle.Stop();
 
         if (!withColor && !DoorIsOpen && isBeamconnected)
         {          
@@ -65,32 +72,26 @@ public class DoorOpener: MonoBehaviour
         {           
             Debug.Log("Animation Door open");
             DoorIsOpen = true;
-        } 
+        }
+        GetComponentInChildren<SimulateDoor>().activate();
+
     }
 
     public void SetBeamConnected(bool value)
     {
         isBeamconnected = value;
-        if (value)
-        {
-           
-        }
-        
     }
 
     void OnCollisionEnter(Collision col)
     {
+        if (!activatedParticle.isPlaying) activatedParticle.Play();
         if (timecounter%60 <= 0)
         {
-            
             OpenDoor();
             other = col.collider;
         }
         Debug.Log(Mathf.Floor(timecounter % 60));
     }
-
-  
-
 
     void Update()
     {      
@@ -98,12 +99,19 @@ public class DoorOpener: MonoBehaviour
         { 
             CloseDoor(); 
         }
-        if(isBeamconnected)
+
+        if (isBeamconnected)
         {
             timecounter -= Time.deltaTime;
+            
+           // loadingParticle(true);
         }
-        else timecounter = secTillActivation;
-
+        else
+        {
+            timecounter = secTillActivation;
+            if (activatedParticle.isPlaying) activatedParticle.Stop();
+            //loadingParticle(false);
+        }
     }
 
     public void CloseDoor()
@@ -111,6 +119,7 @@ public class DoorOpener: MonoBehaviour
         if (DoorIsOpen && !isBeamconnected)
         {
             Debug.Log("Animation Door close");
+            GetComponentInChildren<SimulateDoor>().deactivate();
             DoorIsOpen = false;
            
         }
@@ -118,18 +127,6 @@ public class DoorOpener: MonoBehaviour
     void Start()
     {
         timecounter = secTillActivation;
+        activatedParticle = loading.GetComponent<ParticleSystem>();     
     }
 }
-
-
-    // starte die Partikel mit X sekunden dauer
-    // Wenn lichtstrahl runter --> breche Partikel abspielen ab (aktuellen Loop beenden, nicht nur abbrechen)
-    // wenn Partikel dauer in Sec erfolgreich durchgelaufen
-    // beende Partikel
-    // öffne Tür
-    // spiele animation ab
-
-    // ggf wenn licht von doorknop
-    // dann beende animation
-    // ggf selbe prozedure von vorn
-

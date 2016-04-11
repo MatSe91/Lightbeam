@@ -6,6 +6,7 @@ public class MirrorRotator : MonoBehaviour
     private Vector3 pos;
     private Vector3 dir;
     private float angle;
+    public GameObject touchAnimGameObject;
 
     private float minZ;
     private float maxZ;
@@ -36,6 +37,17 @@ public class MirrorRotator : MonoBehaviour
     public void setActiveGameObject(bool rot)
     {
         active = rot;
+        if (active)
+        {
+            if (touchAnimGameObject != null)
+            {
+                touchAnimGameObject.SetActive(true);
+            }
+        }
+        else
+        {
+            touchAnimGameObject.SetActive(false);
+        }
     }
 
 

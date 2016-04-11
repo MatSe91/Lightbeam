@@ -64,13 +64,13 @@ public class DoorOpener: MonoBehaviour
 
         if (!withColor && !DoorIsOpen && isBeamconnected)
         {          
-            Debug.Log("Animation Door open");
+            //Debug.Log("Animation Door open");
             DoorIsOpen = true;
         }
 
         if (CollisionColor == validColor && withColor && !DoorIsOpen && isBeamconnected)
         {           
-            Debug.Log("Animation Door open");
+            //Debug.Log("Animation Door open");
             DoorIsOpen = true;
         }
         GetComponentInChildren<SimulateDoor>().activate();
@@ -84,13 +84,28 @@ public class DoorOpener: MonoBehaviour
 
     void OnCollisionEnter(Collision col)
     {
-        if (!activatedParticle.isPlaying) activatedParticle.Play();
+
         if (timecounter%60 <= 0)
         {
             OpenDoor();
             other = col.collider;
         }
-        Debug.Log(Mathf.Floor(timecounter % 60));
+
+        if (!activatedParticle.isPlaying)
+        {
+            if (!ConstantTrigger && doorIsOpen)
+            {
+                return;
+            }
+            else if (ConstantTrigger && doorIsOpen)
+            {
+                return;
+            }
+            else
+                activatedParticle.Play();
+        }
+
+        //Debug.Log(Mathf.Floor(timecounter % 60));
     }
 
     void Update()
@@ -103,14 +118,11 @@ public class DoorOpener: MonoBehaviour
         if (isBeamconnected)
         {
             timecounter -= Time.deltaTime;
-            
-           // loadingParticle(true);
         }
         else
         {
             timecounter = secTillActivation;
             if (activatedParticle.isPlaying) activatedParticle.Stop();
-            //loadingParticle(false);
         }
     }
 
@@ -118,7 +130,7 @@ public class DoorOpener: MonoBehaviour
     {
         if (DoorIsOpen && !isBeamconnected)
         {
-            Debug.Log("Animation Door close");
+           // Debug.Log("Animation Door close");
             GetComponentInChildren<SimulateDoor>().deactivate();
             DoorIsOpen = false;
            

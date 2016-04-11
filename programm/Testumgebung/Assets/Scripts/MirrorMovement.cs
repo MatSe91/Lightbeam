@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Linq;
 using System.Collections.Generic;
@@ -9,6 +9,7 @@ public class MirrorMovement : MonoBehaviour {
     private bool active = false;
     public GameObject Line;
     private List<GameObject> linePoints;
+    public GameObject touchAnimGameObject;
     //  public GameObject background;
     // Use this for initialization
 
@@ -31,8 +32,6 @@ public class MirrorMovement : MonoBehaviour {
             if (Input.GetMouseButton(0))
             {
                 Vector3 nearPoint = FindNearPoint(GetWorldPositionOnPlane(Input.mousePosition, 0));
-
-
                 this.transform.position = nearPoint;
             }
         }
@@ -42,6 +41,17 @@ public class MirrorMovement : MonoBehaviour {
     public void setActiveGameObject(bool mov)
     {
         active = mov;
+        if (active)
+        {
+            if (touchAnimGameObject != null)
+            {
+                touchAnimGameObject.SetActive(true);
+            }
+        }
+        else
+        {
+            touchAnimGameObject.SetActive(false);
+        }
         Debug.Log("movement was active");
     }
 

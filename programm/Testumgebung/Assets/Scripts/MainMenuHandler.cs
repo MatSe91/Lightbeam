@@ -56,4 +56,11 @@ public class MainMenuHandler : MonoBehaviour
         MadLevel.LoadLevelByName("Select Level");
     }
 
+    public void ClickReset()
+    {
+        MadLevelProfile.RegisterProfile("default");
+        Debug.Log("Existing profiles: " + MadLevelProfile.profileList);
+        MadLevelProfile.UnregisterProfile("default");
+    }
+
 }

@@ -207,6 +207,7 @@
     <Compile Include="Assets\ExternalRessources\Water2D_Tool\Scripts\Water2D_PolygonClipping.cs" />
     <Compile Include="Assets\ExternalRessources\Water2D_Tool\Scripts\Water2D_Simulation.cs" />
     <Compile Include="Assets\ExternalRessources\Water2D_Tool\Scripts\Water2D_Tool.cs" />
+    <Compile Include="Assets\MirrorMovementAnim.cs" />
     <Compile Include="Assets\Scripts\BeamCollider.cs" />
     <Compile Include="Assets\Scripts\BeamRefraction.cs" />
     <Compile Include="Assets\Scripts\BeamScript_RJ.cs" />
@@ -230,6 +231,7 @@
     <Compile Include="Assets\Scripts\MainMenuHandler.cs" />
     <Compile Include="Assets\Scripts\MirrorMovement.cs" />
     <Compile Include="Assets\Scripts\MirrorRotator.cs" />
+    <Compile Include="Assets\Scripts\MirrorRotatorAnim.cs" />
     <Compile Include="Assets\Scripts\PlayerRotator.cs" />
     <Compile Include="Assets\Scripts\Refraction_Medium.cs" />
     <Compile Include="Assets\Scripts\Settings.cs" />

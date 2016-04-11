@@ -55,7 +55,7 @@ public class Box : MonoBehaviour {
         }
 
         // go back to level select screen
-        MadLevel.LoadLevelByName("Level Select"); // name from level configuration
+        MadLevel.LoadLevelByName("Select Level"); // name from level configuration
     }
 }
 

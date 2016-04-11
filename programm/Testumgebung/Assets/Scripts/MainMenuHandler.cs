@@ -11,6 +11,9 @@ public class MainMenuHandler : MonoBehaviour
     void Start()
     {
         activeMenu = MainMenu;
+        MadLevelProfile.profile = "default";
+        Debug.Log("Current profile is " + MadLevelProfile.profile);
+      
     }
 
     public void ClickMusicButtton(Button musicButton)
@@ -54,6 +57,13 @@ public class MainMenuHandler : MonoBehaviour
     public void ClickPlay()
     {
         MadLevel.LoadLevelByName("Select Level");
+    }
+
+    public void ClickReset()
+    {
+        MadLevelProfile.Reset();
+        
+
     }
 
 }

@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.Collections;
 using System;
+using MadLevelManager;
+using DigitalRuby.FastLineRenderer;
 
 public class DoorOpener: MonoBehaviour
 {
@@ -21,6 +23,7 @@ public class DoorOpener: MonoBehaviour
 
     public GameObject activated;
     public GameObject loading;
+    
 
     private ParticleSystem activatedParticle;
     private Animator anim;
@@ -66,6 +69,8 @@ public class DoorOpener: MonoBehaviour
         {          
             Debug.Log("Animation Door open");
             DoorIsOpen = true;
+          
+            MadLevel.LoadLevelByName("Select Level");
         }
 
         if (CollisionColor == validColor && withColor && !DoorIsOpen && isBeamconnected)

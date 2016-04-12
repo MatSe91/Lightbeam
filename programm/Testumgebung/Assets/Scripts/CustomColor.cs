@@ -11,7 +11,6 @@ public  class  CustomColor : MonoBehaviour   {
         yellow,
         green,
         blue,
-        indigo,
         violet,
     }
 
@@ -41,10 +40,6 @@ public  class  CustomColor : MonoBehaviour   {
         if (color == CustomizedColor.blue)
         {
             return Color.blue;
-        }
-        if (color == CustomizedColor.indigo)
-        {
-            return new Color(0.29f, 0, 0.51f, 1);
         }
         if (color == CustomizedColor.violet)
         {
@@ -78,10 +73,6 @@ public  class  CustomColor : MonoBehaviour   {
         if (color == Color.blue)
         {
             return CustomizedColor.blue;
-        }
-        if (color == new Color(75, 0, 130, 1))
-        {
-            return CustomizedColor.indigo;
         }
         if (color == new Color(128, 0, 128, 1))
         {

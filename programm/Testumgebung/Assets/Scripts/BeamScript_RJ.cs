@@ -10,6 +10,8 @@ public class BeamScript_RJ : MonoBehaviour
     private string colorMirrorTag;
     private string doorKnopTag;
     private string colorChangerTag;
+    private string endPointTag;
+    private string checkPointTag;
 
     // necessary Layers
     private LayerMask checkPointLayer;
@@ -32,10 +34,24 @@ public class BeamScript_RJ : MonoBehaviour
 
     private GameObject oldCheckPoint;
     private GameObject sameDoorKnop;
+    private GameObject endpoint;
 
     private bool isActive;
     private Color intensitive;
     private CustomColor.CustomizedColor previousColor;
+
+    public List<FastLineRendererProperties> Properties
+    {
+        get
+        {
+            return properties;
+        }
+
+        set
+        {
+            properties = value;
+        }
+    }
 
 
 
@@ -44,7 +60,7 @@ public class BeamScript_RJ : MonoBehaviour
     void Start()
     {
         r = FastLineRenderer.CreateWithParent(null, GetComponent<FastLineRenderer>());
-        properties = new List<FastLineRendererProperties>();
+        Properties = new List<FastLineRendererProperties>();
         intensitive = new Color(0, 0, 0, 0.7f);
 
         // layer
@@ -56,6 +72,8 @@ public class BeamScript_RJ : MonoBehaviour
         colorMirrorTag = "ColorMirror";
         doorKnopTag = "Doorknop";
         colorChangerTag = "ColorChanger";
+        endPointTag = "Endpoint";
+        checkPointTag = "CheckpointTag";
     }
 
     // Update is called once per frame
@@ -68,7 +86,7 @@ public class BeamScript_RJ : MonoBehaviour
         {
             r.Reset();
             BeamCollider.OnDestroy();
-            properties.Clear();
+            Properties.Clear();
 
             property = new FastLineRendererProperties();
             beamIsInWater = false;
@@ -115,7 +133,7 @@ public class BeamScript_RJ : MonoBehaviour
                 // if beam hits doorKnop       
                 if (hit.transform.gameObject.tag == doorKnopTag)
                 {
-                    BeamConnectivity(hit.transform.gameObject, true);
+                    BeamConnectivity(hit.transform.gameObject, true,doorKnopTag);
                     sameDoorKnop = hit.transform.gameObject;
                     doorOpener = hit.transform.gameObject.GetComponent<DoorOpener>();
                     doorOpener.CollisionColor = CustomColor.GetCustomColor(property.Color);
@@ -125,11 +143,26 @@ public class BeamScript_RJ : MonoBehaviour
                 {
                     if (sameDoorKnop != null)
                     {
-                        BeamConnectivity(sameDoorKnop, false);
+                        BeamConnectivity(sameDoorKnop, false,doorKnopTag);
                     }
                 }
                 #endregion
 
+                #region endpoint
+                if(hit.transform.gameObject.tag == endPointTag)
+                {
+                    BeamConnectivity(hit.transform.gameObject, true,endPointTag);
+                    endpoint = hit.transform.gameObject;
+                }
+                else
+                {
+                    if(endpoint!=null)
+                    {
+                        BeamConnectivity(endpoint, false, endPointTag);
+                    }
+                }
+
+                #endregion
                 // If beam hit Water surface
                 if (hit.transform.gameObject.layer.Equals(waterLayer))
                 {
@@ -153,13 +186,13 @@ public class BeamScript_RJ : MonoBehaviour
                 // if beam hit checkPoint
                 if (hit.transform.gameObject.layer.Equals(checkPointLayer))
                 {
-                    BeamConnectivity(hit.transform.gameObject, true);
+                    BeamConnectivity(hit.transform.gameObject, true, checkPointTag);
                     oldCheckPoint = hit.transform.gameObject;
                 }
                 else
                 {
                     if (oldCheckPoint != null)
-                        BeamConnectivity(oldCheckPoint, false);
+                        BeamConnectivity(oldCheckPoint, false, checkPointTag);
                 }
 
                 // is beam in water?
@@ -177,16 +210,22 @@ public class BeamScript_RJ : MonoBehaviour
 
                 if (oldCheckPoint != null)
                 {
-                    BeamConnectivity(oldCheckPoint, false);
+                    BeamConnectivity(oldCheckPoint, false, checkPointTag);
                 }
 
                 if (sameDoorKnop != null)
                 {
-                    BeamConnectivity(sameDoorKnop, false);
+                    BeamConnectivity(sameDoorKnop, false,doorKnopTag);
                 }
+
+                if (endpoint != null)
+                {
+                    BeamConnectivity(endpoint, false, endPointTag);
+                }
+
             }
         }
-        properties.Add(property);
+        Properties.Add(property);
         addLines();
 
     }
@@ -209,23 +248,27 @@ public class BeamScript_RJ : MonoBehaviour
     }
     private void setStartPointOfLine(CustomColor.CustomizedColor customColor)
     {
-        properties.Add(property);
+        Properties.Add(property);
         property = new FastLineRendererProperties();
         standardPropertyOfBeam();
         property.Color = CustomColor.GetColor(customColor);
         property.Start = curPosition;
     }
 
-    private void BeamConnectivity(GameObject gObject, bool value)
+    private void BeamConnectivity(GameObject gObject, bool value, string tag)
     {
-        try
+       if(tag==endPointTag)
         {
-            gObject.GetComponent<CheckPointManager>().setBeamConnectivity(value);
-
+            gObject.GetComponent<Endpoint>().setBeamConnectivity(value);
+         
         }
-        catch (NullReferenceException)
+        else if (tag == doorKnopTag)
         {
             gObject.GetComponent<DoorOpener>().SetBeamConnected(value);
+        }
+        else if(tag==checkPointTag)
+        {
+            gObject.GetComponent<CheckPointManager>().setBeamConnectivity(value);
         }
 
     }
@@ -244,7 +287,7 @@ public class BeamScript_RJ : MonoBehaviour
     }
     private void addLines()
     {
-        foreach (var prop in properties)
+        foreach (var prop in Properties)
         {
             reduceBeamIntencity(prop);
             BeamCollider.AddColliderToLine(prop.Start, prop.End, r);

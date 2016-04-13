@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class SimulateDoor : MonoBehaviour {
+public class DoorKnopSimulation : MonoBehaviour {
 
     public List<GameObject> particles;
     private List<ParticleSystem> systems;

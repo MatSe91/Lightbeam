@@ -21,19 +21,19 @@ public class DoorOpener: MonoBehaviour
     [Tooltip("Sekunden bis Schalter aktiviert")]
     public float secTillActivation = 60f;
 
+    [Tooltip("Object, das die Türknopfsimulation besitzt (Script).")]
     public GameObject activated;
-    public GameObject loading;
-    
 
-    private ParticleSystem activatedParticle;
-    private Animator anim;
+    [Tooltip("Loading Particlesystem")]
+    public GameObject loading; 
 
-
+    private ParticleSystem loadingParticleSystem;
     private bool doorIsOpen =false;
     private bool isBeamconnected;
     private CustomColor.CustomizedColor collisionColor;
     private Collider other;
     private float timecounter = 0f;
+
 
     public CustomColor.CustomizedColor CollisionColor
     {
@@ -63,23 +63,27 @@ public class DoorOpener: MonoBehaviour
 
     public void OpenDoor()
     {
-        if (activatedParticle.isPlaying) activatedParticle.Stop();
 
         if (!withColor && !DoorIsOpen && isBeamconnected)
-        {          
-            //Debug.Log("Animation Door open");
-            DoorIsOpen = true;
-          
-            MadLevel.LoadLevelByName("Select Level");
+        {
+            OpenDoorProperties();
+            Debug.Log("ohne color");
+            //   MadLevel.LoadLevelByName("Select Level");
         }
 
         if (CollisionColor == validColor && withColor && !DoorIsOpen && isBeamconnected)
-        {           
-            //Debug.Log("Animation Door open");
-            DoorIsOpen = true;
+        {
+            OpenDoorProperties();
+            Debug.Log("mit color");
         }
-        GetComponentInChildren<SimulateDoor>().activate();
+    }
 
+    private void OpenDoorProperties()
+    {
+        if (loadingParticleSystem.isPlaying) loadingParticleSystem.Stop();
+        Door.GetComponent<DoorManager>().OpenDoor();
+        GetComponentInChildren<DoorKnopSimulation>().activate();
+        DoorIsOpen = true;
     }
 
     public void SetBeamConnected(bool value)
@@ -96,21 +100,15 @@ public class DoorOpener: MonoBehaviour
             other = col.collider;
         }
 
-        if (!activatedParticle.isPlaying)
+        if (!loadingParticleSystem.isPlaying)
         {
-            if (!ConstantTrigger && doorIsOpen)
-            {
-                return;
-            }
-            else if (ConstantTrigger && doorIsOpen)
+            if (doorIsOpen)
             {
                 return;
             }
             else
-                activatedParticle.Play();
+                loadingParticleSystem.Play();
         }
-
-        //Debug.Log(Mathf.Floor(timecounter % 60));
     }
 
     void Update()
@@ -127,7 +125,7 @@ public class DoorOpener: MonoBehaviour
         else
         {
             timecounter = secTillActivation;
-            if (activatedParticle.isPlaying) activatedParticle.Stop();
+            if (loadingParticleSystem.isPlaying) loadingParticleSystem.Stop();
         }
     }
 
@@ -135,8 +133,8 @@ public class DoorOpener: MonoBehaviour
     {
         if (DoorIsOpen && !isBeamconnected)
         {
-           // Debug.Log("Animation Door close");
-            GetComponentInChildren<SimulateDoor>().deactivate();
+            Door.GetComponent<DoorManager>().CloseDoor();
+            GetComponentInChildren<DoorKnopSimulation>().deactivate();
             DoorIsOpen = false;
            
         }
@@ -144,6 +142,6 @@ public class DoorOpener: MonoBehaviour
     void Start()
     {
         timecounter = secTillActivation;
-        activatedParticle = loading.GetComponent<ParticleSystem>();     
+        loadingParticleSystem = loading.GetComponent<ParticleSystem>();
     }
 }

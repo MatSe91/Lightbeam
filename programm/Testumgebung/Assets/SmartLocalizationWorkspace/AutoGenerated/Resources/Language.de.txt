@@ -122,22 +122,13 @@
 	<data name="menu.Music" xml:space="preserve">
 		<value>Ton</value>
 	</data>
-	<data name="menu.Reset" xml:space="preserve">
-		<value />
-	</data>
 	<data name="pauseMenu.Header" xml:space="preserve">
 		<value>Pause</value>
 	</data>
 	<data name="pauseMenu.Resume" xml:space="preserve">
 		<value>zum Spiel</value>
 	</data>
-	<data name="endMenu.Next" xml:space="preserve">
-		<value />
-	</data>
-	<data name="endMenu.Repeat" xml:space="preserve">
-		<value />
-	</data>
-	<data name="endMenu.Select" xml:space="preserve">
+	<data name="menu.Reset" xml:space="preserve">
 		<value />
 	</data>
 </root>

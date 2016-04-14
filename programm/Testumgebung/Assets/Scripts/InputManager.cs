@@ -9,7 +9,7 @@ public class InputManager : MonoBehaviour {
     private bool gameStarted;
     public GameObject PlayerChild;
     public static bool touchInput;
-    public static GameObject lastObjectBeforePause;
+    public static GameObject lastObjectBevorePause;
 
 	// Use this for initialization
 	void Start () {
@@ -68,7 +68,7 @@ public class InputManager : MonoBehaviour {
                         inUse.SendMessage("setActiveGameObject", true);
 
                     }
-                    lastObjectBeforePause = inUse;
+                    lastObjectBevorePause = inUse;
                 }
                 // speichere das GameObject zwischen zur Überprüfung
                 sameObject = inUse;

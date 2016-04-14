@@ -2,7 +2,6 @@ using UnityEngine;
 using System.Collections;
 using System;
 using System.Collections.Generic;
-using MadLevelManager;
 
 public class LevelManager : MonoBehaviour {
     private GameObject inputManager;
@@ -16,10 +15,10 @@ public class LevelManager : MonoBehaviour {
         inputManager = GameObject.Find("Main Camera");
     }
 
-    public  void Pause(GameObject obj)
+    public void Pause(GameObject obj)
     {
         pauseObject = obj;
-        lastActiveGameObject = InputManager.lastObjectBeforePause;
+        lastActiveGameObject = InputManager.lastObjectBevorePause;
 
 
         if (pauseObject.activeInHierarchy == false)
@@ -48,25 +47,13 @@ public class LevelManager : MonoBehaviour {
         }
     }
 
-    public  void SetCollectedItems()
+    public void addWaterDrop(GameObject water)
     {
-        CollectibleManager.AddCollectedItems();
-        CollectibleManager.SetCollectiblesToLevel();
+       // waterDropList.Add(water);
     }
 
-
-    public void ClickAgain()
+    private void gainWaterDrop(List<GameObject> waterDropList)
     {
-        MadLevel.LoadLevelByName(MadLevel.currentLevelName);
-    }
-
-    public void ClickNext()
-    {
-        MadLevel.LoadNext();
-    }
-
-    public void ClickSelect()
-    {
-        MadLevel.LoadLevelByName("Select Level");
+        // TODO jeder Waterdrop, der in der Liste steht, soll persistiert werden
     }
 }

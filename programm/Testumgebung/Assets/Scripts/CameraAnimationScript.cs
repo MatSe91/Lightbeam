@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class CameraAnimationScript : MonoBehaviour {
@@ -40,10 +40,10 @@ public class CameraAnimationScript : MonoBehaviour {
         anim_index = 1;
     }
 
-        public void enableBeam()
-        {
-            checkpoint.GetComponent<PlayerRotator>().enabled = true;
-        }
+    public void enableBeam()
+    {
+        checkpoint.GetComponent<PlayerRotator>().enabled = true;
+    }
 
     /// <summary>
     /// Aufruf nur durch die Animation selbst!

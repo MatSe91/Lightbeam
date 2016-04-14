@@ -1,8 +1,6 @@
 using UnityEngine;
-using System.Collections;
-using System;
-using System.Collections.Generic;
 using MadLevelManager;
+using DigitalRuby.FastLineRenderer;
 
 public class LevelManager : MonoBehaviour {
     private GameObject inputManager;
@@ -24,18 +22,17 @@ public class LevelManager : MonoBehaviour {
 
         if (pauseObject.activeInHierarchy == false)
         {
-            de_ActivateMenue(true, 0, false);
+            de_ActivateMenue(true, false);
         }
         else
         {
-            de_ActivateMenue(false, 1, true);
+            de_ActivateMenue(false, true);
         }
     }
 
-    private void de_ActivateMenue(bool canvasActive, int timeScale, bool objectActive)
+    private void de_ActivateMenue(bool canvasActive, bool objectActive)
     {
         pauseObject.SetActive(canvasActive);
-        //Time.timeScale = timeScale;
         De_ActivateGameObjects(objectActive);
     }
 
@@ -57,16 +54,31 @@ public class LevelManager : MonoBehaviour {
 
     public void ClickAgain()
     {
+        destroyLightbeam();
         MadLevel.LoadLevelByName(MadLevel.currentLevelName);
     }
 
     public void ClickNext()
     {
+        destroyLightbeam();
         MadLevel.LoadNext();
     }
 
     public void ClickSelect()
     {
+        destroyLightbeam();
         MadLevel.LoadLevelByName("Select Level");
+    }
+
+    private static void destroyLightbeam()
+    {
+        var beam = GameObject.FindGameObjectsWithTag("Beam");
+        foreach (var item in beam)
+        {
+            FastLineRenderer flr = item.GetComponent<BeamScript_RJ>().R;
+            flr.Reset();
+            Destroy(flr);
+            Destroy(item);
+        }
     }
 }

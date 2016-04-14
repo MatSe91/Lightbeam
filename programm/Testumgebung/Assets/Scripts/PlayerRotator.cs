@@ -27,10 +27,17 @@ public class PlayerRotator : MonoBehaviour {
             {
                 touchAnimGameObject.SetActive(true);
             }
+            else
+            {
+                print("Bitte fügen Sie einen Touch Anim Game Objekt hinzu.");
+            }
         }
-        else
+        else 
         {
-            touchAnimGameObject.SetActive(false);
+            if (touchAnimGameObject != null)
+            {
+                touchAnimGameObject.SetActive(false);
+            }
         }
     }
 

@@ -53,6 +53,19 @@ public class BeamScript_RJ : MonoBehaviour
         }
     }
 
+    public FastLineRenderer R
+    {
+        get
+        {
+            return r;
+        }
+
+        set
+        {
+            r = value;
+        }
+    }
+
 
 
 

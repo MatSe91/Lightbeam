@@ -10,7 +10,7 @@ public class Endpoint : MonoBehaviour {
 
     private bool isBeamconntected;
     public GameObject EndLevelMenu;
-    private LevelManager manager;
+    public LevelManager manager;
     
    
 
@@ -49,7 +49,6 @@ public class Endpoint : MonoBehaviour {
 
     private void LevelCompleted()
     {
-        manager = this.GetComponent<LevelManager>();
         manager.Pause(EndLevelMenu);
         manager.SetCollectedItems();
     }

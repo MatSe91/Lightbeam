@@ -70,7 +70,7 @@ public class DoorOpener: MonoBehaviour
             //Debug.Log("Animation Door open");
             DoorIsOpen = true;
           
-            MadLevel.LoadLevelByName("Select Level");
+           
         }
 
         if (CollisionColor == validColor && withColor && !DoorIsOpen && isBeamconnected)

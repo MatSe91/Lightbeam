@@ -116,6 +116,15 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+	<data name="endMenu.Next" xml:space="preserve">
+		<value>Next level</value>
+	</data>
+	<data name="endMenu.Repeat" xml:space="preserve">
+		<value>Again</value>
+	</data>
+	<data name="endMenu.Select" xml:space="preserve">
+		<value>Select Level</value>
+	</data>
 	<data name="menu.MainMenu" xml:space="preserve">
 		<value>Main Menu</value>
 	</data>

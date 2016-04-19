@@ -1,7 +1,9 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 using MadLevelManager;
+using System;
+using SmartLocalization;
 
 public class MainMenuHandler : MonoBehaviour
 {
@@ -10,9 +12,30 @@ public class MainMenuHandler : MonoBehaviour
 
     void Start()
     {
-        activeMenu = MainMenu;
+        loadSettings();
+        activeMenu = MainMenu;          
+    }
+
+    private void loadSettings()
+    {
+        // load Profile 
         MadLevelProfile.profile = "default";
-        Debug.Log("Current profile is " + MadLevelProfile.profile);      
+
+        // load language
+        LanguageManager lm = LanguageManager.Instance;
+        //if (MadLevelProfile.GetProfileString("Language") == null)
+        //{
+            lm.ChangeLanguage(MadLevelProfile.GetProfileString("Language", "de"));
+        //}
+        //else
+        //{
+        //    lm.ChangeLanguage(MadLevelProfile.GetProfileString("Language"));
+        //}
+
+        // loadMusicVolume
+        
+
+        // loadSfxVolume
     }
 
     public void ClickMusicButtton(Button musicButton)
@@ -21,13 +44,13 @@ public class MainMenuHandler : MonoBehaviour
         {
             AudioListener.volume = 1f;
             Settings.MusicVolume = true;
-            musicButton.GetComponent<Image>().overrideSprite = Resources.Load<Sprite>("Images/music");
+            musicButton.GetComponent<Image>().overrideSprite = Resources.Load<Sprite>("Sprites/Icons/music");
         }
         else
         {
             AudioListener.volume = 0f;
             Settings.MusicVolume = false;
-            musicButton.GetComponent<Image>().overrideSprite = Resources.Load<Sprite>("Images/music_off");
+            musicButton.GetComponent<Image>().overrideSprite = Resources.Load<Sprite>("Sprites/Icons/music_off");
         }
     }
 
@@ -36,21 +59,36 @@ public class MainMenuHandler : MonoBehaviour
         if(Settings.SfxVolume)
         { 
             Settings.SfxVolume = false;
-            sfxButton.GetComponent<Image>().overrideSprite = Resources.Load<Sprite>("Images/sfx_off");
+            sfxButton.GetComponent<Image>().overrideSprite = Resources.Load<Sprite>("Sprites/Icons/sfx_off");
         }
  
         else
         {
             Settings.SfxVolume = true;
-            sfxButton.GetComponent<Image>().overrideSprite = Resources.Load<Sprite>("Images/sfx");
+            sfxButton.GetComponent<Image>().overrideSprite = Resources.Load<Sprite>("Sprites/Icons/sfx");
         }
     }
+
 
     public void ClickNextMenu(GameObject nextMenu)
     {
         activeMenu.SetActive(false);
         nextMenu.SetActive(true);
         activeMenu = nextMenu;
+    }
+
+    public void ChangeLanguage(String lang)
+    {
+        LanguageManager.Instance.ChangeLanguage(lang);
+        MadLevelProfile.SetProfileString("Language", lang);
+    }
+
+
+    public void ClickPreviousMenu(GameObject previousMenu)
+    {
+        activeMenu.SetActive(false);
+        previousMenu.SetActive(true);
+        activeMenu = previousMenu;
     }
 
     public void ClickPlay()
@@ -60,9 +98,7 @@ public class MainMenuHandler : MonoBehaviour
 
     public void ClickReset()
     {
-        MadLevelProfile.Reset();
-        
-
+        MadLevelProfile.Reset();        
     }
 
 }

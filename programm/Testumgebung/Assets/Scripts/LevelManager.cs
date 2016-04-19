@@ -7,8 +7,6 @@ public class LevelManager : MonoBehaviour {
     private GameObject lastActiveGameObject;
     private GameObject pauseObject;
 
-    //private List<GameObject> waterDropList;
-
     void Awake()
     {
         inputManager = GameObject.Find("Main Camera");
@@ -68,6 +66,12 @@ public class LevelManager : MonoBehaviour {
     {
         destroyLightbeam();
         MadLevel.LoadLevelByName("Select Level");
+    }
+
+    public void ClickMainMenu()
+    {
+        destroyLightbeam();
+        MadLevel.LoadLevelByName("MainMenu");
     }
 
     private static void destroyLightbeam()

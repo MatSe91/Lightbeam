@@ -10,9 +10,9 @@ public class Beamscript_tmp_MS : MonoBehaviour
     private string colorMirrorTag;
     private string doorKnopTag;
     private string colorChangerTag;
+    private string checkPointTag;
 
     // necessary Layers
-    private LayerMask checkPointLayer;
     private LayerMask waterLayer;
 
     // Lines
@@ -48,7 +48,6 @@ public class Beamscript_tmp_MS : MonoBehaviour
         intensitive = new Color(0, 0, 0, 0.7f);
 
         // layer
-        checkPointLayer = LayerMask.NameToLayer("Checkpoint");
         waterLayer = LayerMask.NameToLayer("Water");
 
         // tags
@@ -56,6 +55,7 @@ public class Beamscript_tmp_MS : MonoBehaviour
         colorMirrorTag = "ColorMirror";
         doorKnopTag = "Doorknop";
         colorChangerTag = "ColorChanger";
+        checkPointTag = "Checkpoint";
     }
 
     // Update is called once per frame
@@ -151,7 +151,7 @@ public class Beamscript_tmp_MS : MonoBehaviour
                 }
 
                 // if beam hit checkPoint
-                if (hit.transform.gameObject.layer.Equals(checkPointLayer))
+                if (hit.transform.gameObject.tag == checkPointTag)
                 { 
                     BeamConnectivity(hit.transform.gameObject, true);
                     oldCheckPoint = hit.transform.gameObject;

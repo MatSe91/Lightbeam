@@ -23,14 +23,8 @@ public class MainMenuHandler : MonoBehaviour
 
         // load language
         LanguageManager lm = LanguageManager.Instance;
-        //if (MadLevelProfile.GetProfileString("Language") == null)
-        //{
-            lm.ChangeLanguage(MadLevelProfile.GetProfileString("Language", "de"));
-        //}
-        //else
-        //{
-        //    lm.ChangeLanguage(MadLevelProfile.GetProfileString("Language"));
-        //}
+        lm.ChangeLanguage(MadLevelProfile.GetProfileString("Language", "de"));
+
 
         // loadMusicVolume
         
@@ -96,8 +90,11 @@ public class MainMenuHandler : MonoBehaviour
         MadLevel.LoadLevelByName("Select Level");
     }
 
-    public void ClickReset()
+    public void ClickReset(GameObject previousMenu)
     {
+        activeMenu.SetActive(false);
+        previousMenu.SetActive(true);
+        activeMenu = previousMenu;
         MadLevelProfile.Reset();        
     }
 

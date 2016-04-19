@@ -5,20 +5,20 @@ using DigitalRuby.FastLineRenderer;
 public class LevelManager : MonoBehaviour {
     private GameObject inputManager;
     private GameObject lastActiveGameObject;
-    private GameObject pauseObject;
+    private GameObject pauseCanvas;
 
     void Awake()
     {
         inputManager = GameObject.Find("Main Camera");
     }
 
-    public  void Pause(GameObject obj)
+    public void Pause(GameObject obj)
     {
-        pauseObject = obj;
-        lastActiveGameObject = InputManager.lastObjectBeforePause;
+        pauseCanvas = obj;
+        lastActiveGameObject = InputManager.sameObject;
 
 
-        if (pauseObject.activeInHierarchy == false)
+        if (pauseCanvas.activeInHierarchy == false)
         {
             de_ActivateMenue(true, false);
         }
@@ -30,7 +30,7 @@ public class LevelManager : MonoBehaviour {
 
     private void de_ActivateMenue(bool canvasActive, bool objectActive)
     {
-        pauseObject.SetActive(canvasActive);
+        pauseCanvas.SetActive(canvasActive);
         De_ActivateGameObjects(objectActive);
     }
 
@@ -38,6 +38,7 @@ public class LevelManager : MonoBehaviour {
     {
         if (lastActiveGameObject != null)
         {
+            Debug.Log("Input: " +inputManager);
             lastActiveGameObject.SendMessage("setActiveGameObject", bo);
             inputManager.GetComponent<InputManager>().enabled = bo;
         }

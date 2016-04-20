@@ -39,6 +39,7 @@ public class BeamScript_RJ : MonoBehaviour
     private bool isActive;
     private Color intensitive;
     private CustomColor.CustomizedColor previousColor;
+    private bool touched = false;
 
     public List<FastLineRendererProperties> Properties
     {
@@ -92,10 +93,17 @@ public class BeamScript_RJ : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+      
+        if (InputManager.touchInput)
+        {
+            touched = true;
+        }
+        else
+        {
+            touched = false;
+        }
 
-        //if (InputManager.touchInput)
-        //{
-        if (r != null)
+        if (r != null && touched)
         {
             r.Reset();
             BeamCollider.OnDestroy();
@@ -247,25 +255,33 @@ public class BeamScript_RJ : MonoBehaviour
     #region helpers
     private void setMirrorReflection(RaycastHit hit, bool isAcitve, Vector3 direction, CustomColor.CustomizedColor color)
     {
-        setEndPointOfLine(hit, isAcitve);
-        dir = direction;
-        setStartPointOfLine(color);
+       
+            setEndPointOfLine(hit, isAcitve);
+            dir = direction;
+            setStartPointOfLine(color);
+        
 
     }
 
     private void setEndPointOfLine(RaycastHit hit, bool isActive)
     {
-        this.isActive = isActive;
-        curPosition = hit.point;
-        property.End = curPosition;
+        if (touched)
+        {
+            this.isActive = isActive;
+            curPosition = hit.point;
+            property.End = curPosition;
+        }
     }
     private void setStartPointOfLine(CustomColor.CustomizedColor customColor)
     {
-        Properties.Add(property);
-        property = new FastLineRendererProperties();
-        standardPropertyOfBeam();
-        property.Color = CustomColor.GetColor(customColor);
-        property.Start = curPosition;
+        if (touched)
+        {
+            Properties.Add(property);
+            property = new FastLineRendererProperties();
+            standardPropertyOfBeam();
+            property.Color = CustomColor.GetColor(customColor);
+            property.Start = curPosition;
+        }
     }
 
     private void BeamConnectivity(GameObject gObject, bool value, string tag)
@@ -300,13 +316,16 @@ public class BeamScript_RJ : MonoBehaviour
     }
     private void addLines()
     {
-        foreach (var prop in Properties)
+        if (touched)
         {
-            reduceBeamIntencity(prop);
-            BeamCollider.AddColliderToLine(prop.Start, prop.End, r);
-            r.AddLine(prop);
+            foreach (var prop in Properties)
+            {
+                reduceBeamIntencity(prop);
+                BeamCollider.AddColliderToLine(prop.Start, prop.End, r);
+                r.AddLine(prop);
+            }
+            r.Apply(true);
         }
-        r.Apply(true);
     }
     #endregion
 }

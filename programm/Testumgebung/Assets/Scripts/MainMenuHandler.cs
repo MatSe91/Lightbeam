@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using MadLevelManager;
 using System;
 using SmartLocalization;
+using UnityEngine.Audio;
 
 public class MainMenuHandler : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class MainMenuHandler : MonoBehaviour
     private GameObject activeMenu;
     public Button MusicButton;
     public Button SfxButton;
+    public AudioMixerGroup sounds;
+    
 
     void Start()
     {
@@ -92,18 +95,21 @@ public class MainMenuHandler : MonoBehaviour
 
     private void SetMusicOff()
     {
-        AudioListener.volume = 0f;
+        
         Settings.MusicVolume = false;
+        sounds.audioMixer.SetFloat("MusicVolume", -80f);
         MusicButton.GetComponent<Image>().overrideSprite = Resources.Load<Sprite>("Sprites/Icons/music_off");
         PlayerPrefs.SetInt("music", 0);
     }
 
     private void SetMusicOn()
     {
-        AudioListener.volume = 1f;
+       
         Settings.MusicVolume = true;
+        sounds.audioMixer.SetFloat("MusicVolume", 0f);
         MusicButton.GetComponent<Image>().overrideSprite = Resources.Load<Sprite>("Sprites/Icons/music");
         PlayerPrefs.SetInt("music", 1);
+        
     }
 
     public void ClickSfxButtton()
@@ -124,6 +130,7 @@ public class MainMenuHandler : MonoBehaviour
     private void SetSfxOn()
     {
         Settings.SfxVolume = true;
+        sounds.audioMixer.SetFloat("SfxVolume", -0f);
         SfxButton.GetComponent<Image>().overrideSprite = Resources.Load<Sprite>("Sprites/Icons/sfx");
         PlayerPrefs.SetInt("sfx", 1);
     }
@@ -131,6 +138,7 @@ public class MainMenuHandler : MonoBehaviour
     private void SetSfxOff()
     {
         Settings.SfxVolume = false;
+        sounds.audioMixer.SetFloat("SfxVolume", -80f);
         SfxButton.GetComponent<Image>().overrideSprite = Resources.Load<Sprite>("Sprites/Icons/sfx_off");
         PlayerPrefs.SetInt("sfx", 0);
     }

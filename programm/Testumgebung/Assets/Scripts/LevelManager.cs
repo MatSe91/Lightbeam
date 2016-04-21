@@ -69,10 +69,11 @@ public class LevelManager : MonoBehaviour {
         MadLevel.LoadLevelByName("Select Level");
     }
 
-    public void ClickMainMenu()
+    public void ClickMainMenu(GameObject game)
     {
         destroyLightbeam();
         MadLevel.LoadLevelByName("MainMenu");
+        game.GetComponent<AudioSource>().Play();
     }
 
     private static void destroyLightbeam()

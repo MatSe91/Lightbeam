@@ -4,11 +4,16 @@ using UnityEngine.UI;
 using MadLevelManager;
 using System;
 using SmartLocalization;
+using UnityEngine.Audio;
 
 public class MainMenuHandler : MonoBehaviour
 {
     public GameObject MainMenu;
     private GameObject activeMenu;
+    public Button MusicButton;
+    public Button SfxButton;
+    public AudioMixerGroup sounds;
+    
 
     void Start()
     {
@@ -19,50 +24,124 @@ public class MainMenuHandler : MonoBehaviour
     private void loadSettings()
     {
         // load Profile 
-        MadLevelProfile.profile = "default";
+        MadLevelProfile.profile = "_default";
 
-        // load language
         LanguageManager lm = LanguageManager.Instance;
-        lm.ChangeLanguage(MadLevelProfile.GetProfileString("Language", "de"));
+        // load language
+        if (PlayerPrefs.HasKey("language"))
+        {
+            Settings.Language = PlayerPrefs.GetString("language");
+         
+            lm.ChangeLanguage(MadLevelProfile.GetProfileString("Language", Settings.Language));
+        }
+        else
+        {
+            PlayerPrefs.SetString("language", "de");
+            lm.ChangeLanguage(MadLevelProfile.GetProfileString("Language", Settings.Language));
+        }
+        
 
 
         // loadMusicVolume
-        
-
-        // loadSfxVolume
-    }
-
-    public void ClickMusicButtton(Button musicButton)
-    {
-        if (!Settings.MusicVolume)
+        if (PlayerPrefs.HasKey("music"))
         {
-            AudioListener.volume = 1f;
-            Settings.MusicVolume = true;
-            musicButton.GetComponent<Image>().overrideSprite = Resources.Load<Sprite>("Sprites/Icons/music");
+            Settings.MusicVolume = Convert.ToBoolean(PlayerPrefs.GetInt("music"));
+            if(Settings.MusicVolume)
+            {
+                SetMusicOn();
+            }
+            else 
+            {
+                SetMusicOff();
+            }
         }
         else
         {
-            AudioListener.volume = 0f;
-            Settings.MusicVolume = false;
-            musicButton.GetComponent<Image>().overrideSprite = Resources.Load<Sprite>("Sprites/Icons/music_off");
+            Settings.MusicVolume = true;
+            PlayerPrefs.SetInt("music", 1);
         }
-    }
 
-    public void ClickSfxButtton(Button sfxButton)
-    {
-        if(Settings.SfxVolume)
-        { 
-            Settings.SfxVolume = false;
-            sfxButton.GetComponent<Image>().overrideSprite = Resources.Load<Sprite>("Sprites/Icons/sfx_off");
+        // loadSfxVolume
+
+        if (PlayerPrefs.HasKey("sfx"))
+        {
+            Settings.SfxVolume = Convert.ToBoolean(PlayerPrefs.GetInt("sfx"));
+            if (Settings.SfxVolume)
+            {
+                SetSfxOn();
+            }
+            else { SetSfxOff(); }
         }
- 
         else
         {
             Settings.SfxVolume = true;
-            sfxButton.GetComponent<Image>().overrideSprite = Resources.Load<Sprite>("Sprites/Icons/sfx");
+            PlayerPrefs.SetInt("sfx", 1);
         }
     }
 
+    public void ClickMusicButtton()
+    {
+        if (!Settings.MusicVolume)
+        {
+            SetMusicOn();
+        }
+        else
+        {
+            SetMusicOff();
+        }
+
+        PlayerPrefs.Save();
+    }
+
+    private void SetMusicOff()
+    {
+        
+        Settings.MusicVolume = false;
+        sounds.audioMixer.SetFloat("MusicVolume", -80f);
+        MusicButton.GetComponent<Image>().overrideSprite = Resources.Load<Sprite>("Sprites/Icons/music_off");
+        PlayerPrefs.SetInt("music", 0);
+    }
+
+    private void SetMusicOn()
+    {
+       
+        Settings.MusicVolume = true;
+        sounds.audioMixer.SetFloat("MusicVolume", 0f);
+        MusicButton.GetComponent<Image>().overrideSprite = Resources.Load<Sprite>("Sprites/Icons/music");
+        PlayerPrefs.SetInt("music", 1);
+        
+    }
+
+    public void ClickSfxButtton()
+    {
+        if(Settings.SfxVolume)
+        {
+            SetSfxOff();
+        }
+
+        else
+        {
+            SetSfxOn();
+        }
+
+        PlayerPrefs.Save();
+    }
+
+    private void SetSfxOn()
+    {
+        Settings.SfxVolume = true;
+        sounds.audioMixer.SetFloat("SfxVolume", -0f);
+        SfxButton.GetComponent<Image>().overrideSprite = Resources.Load<Sprite>("Sprites/Icons/sfx");
+        PlayerPrefs.SetInt("sfx", 1);
+    }
+
+    private void SetSfxOff()
+    {
+        Settings.SfxVolume = false;
+        sounds.audioMixer.SetFloat("SfxVolume", -80f);
+        SfxButton.GetComponent<Image>().overrideSprite = Resources.Load<Sprite>("Sprites/Icons/sfx_off");
+        PlayerPrefs.SetInt("sfx", 0);
+    }
 
     public void ClickNextMenu(GameObject nextMenu)
     {
@@ -75,6 +154,9 @@ public class MainMenuHandler : MonoBehaviour
     {
         LanguageManager.Instance.ChangeLanguage(lang);
         MadLevelProfile.SetProfileString("Language", lang);
+        PlayerPrefs.SetString("language", lang);
+        PlayerPrefs.Save();
+
     }
 
 

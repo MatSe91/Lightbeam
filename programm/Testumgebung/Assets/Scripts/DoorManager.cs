@@ -76,7 +76,11 @@ public class DoorManager : MonoBehaviour {
         }
         else
         {
-            doorOpenParticleBeam.SetActive(false);
+            var sys = doorOpenParticleBeam.GetComponent<ParticleSystem>();
+            sys.Stop();
+
+            if (!sys.IsAlive())
+                doorOpenParticleBeam.SetActive(false);
         }
     }
 

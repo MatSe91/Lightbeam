@@ -69,7 +69,8 @@ public class MirrorRotator : MonoBehaviour
                     dir = Input.mousePosition - pos;
                     angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
                     angle = SmoothAngle(angle);
-                    transform.rotation = Quaternion.AngleAxis(ClampAngle(angle, minZ, maxZ), transform.forward);
+                    
+                    transform.localRotation = Quaternion.AngleAxis(ClampAngle(angle, minZ, maxZ), transform.forward);
 
                 }
             }

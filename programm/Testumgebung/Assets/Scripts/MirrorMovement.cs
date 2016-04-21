@@ -10,10 +10,12 @@ public class MirrorMovement : MonoBehaviour {
     public GameObject Line;
     private List<GameObject> linePoints;
     public GameObject touchAnimGameObject;
+    private int heldDown = 0;
+    public int framesTillMovable = 8;
     //  public GameObject background;
     // Use this for initialization
 
-   void Start()
+    void Start()
     {
         linePoints = new List<GameObject>();
         int childCount = Line.transform.childCount;
@@ -31,8 +33,17 @@ public class MirrorMovement : MonoBehaviour {
         {
             if (Input.GetMouseButton(0))
             {
-                Vector3 nearPoint = FindNearPoint(GetWorldPositionOnPlane(Input.mousePosition, 0));
-                this.transform.position = nearPoint;
+                if (heldDown < framesTillMovable) heldDown++;
+                else
+                {
+                    Vector3 nearPoint = FindNearPoint(GetWorldPositionOnPlane(Input.mousePosition, 0));
+                    this.transform.position = nearPoint;
+                }
+
+            }
+            else
+            {
+                heldDown = 0;
             }
         }
     }
@@ -52,7 +63,6 @@ public class MirrorMovement : MonoBehaviour {
         {
             touchAnimGameObject.SetActive(false);
         }
-        Debug.Log("movement was active");
     }
 
     public Vector3 GetWorldPositionOnPlane(Vector3 screenPosition, float z)

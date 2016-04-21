@@ -31,7 +31,6 @@ public class DoorOpener: MonoBehaviour
     private bool doorIsOpen =false;
     private bool isBeamconnected;
     private CustomColor.CustomizedColor collisionColor;
-    private Collider other;
     private float timecounter = 0f;
 
 
@@ -63,19 +62,7 @@ public class DoorOpener: MonoBehaviour
 
     public void OpenDoor()
     {
-
-        if (!withColor && !DoorIsOpen && isBeamconnected)
-        {
-            OpenDoorProperties();
-            Debug.Log("ohne color");
-            //   MadLevel.LoadLevelByName("Select Level");
-        }
-
-        if (CollisionColor == validColor && withColor && !DoorIsOpen && isBeamconnected)
-        {
-            OpenDoorProperties();
-            Debug.Log("mit color");
-        }
+        OpenDoorProperties();
     }
 
     private void OpenDoorProperties()
@@ -91,52 +78,48 @@ public class DoorOpener: MonoBehaviour
         isBeamconnected = value;
     }
 
-    void OnCollisionEnter(Collision col)
-    {
-
-        if (timecounter%60 <= 0)
-        {
-            OpenDoor();
-            other = col.collider;
-        }
-
-        if (!loadingParticleSystem.isPlaying)
-        {
-            if (doorIsOpen)
-            {
-                return;
-            }
-            else
-                loadingParticleSystem.Play();
-        }
-    }
-
     void Update()
     {      
-        if (!other && DoorIsOpen && ConstantTrigger)
-        { 
-            CloseDoor(); 
-        }
 
         if (isBeamconnected)
         {
-            timecounter -= Time.deltaTime;
+            if ((!withColor && !DoorIsOpen && isBeamconnected) || (withColor && CollisionColor.Equals(validColor) && !DoorIsOpen && isBeamconnected))
+            {
+                if (!loadingParticleSystem.isPlaying && !doorIsOpen)
+                {
+                    loadingParticleSystem.Play();
+                }
+                if (!doorIsOpen) timer();
+            }
+
+
         }
         else
         {
             timecounter = secTillActivation;
             if (loadingParticleSystem.isPlaying) loadingParticleSystem.Stop();
         }
+
+        CloseDoor();
+    }
+
+    private void timer()
+    {
+        timecounter -= Time.deltaTime;
+
+        if (timecounter % 60 <= 0)
+        {
+            OpenDoor();
+        }
     }
 
     public void CloseDoor()
     {
-        if (DoorIsOpen && !isBeamconnected)
+        if (DoorIsOpen && !isBeamconnected && ConstantTrigger)
         {
             Door.GetComponent<DoorManager>().CloseDoor();
             GetComponentInChildren<DoorKnopSimulation>().deactivate();
-            DoorIsOpen = false;
-           
+            DoorIsOpen = false;         
         }
     }
     void Start()

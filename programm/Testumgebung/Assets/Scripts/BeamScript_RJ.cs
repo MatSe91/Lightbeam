@@ -93,15 +93,7 @@ public class BeamScript_RJ : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-      
-        if (InputManager.touchInput)
-        {
-            touched = true;
-        }
-        else
-        {
-            touched = false;
-        }
+        touched = InputManager.touchInput;
 
         if (r != null && touched)
         {
@@ -111,9 +103,9 @@ public class BeamScript_RJ : MonoBehaviour
 
             property = new FastLineRendererProperties();
             beamIsInWater = false;
+            isActive = true;
         }
 
-        isActive = true;
         curPosition = transform.position;
         property.Start = curPosition;
         standardPropertyOfBeam();
@@ -248,9 +240,9 @@ public class BeamScript_RJ : MonoBehaviour
         }
         Properties.Add(property);
         addLines();
+        
 
     }
-    //}
 
     #region helpers
     private void setMirrorReflection(RaycastHit hit, bool isAcitve, Vector3 direction, CustomColor.CustomizedColor color)

@@ -45,11 +45,11 @@ public class MainMenuHandler : MonoBehaviour
             Settings.MusicVolume = Convert.ToBoolean(PlayerPrefs.GetInt("music"));
             if(Settings.MusicVolume)
             {
-                MusicButton.GetComponent<Image>().overrideSprite = Resources.Load<Sprite>("Sprites/Icons/music");
+                SetMusicOn();
             }
             else 
             {
-                MusicButton.GetComponent<Image>().overrideSprite = Resources.Load<Sprite>("Sprites/Icons/music_off");
+                SetMusicOff();
             }
         }
         else
@@ -65,9 +65,9 @@ public class MainMenuHandler : MonoBehaviour
             Settings.SfxVolume = Convert.ToBoolean(PlayerPrefs.GetInt("sfx"));
             if (Settings.SfxVolume)
             {
-                SfxButton.GetComponent<Image>().overrideSprite = Resources.Load<Sprite>("Sprites/Icons/sfx");
+                SetSfxOn();
             }
-            else { SfxButton.GetComponent<Image>().overrideSprite = Resources.Load<Sprite>("Sprites/Icons/sfx_off"); }
+            else { SetSfxOff(); }
         }
         else
         {
@@ -80,41 +80,60 @@ public class MainMenuHandler : MonoBehaviour
     {
         if (!Settings.MusicVolume)
         {
-            AudioListener.volume = 1f;
-            Settings.MusicVolume = true;
-            MusicButton.GetComponent<Image>().overrideSprite = Resources.Load<Sprite>("Sprites/Icons/music");
-            PlayerPrefs.SetInt("music", 1);
+            SetMusicOn();
         }
         else
         {
-            AudioListener.volume = 0f;
-            Settings.MusicVolume = false;
-            MusicButton.GetComponent<Image>().overrideSprite = Resources.Load<Sprite>("Sprites/Icons/music_off");
-            PlayerPrefs.SetInt("music", 0);
+            SetMusicOff();
         }
 
         PlayerPrefs.Save();
+    }
+
+    private void SetMusicOff()
+    {
+        AudioListener.volume = 0f;
+        Settings.MusicVolume = false;
+        MusicButton.GetComponent<Image>().overrideSprite = Resources.Load<Sprite>("Sprites/Icons/music_off");
+        PlayerPrefs.SetInt("music", 0);
+    }
+
+    private void SetMusicOn()
+    {
+        AudioListener.volume = 1f;
+        Settings.MusicVolume = true;
+        MusicButton.GetComponent<Image>().overrideSprite = Resources.Load<Sprite>("Sprites/Icons/music");
+        PlayerPrefs.SetInt("music", 1);
     }
 
     public void ClickSfxButtton()
     {
         if(Settings.SfxVolume)
-        { 
-            Settings.SfxVolume = false;
-            SfxButton.GetComponent<Image>().overrideSprite = Resources.Load<Sprite>("Sprites/Icons/sfx_off");
-            PlayerPrefs.SetInt("sfx", 0);
+        {
+            SetSfxOff();
         }
- 
+
         else
         {
-            Settings.SfxVolume = true;
-            SfxButton.GetComponent<Image>().overrideSprite = Resources.Load<Sprite>("Sprites/Icons/sfx");
-            PlayerPrefs.SetInt("sfx", 1);
+            SetSfxOn();
         }
 
         PlayerPrefs.Save();
     }
 
+    private void SetSfxOn()
+    {
+        Settings.SfxVolume = true;
+        SfxButton.GetComponent<Image>().overrideSprite = Resources.Load<Sprite>("Sprites/Icons/sfx");
+        PlayerPrefs.SetInt("sfx", 1);
+    }
+
+    private void SetSfxOff()
+    {
+        Settings.SfxVolume = false;
+        SfxButton.GetComponent<Image>().overrideSprite = Resources.Load<Sprite>("Sprites/Icons/sfx_off");
+        PlayerPrefs.SetInt("sfx", 0);
+    }
 
     public void ClickNextMenu(GameObject nextMenu)
     {

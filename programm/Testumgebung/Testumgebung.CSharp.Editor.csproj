@@ -301,6 +301,7 @@
     <None Include="Assets\ExternalRessources\SmartLocalization\Resources\EmptyResourceHeader.txt" />
     <None Include="Assets\ExternalRessources\SmartLocalization\SmartLocalization_Runtime.XML" />
     <None Include="Assets\ExternalRessources\SmartLocalization\smartloc_licenses.txt" />
+    <None Include="Assets\ExternalRessources\Stylized Jungle Pack\Demo Scene\Notes about the demo scene.txt" />
     <None Include="Assets\ExternalRessources\Water2D_Tool\Resources\Readme.txt" />
     <None Include="Assets\ExternalRessources\Water2D_Tool\Scripts\ClipperLibrary\License.txt" />
     <None Include="Assets\ExternalRessources\Water2D_Tool\Shaders\Water2D_HorizontalWater.shader" />

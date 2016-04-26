@@ -1,10 +1,6 @@
-﻿using UnityEngine;
-using System.Collections;
-using MadLevelManager;
-using DigitalRuby.FastLineRenderer;
+using UnityEngine;
 using UnityEngine.UI;
-using System.Collections.Generic;
-using System.Linq;
+
 
 public class Endpoint : MonoBehaviour {
 

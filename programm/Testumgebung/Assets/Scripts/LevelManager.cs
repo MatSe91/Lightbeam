@@ -85,6 +85,6 @@ public class LevelManager : MonoBehaviour {
             flr.Reset();
             Destroy(flr);
             Destroy(item);
-        }
+        }      
     }
 }

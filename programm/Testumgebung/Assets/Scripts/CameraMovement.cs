@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class CameraMovement : MonoBehaviour {
@@ -11,9 +11,6 @@ public class CameraMovement : MonoBehaviour {
 
     void Update()
     {
-
-        
-
         if (Input.GetMouseButton(0))
         {
             Vector3 tmp = transform.position + new Vector3(Input.GetAxis("Mouse X") * sensX * Time.deltaTime, 0, 0);
@@ -23,8 +20,14 @@ public class CameraMovement : MonoBehaviour {
                 transform.position += new Vector3(Input.GetAxis("Mouse X") * sensX * Time.deltaTime, 0, 0);
             }
         }
-
     }
 
-
+    /// <summary>
+    /// Wenn value = true, dann wird der Animator disabled. Die Kamera ist frei beweglich.
+    /// </summary>
+    /// <param name="value"></param>
+    private void disableCameraAnimator(bool value)
+    {
+        gameObject.GetComponent<Animator>().enabled = value;
+    }
 }

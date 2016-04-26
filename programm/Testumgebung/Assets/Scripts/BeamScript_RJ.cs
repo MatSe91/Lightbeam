@@ -14,7 +14,6 @@ public class BeamScript_RJ : MonoBehaviour
     private string checkPointTag;
 
     // necessary Layers
-    private LayerMask checkPointLayer;
     private LayerMask waterLayer;
 
     // Lines
@@ -33,7 +32,7 @@ public class BeamScript_RJ : MonoBehaviour
     private DoorOpener doorOpener;
 
     private GameObject oldCheckPoint;
-    private GameObject sameDoorKnop;
+    private GameObject oldDoorKnop;
     private GameObject endpoint;
 
     private bool isActive;
@@ -67,18 +66,15 @@ public class BeamScript_RJ : MonoBehaviour
         }
     }
 
-
-
-
     // Use this for initialization
     void Start()
     {
         r = FastLineRenderer.CreateWithParent(null, GetComponent<FastLineRenderer>());
         Properties = new List<FastLineRendererProperties>();
         intensitive = new Color(0, 0, 0, 0.7f);
+        property = new FastLineRendererProperties();
 
         // layer
-        checkPointLayer = LayerMask.NameToLayer("Checkpoint");
         waterLayer = LayerMask.NameToLayer("Water");
 
         // tags
@@ -87,7 +83,7 @@ public class BeamScript_RJ : MonoBehaviour
         doorKnopTag = "Doorknop";
         colorChangerTag = "ColorChanger";
         endPointTag = "Endpoint";
-        checkPointTag = "CheckpointTag";
+        checkPointTag = "Checkpoint";
     }
 
     // Update is called once per frame
@@ -147,16 +143,16 @@ public class BeamScript_RJ : MonoBehaviour
                 if (hit.transform.gameObject.tag == doorKnopTag)
                 {
                     BeamConnectivity(hit.transform.gameObject, true,doorKnopTag);
-                    sameDoorKnop = hit.transform.gameObject;
+                    oldDoorKnop = hit.transform.gameObject;
                     doorOpener = hit.transform.gameObject.GetComponent<DoorOpener>();
                     doorOpener.CollisionColor = CustomColor.GetCustomColor(property.Color);
                 }
 
                 else
                 {
-                    if (sameDoorKnop != null)
+                    if (oldDoorKnop != null)
                     {
-                        BeamConnectivity(sameDoorKnop, false,doorKnopTag);
+                        BeamConnectivity(oldDoorKnop, false,doorKnopTag);
                     }
                 }
                 #endregion
@@ -197,7 +193,7 @@ public class BeamScript_RJ : MonoBehaviour
                 }
 
                 // if beam hit checkPoint
-                if (hit.transform.gameObject.layer.Equals(checkPointLayer))
+                if (hit.transform.gameObject.tag == checkPointTag)
                 {
                     BeamConnectivity(hit.transform.gameObject, true, checkPointTag);
                     oldCheckPoint = hit.transform.gameObject;
@@ -219,16 +215,16 @@ public class BeamScript_RJ : MonoBehaviour
             else
             {
                 isActive = false;
-                property.End = curPosition + dir * 20;
+                property.End = curPosition + dir * 30;
 
                 if (oldCheckPoint != null)
                 {
                     BeamConnectivity(oldCheckPoint, false, checkPointTag);
                 }
 
-                if (sameDoorKnop != null)
+                if (oldDoorKnop != null)
                 {
-                    BeamConnectivity(sameDoorKnop, false,doorKnopTag);
+                    BeamConnectivity(oldDoorKnop, false,doorKnopTag);
                 }
 
                 if (endpoint != null)
@@ -246,13 +242,10 @@ public class BeamScript_RJ : MonoBehaviour
 
     #region helpers
     private void setMirrorReflection(RaycastHit hit, bool isAcitve, Vector3 direction, CustomColor.CustomizedColor color)
-    {
-       
+    {      
             setEndPointOfLine(hit, isAcitve);
             dir = direction;
-            setStartPointOfLine(color);
-        
-
+            setStartPointOfLine(color);        
     }
 
     private void setEndPointOfLine(RaycastHit hit, bool isActive)

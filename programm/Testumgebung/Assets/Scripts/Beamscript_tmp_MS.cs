@@ -25,17 +25,18 @@ public class Beamscript_tmp_MS : MonoBehaviour
     private Vector3 curPosition;
     private Vector3 dir;
     private bool beamIsInWater;
-    public float lineRadius = 0.1f;
+    public float lineRadius = 0.06f;
 
     [Range(0.3f,0.5f)]
     public float jitterMultiplier = 0.4f;
     public float glowUVXScale = 1;
     public float glowUVYScale = 1;
-    public Color glowColor;
+    public Color glowColor = new Color(1, 1, 1 ,0.392f);
     public float globalGlowIntensityMultiplier = 2f;
     public float globalGlowWidthMultiplier = 0.8f;
     public float singleLineGlowIntensityMultiplier = 0.1f;
-    public float singleLineGlowWidthMultiplier = 5f;
+    public float singleLineGlowWidthMultiplier = 1.5f;
+    public CustomColor.CustomizedColor startColor = CustomColor.CustomizedColor.white; 
 
     // external Scripts
     private BeamRefraction br;
@@ -103,8 +104,8 @@ public class Beamscript_tmp_MS : MonoBehaviour
         standardPropertyOfBeam();
         dir = transform.right;
 
-        property.Color = CustomColor.GetColor(CustomColor.CustomizedColor.white);
-        previousColor = CustomColor.CustomizedColor.white;
+        property.Color = CustomColor.GetColor(startColor);
+        previousColor = startColor;
 
 
         while (isActive)
@@ -152,6 +153,21 @@ public class Beamscript_tmp_MS : MonoBehaviour
                     if (oldDoorKnop != null)
                     {
                         BeamConnectivity(oldDoorKnop, false, doorKnopTag);
+                    }
+                }
+                #endregion
+
+                #region endPoint
+                if (hit.transform.gameObject.tag == endPointTag)
+                {
+                    BeamConnectivity(hit.transform.gameObject, true, endPointTag);
+                    endpoint = hit.transform.gameObject;
+                }
+                else
+                {
+                    if (endpoint != null)
+                    {
+                        BeamConnectivity(endpoint, false, endPointTag);
                     }
                 }
                 #endregion
@@ -322,7 +338,6 @@ public class Beamscript_tmp_MS : MonoBehaviour
 
             for ( int i=1;i< props; i++)
             {
-                Debug.Log(properties[i].Color + ": Farbe des Strahls: " + (i + 1));
                 properties[i].Start = properties[i].End;
                 lineProbs(i);
                 properties[i].LineJoin = FastLineRendererLineJoin.Round;

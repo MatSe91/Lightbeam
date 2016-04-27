@@ -67,7 +67,7 @@ public class Beamscript : MonoBehaviour
     {
         touched = InputManager.touchInput;
 
-        if (r != null)
+        if (r != null && touched)
         {
             r.Reset();
             BeamCollider.OnDestroy();

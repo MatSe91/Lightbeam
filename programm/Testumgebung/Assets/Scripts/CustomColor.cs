@@ -17,64 +17,66 @@ public  class  CustomColor : MonoBehaviour   {
 // TODO ergänzen und bearbeiten
     public static Color GetColor(CustomizedColor color)
     {
-        if (color == CustomizedColor.white)
+        if (color.Equals(CustomizedColor.white))
         {
-            return Color.white;
+            return new Color(0.58f, 0.529f, 1, 0.902f);
+          //  return new Color(1, 1, 1, 0.9f);
         }
-        if (color == CustomizedColor.red)
+        if (color.Equals(CustomizedColor.red))
         {
-            return Color.red;
+            return new Color(1, 0, 0, 0.9f);
         }
-        if (color == CustomizedColor.orange)
+        if (color.Equals(CustomizedColor.orange))
         {
-            return new Color(1, 0.65f, 0, 1);
+            return new Color(1, 0.65f, 0, 0.9f);
         }
-        if (color == CustomizedColor.yellow)
+        if (color.Equals(CustomizedColor.yellow))
         {
-            return Color.yellow;
+            return new Color(1, 0.92f, 0.016f, 0.9f);
         }
-        if (color == CustomizedColor.green)
+        if (color.Equals(CustomizedColor.green))
         {
-            return Color.green;
+            return new Color(0, 1, 0, 0.9f);
         }
-        if (color == CustomizedColor.blue)
+        if (color.Equals(CustomizedColor.blue))
         {
-            return Color.blue;
+            return new Color(0, 0, 1, 0.9f);
         }
-        if (color == CustomizedColor.violet)
+        if (color.Equals(CustomizedColor.violet))
         {
-            return new Color(0.5f, 0, 0.5f, 1);
+            return new Color(0.5f, 0, 0.5f, 0.9f);
         }
-        return Color.white;
+        return new Color(0.58f, 0.529f, 1, 0.902f);
+       // return new Color(1, 1, 1, 0.9f); // white
     }
 
     public static CustomizedColor GetCustomColor(Color color)
     {
-        if (color == Color.white)
+        if (color.Equals(new Color(0.58f, 0.529f, 1, 0.902f)))
         {
             return CustomizedColor.white;
         }
-        if (color == Color.red)
+        if (color.Equals(new Color(1, 0, 0, 0.9f)))
         {
             return CustomizedColor.red;
         }
-        if (color == new Color(255, 165, 0, 1))
+        if (color.Equals(new Color(1, 0.65f, 0, 0.9f)))
         {
             return CustomizedColor.orange;
         }
-        if (color == Color.yellow)
+        if (color.Equals(new Color(1, 0.92f, 0.016f, 0.9f)))
         {
             return CustomizedColor.yellow;
         }
-        if (color == Color.green)
+        if (color.Equals(new Color(0, 1, 0, 0.9f)))
         {
             return CustomizedColor.green;
         }
-        if (color == Color.blue)
+        if (color.Equals(new Color(0, 0, 1, 0.9f)))
         {
             return CustomizedColor.blue;
         }
-        if (color == new Color(128, 0, 128, 1))
+        if (color.Equals(new Color(0.5f, 0, 0.5f, 0.9f)))
         {
             return CustomizedColor.violet;
         }

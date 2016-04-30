@@ -47,6 +47,7 @@ public class Endpoint : MonoBehaviour {
     {
         manager.Pause(EndLevelMenu);
         manager.SetCollectedItems();
+        manager.GameFinished = true;
     }
 
 

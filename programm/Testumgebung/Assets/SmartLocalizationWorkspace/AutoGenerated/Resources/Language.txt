@@ -161,4 +161,7 @@
 	<data name="settings.Title" xml:space="preserve">
 		<value>Einstellungen</value>
 	</data>
+	<data name="manu.exitGame" xml:space="preserve">
+		<value>Wirklich verlassen?</value>
+	</data>
 </root>

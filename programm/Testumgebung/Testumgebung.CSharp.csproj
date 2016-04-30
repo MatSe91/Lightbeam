@@ -226,9 +226,9 @@
     <Compile Include="Assets\Scripts\DoorManager.cs" />
     <Compile Include="Assets\Scripts\DoorOpener.cs" />
     <Compile Include="Assets\Scripts\Endpoint.cs" />
-    <Compile Include="Assets\Scripts\ExitGameOnBackButton.cs" />
     <Compile Include="Assets\Scripts\FastLineRendererPropertiesExtended.cs" />
     <Compile Include="Assets\Scripts\ForceMultiInput.cs" />
+    <Compile Include="Assets\Scripts\HardwareInputManager.cs" />
     <Compile Include="Assets\Scripts\InputManager.cs" />
     <Compile Include="Assets\Scripts\LevelManager.cs" />
     <Compile Include="Assets\Scripts\LineDrawer.cs" />
@@ -237,6 +237,7 @@
     <Compile Include="Assets\Scripts\MirrorMovementAnim.cs" />
     <Compile Include="Assets\Scripts\MirrorRotator.cs" />
     <Compile Include="Assets\Scripts\MirrorRotatorAnim.cs" />
+    <Compile Include="Assets\Scripts\MoveEndMenuCanvas.cs" />
     <Compile Include="Assets\Scripts\Music.cs" />
     <Compile Include="Assets\Scripts\PlayerRotator.cs" />
     <Compile Include="Assets\Scripts\Refraction_Medium.cs" />

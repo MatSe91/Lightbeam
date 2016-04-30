@@ -137,6 +137,9 @@
 	<data name="language.German" xml:space="preserve">
 		<value>Deutsch</value>
 	</data>
+	<data name="manu.exitGame" xml:space="preserve">
+		<value>Wirklich verlassen?</value>
+	</data>
 	<data name="menu.MainMenu" xml:space="preserve">
 		<value>Hauptmenü</value>
 	</data>

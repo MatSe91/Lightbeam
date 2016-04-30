@@ -180,4 +180,16 @@ public class MainMenuHandler : MonoBehaviour
         MadLevelProfile.Reset();        
     }
 
+    public void ClickLeave()
+    {
+        Application.Quit();
+    }
+
+    public void ClickMainMenu(GameObject active)
+    {
+        active.SetActive(false);
+        activeMenu = active;
+        MainMenu.SetActive(true);
+    }
+
 }

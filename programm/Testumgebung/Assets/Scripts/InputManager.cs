@@ -6,13 +6,14 @@ public class InputManager : MonoBehaviour {
 
     private GameObject inUse;
     public static GameObject sameObject;
-    private bool gameStarted;
     public GameObject PlayerChild;
     public static bool touchInput;
 
+    private LevelManager levelManager;
+
 	// Use this for initialization
 	void Start () {
-        gameStarted = false;
+        levelManager = gameObject.GetComponent<LevelManager>();
 	}
 
     // Update is called once per frame
@@ -34,14 +35,14 @@ public class InputManager : MonoBehaviour {
                 if (inUse.layer == 14)
                 { 
                     // Wird der Lichtkörper angeklickt starte das Spiel und aktiviere Script PlayerRotator2
-                    if (!gameStarted && inUse.Equals(PlayerChild))
+                    if (!levelManager.GameStarted && inUse.Equals(PlayerChild))
                     {
-                        gameStarted = true;
+                        levelManager.GameStarted = true;
                         PlayerChild.GetComponent<PlayerRotator>().enabled = true;
                     }
 
                     // wenn das Spiel gestartet wurde darfst du arbeiten
-                    if (gameStarted)
+                    if (levelManager.GameStarted)
                     {
                         // wenn ein neues Objekt gewählt wurde, setze das Alte auf passiv
                         if (sameObject != null && !sameObject.Equals(inUse))

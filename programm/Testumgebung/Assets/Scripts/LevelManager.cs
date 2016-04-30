@@ -3,13 +3,44 @@ using MadLevelManager;
 using DigitalRuby.FastLineRenderer;
 
 public class LevelManager : MonoBehaviour {
-    private GameObject inputManager;
+
+    private bool gameStarted;
+    private bool gameFinished;
+
     private GameObject lastActiveGameObject;
     private GameObject pauseCanvas;
+    private GameObject endMenuCanvas;
+
+    public bool GameStarted
+    {
+        get
+        {
+            return gameStarted;
+        }
+
+        set
+        {
+            gameStarted = value;
+        }
+    }
+
+    public bool GameFinished
+    {
+        get
+        {
+            return gameFinished;
+        }
+
+        set
+        {
+            gameFinished = value;
+        }
+    }
 
     void Awake()
     {
-        inputManager = GameObject.Find("Main Camera");
+        GameFinished = false;
+        GameStarted = false;
     }
 
     public void Pause(GameObject obj)
@@ -38,9 +69,8 @@ public class LevelManager : MonoBehaviour {
     {
         if (lastActiveGameObject != null)
         {
-            Debug.Log("Input: " +inputManager);
             lastActiveGameObject.SendMessage("setActiveGameObject", bo);
-            inputManager.GetComponent<InputManager>().enabled = bo;
+            gameObject.GetComponent<InputManager>().enabled = bo;
         }
     }
 
@@ -81,10 +111,10 @@ public class LevelManager : MonoBehaviour {
         var beam = GameObject.FindGameObjectsWithTag("Beam");
         foreach (var item in beam)
         {
-            FastLineRenderer flr = item.GetComponent<BeamScript_RJ>().R;
+            FastLineRenderer flr = item.GetComponent<Beamscript_tmp_MS>().R;
             flr.Reset();
             Destroy(flr);
             Destroy(item);
-        }      
+        }
     }
 }

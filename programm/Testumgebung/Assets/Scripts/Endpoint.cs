@@ -6,6 +6,7 @@ public class Endpoint : MonoBehaviour {
 
     private bool isBeamconntected;
     public GameObject EndLevelMenu;
+    public GameObject CollectedUI;
     public LevelManager manager;
     
    
@@ -27,7 +28,7 @@ public class Endpoint : MonoBehaviour {
 
     private void SetCollectedUI()
     {
-       Image[] collectibles = EndLevelMenu.GetComponentsInChildren<Image>();
+       Image[] collectibles = CollectedUI.GetComponentsInChildren<Image>();
 
         foreach (var collectUi in collectibles)
         {
@@ -35,7 +36,6 @@ public class Endpoint : MonoBehaviour {
             {
                 if (collectUi.name == collect + "_image")
                 {
-
                     collectUi.color = new Color(255f, 255f, 255f, 255f);
                 }
             }
@@ -45,8 +45,8 @@ public class Endpoint : MonoBehaviour {
 
     private void LevelCompleted()
     {
-        manager.Pause(EndLevelMenu);
         manager.SetCollectedItems();
+        manager.Pause(EndLevelMenu);
         manager.GameFinished = true;
     }
 

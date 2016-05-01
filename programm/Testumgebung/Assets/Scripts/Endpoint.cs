@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class Endpoint : MonoBehaviour {
 
-    private bool isBeamconntected;
+    public bool isBeamconntected;
     public GameObject EndLevelMenu;
     public GameObject CollectedUI;
     public LevelManager manager;
@@ -39,8 +39,7 @@ public class Endpoint : MonoBehaviour {
                     collectUi.color = new Color(255f, 255f, 255f, 255f);
                 }
             }
-        }   
-        
+        }        
     }
 
     private void LevelCompleted()
@@ -49,6 +48,4 @@ public class Endpoint : MonoBehaviour {
         manager.Pause(EndLevelMenu);
         manager.GameFinished = true;
     }
-
-
 }

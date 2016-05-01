@@ -6,7 +6,7 @@ public class InputManager : MonoBehaviour {
 
     private GameObject inUse;
     public static GameObject sameObject;
-    public GameObject PlayerChild;
+    private GameObject PlayerChild;
     public static bool touchInput;
 
     private LevelManager levelManager;
@@ -14,6 +14,7 @@ public class InputManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         levelManager = gameObject.GetComponent<LevelManager>();
+        PlayerChild = GameObject.Find("Outer");
 	}
 
     // Update is called once per frame

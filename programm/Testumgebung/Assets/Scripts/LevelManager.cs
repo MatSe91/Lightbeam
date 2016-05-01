@@ -49,7 +49,7 @@ public class LevelManager : MonoBehaviour {
         lastActiveGameObject = InputManager.sameObject;
 
 
-        if (pauseCanvas.activeInHierarchy == false)
+        if (!pauseCanvas.activeInHierarchy)
         {
             de_ActivateMenue(true, false);
         }
@@ -111,7 +111,7 @@ public class LevelManager : MonoBehaviour {
         var beam = GameObject.FindGameObjectsWithTag("Beam");
         foreach (var item in beam)
         {
-            FastLineRenderer flr = item.GetComponent<Beamscript_tmp_MS>().R;
+            FastLineRenderer flr = item.GetComponent<Beamscript>().R;
             flr.Reset();
             Destroy(flr);
             Destroy(item);

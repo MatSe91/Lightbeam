@@ -22,7 +22,10 @@ public class HardwareInputManager : MonoBehaviour
             if (MadLevel.currentLevelName == "MainMenu")
             {
                 if (leaveGameMenu != null)
+                {
                     leaveGameMenu.SetActive(true);
+                    return;
+                }
             }
 
             if (levelManager!= null && levelManager.GameFinished) // game finished
@@ -30,8 +33,10 @@ public class HardwareInputManager : MonoBehaviour
                 if (endMenuCanvas != null)
                     levelManager.Pause(endMenuCanvas);
             }
-            if (pauseMenuCanvas != null)
+            else if (pauseMenuCanvas != null)
                 levelManager.Pause(pauseMenuCanvas);
+
+            //gameObject.GetComponent<InputManager>().enabled = false;
         }
 
     }

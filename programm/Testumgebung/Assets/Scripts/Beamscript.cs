@@ -25,7 +25,18 @@ public class Beamscript : MonoBehaviour
     private Vector3 curPosition;
     private Vector3 dir;
     private bool beamIsInWater;
-    public float lineRadius = 0.1f;
+    public float lineRadius = 0.06f;
+
+    [Range(0.3f, 0.5f)]
+    public float jitterMultiplier = 0.4f;
+    public float glowUVXScale = 1;
+    public float glowUVYScale = 1;
+    public Color glowColor = new Color(1, 1, 1, 0.392f);
+    public float globalGlowIntensityMultiplier;
+    public float globalGlowWidthMultiplier;
+    public float singleLineGlowIntensityMultiplier;
+    public float singleLineGlowWidthMultiplier;
+    public CustomColor.CustomizedColor startColor = CustomColor.CustomizedColor.white;
 
     // external Scripts
     private BeamRefraction br;
@@ -36,7 +47,7 @@ public class Beamscript : MonoBehaviour
     private GameObject endpoint;
 
     private bool isActive;
-    private Color intensitive;
+    private Color intensitive = new Color(0, 0, 0, 0.3f);
     private CustomColor.CustomizedColor previousColor;
     private bool touched = false;
 
@@ -45,15 +56,41 @@ public class Beamscript : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        initialAll();
+    }
+
+    private void initialAll()
+    {
+        initialLine();
+        initialLayers();
+        initialTags();
+        initialGlobalProperties();
+    }
+
+    private void initialLayers()
+    {
+        waterLayer = LayerMask.NameToLayer("Water");
+    }
+
+    private void initialLine()
+    {
         r = FastLineRenderer.CreateWithParent(null, GetComponent<FastLineRenderer>());
         properties = new List<FastLineRendererProperties>();
-        intensitive = new Color(0, 0, 0, 0.7f);
         property = new FastLineRendererProperties();
+    }
 
-        // layer
-        waterLayer = LayerMask.NameToLayer("Water");
+    private void initialGlobalProperties()
+    {
+        r.GlowUVXScale = glowUVXScale;
+        r.GlowUVYScale = glowUVYScale;
+        r.JitterMultiplier = jitterMultiplier;
+        r.GlowColor = glowColor;
+        r.GlowIntensityMultiplier = globalGlowIntensityMultiplier;
+        r.GlowWidthMultiplier = globalGlowWidthMultiplier;
+    }
 
-        // tags
+    private void initialTags()
+    {
         mirrorTag = "Mirror";
         colorMirrorTag = "ColorMirror";
         doorKnopTag = "Doorknop";
@@ -69,19 +106,11 @@ public class Beamscript : MonoBehaviour
 
         if (r != null && touched)
         {
-            r.Reset();
-            BeamCollider.OnDestroy();
-            properties.Clear();
-
-            property = new FastLineRendererProperties();
-            beamIsInWater = false;
-            isActive = true;
+            resetLine();
         }
-
         curPosition = transform.position;
         property.Start = curPosition;
         standardPropertyOfBeam();
-        property.Color = CustomColor.GetColor(CustomColor.CustomizedColor.red);
         dir = transform.right;
 
         while (isActive)
@@ -99,8 +128,13 @@ public class Beamscript : MonoBehaviour
                 // if beam hits a colored Mirror
                 else if (hit.transform.gameObject.tag == colorMirrorTag)
                 {
-                    dir = hit.transform.gameObject.GetComponentInParent<ColorMirror>().GetReflection(CustomColor.GetCustomColor(property.Color), dir, hit);
-                    setMirrorReflection(hit, true, dir, previousColor);
+                    var colorMirror = hit.transform.gameObject.GetComponentInParent<ColorMirror>().Reflect(previousColor, dir, hit);
+                    if (colorMirror.Reflected)
+                        setMirrorReflection(hit, true, colorMirror.Dir, previousColor);
+                    else
+                    {
+                        isActive = false;
+                    }
                 }
                 else
                 {
@@ -113,6 +147,7 @@ public class Beamscript : MonoBehaviour
                 {
                     setMirrorReflection(hit, true, dir, hit.transform.gameObject.GetComponent<ChangeBeamColor>().getNewBeamColor());
                 }
+
 
                 #region Door 
                 // if beam hits doorKnop       
@@ -133,23 +168,26 @@ public class Beamscript : MonoBehaviour
                 }
                 #endregion
 
+                #region endPoint
+                if (hit.transform.gameObject.tag == endPointTag)
+                {
+                    BeamConnectivity(hit.transform.gameObject, true, endPointTag);
+                    endpoint = hit.transform.gameObject;
+                }
+                else
+                {
+                    if (endpoint != null)
+                    {
+                        BeamConnectivity(endpoint, false, endPointTag);
+                    }
+                }
+                #endregion
+
                 // If beam hit Water surface
                 if (hit.transform.gameObject.layer.Equals(waterLayer))
                 {
                     setEndPointOfLine(hit, true);
-
-                    if (!beamIsInWater)
-                    {
-                        br = new BeamRefraction(dir, hit, Refraction_Medium.Refraction_Med.air, Refraction_Medium.Refraction_Med.water);
-                        dir = br.getDir();
-                        beamIsInWater = br.getLineInWater();
-                    }
-                    else
-                    {
-                        br = new BeamRefraction(dir, hit, Refraction_Medium.Refraction_Med.water, Refraction_Medium.Refraction_Med.air);
-                        dir = br.getDir();
-                        beamIsInWater = br.getLineInWater();
-                    }
+                    refractBeam(hit);
                     setStartPointOfLine(previousColor);
                 }
 
@@ -178,27 +216,61 @@ public class Beamscript : MonoBehaviour
                 isActive = false;
                 property.End = curPosition + dir * 30;
 
-                if (oldCheckPoint != null)
-                {
-                    BeamConnectivity(oldCheckPoint, false, checkPointTag);
-                }
-
-                if (oldDoorKnop != null)
-                {
-                    BeamConnectivity(oldDoorKnop, false, doorKnopTag);
-                }
-
-                if (endpoint != null)
-                {
-                    BeamConnectivity(endpoint, false, endPointTag);
-                }
+                checkBeamConectivity();
             }
-        }
+        } // end while
         properties.Add(property);
         addLines();
 
     }
-    //}
+
+    private void refractBeam(RaycastHit hit)
+    {
+        if (!beamIsInWater)
+        {
+            br = new BeamRefraction(dir, hit, Refraction_Medium.Refraction_Med.air, Refraction_Medium.Refraction_Med.water);
+            dir = br.getDir();
+            beamIsInWater = br.getLineInWater();
+        }
+        else
+        {
+            br = new BeamRefraction(dir, hit, Refraction_Medium.Refraction_Med.water, Refraction_Medium.Refraction_Med.air);
+            dir = br.getDir();
+            beamIsInWater = br.getLineInWater();
+        }
+    }
+
+    private void checkBeamConectivity()
+    {
+        if (oldCheckPoint != null)
+        {
+            BeamConnectivity(oldCheckPoint, false, checkPointTag);
+        }
+
+        if (oldDoorKnop != null)
+        {
+            BeamConnectivity(oldDoorKnop, false, doorKnopTag);
+        }
+
+        if (endpoint != null)
+        {
+            BeamConnectivity(endpoint, false, endPointTag);
+        }
+    }
+
+    private void resetLine()
+    {
+        r.Reset();
+        BeamCollider.OnDestroy();
+        properties.Clear();
+
+        property = new FastLineRendererProperties();
+        property.LineType = FastLineRendererLineSegmentType.StartCap;
+        property.Color = CustomColor.GetColor(startColor);
+
+        isActive = true;
+        beamIsInWater = false;
+    }
 
     #region helpers
 
@@ -250,8 +322,8 @@ public class Beamscript : MonoBehaviour
         {
             Properties.Add(property);
             property = new FastLineRendererProperties();
-            standardPropertyOfBeam();
             property.Color = CustomColor.GetColor(customColor);
+            standardPropertyOfBeam();
             property.Start = curPosition;
         }
     }
@@ -284,20 +356,41 @@ public class Beamscript : MonoBehaviour
         if (pro.lineInWater)
         {
             pro.Color -= intensitive;
+            pro.GlowIntensityMultiplier = singleLineGlowIntensityMultiplier;
+            pro.GlowWidthMultiplier = singleLineGlowWidthMultiplier;
         }
     }
     private void addLines()
     {
         if (touched)
         {
-            foreach (var prop in Properties)
-            {
-                reduceBeamIntencity(prop);
-                BeamCollider.AddColliderToLine(prop.Start, prop.End, r);
-                r.AddLine(prop);
-            }
+            createLine();
             r.Apply(true);
         }
+    }
+
+    private void createLine()
+    {
+        lineProbs(0);
+        properties[0].LineType = FastLineRendererLineSegmentType.StartCap;
+        r.StartLine(properties[0]);
+        appendLine();
+    }
+
+    private void appendLine()
+    {
+        for (int i = 1; i < properties.Count; i++)
+        {
+            lineProbs(i);
+            properties[i].Start = properties[i].End;
+            r.AppendLine(properties[i]);
+        }
+    }
+
+    private void lineProbs(int i)
+    {
+        reduceBeamIntencity(properties[i]);
+        BeamCollider.AddColliderToLine(properties[i].Start, properties[i].End, r);
     }
     #endregion
 }

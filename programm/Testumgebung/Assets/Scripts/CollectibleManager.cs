@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using MadLevelManager;
@@ -22,7 +22,7 @@ public static  class CollectibleManager
     {
         foreach(GameObject collectible in GameObject.FindGameObjectsWithTag(collectibleTag))
         {
-            if(collectible.GetComponent<Collectible>().collected)
+            if(collectible.GetComponent<Collectible>().Collected)
             {
                 Collected.Add(collectible.name);
                 collectible.GetComponent<Rigidbody>().useGravity = true;

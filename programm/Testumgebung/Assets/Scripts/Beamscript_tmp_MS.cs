@@ -56,29 +56,47 @@ public class Beamscript_tmp_MS : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        initialAll();
+    }
+
+    private void initialAll()
+    {
+        initialLine();
+        initialLayers();
+        initialTags();
+        initialGlobalProperties();
+    }
+
+    private void initialLayers()
+    {
+        waterLayer = LayerMask.NameToLayer("Water");
+    }
+
+    private void initialLine()
+    {
         r = FastLineRenderer.CreateWithParent(null, GetComponent<FastLineRenderer>());
         properties = new List<FastLineRendererProperties>();
         property = new FastLineRendererProperties();
+    }
 
-        // layer
-        waterLayer = LayerMask.NameToLayer("Water");
+    private void initialGlobalProperties()
+    {
+        r.GlowUVXScale = glowUVXScale;
+        r.GlowUVYScale = glowUVYScale;
+        r.JitterMultiplier = jitterMultiplier;
+        r.GlowColor = glowColor;
+        r.GlowIntensityMultiplier = globalGlowIntensityMultiplier;
+        r.GlowWidthMultiplier = globalGlowWidthMultiplier;
+    }
 
-        // tags
+    private void initialTags()
+    {
         mirrorTag = "Mirror";
         colorMirrorTag = "ColorMirror";
         doorKnopTag = "Doorknop";
         colorChangerTag = "ColorChanger";
         checkPointTag = "Checkpoint";
         endPointTag = "Endpoint";
-
-        // global line Properties
-        r.GlowUVXScale = glowUVXScale;
-        r.GlowUVYScale = glowUVYScale;
-        r.JitterMultiplier = jitterMultiplier;
-        r.GlowColor = glowColor;
-        r.GlowIntensityMultiplier = globalGlowIntensityMultiplier;
-        r.GlowWidthMultiplier = globalGlowWidthMultiplier;        
-
     }
 
     // Update is called once per frame
@@ -88,16 +106,7 @@ public class Beamscript_tmp_MS : MonoBehaviour
 
         if (r != null && touched)
         {
-            r.Reset();
-            BeamCollider.OnDestroy();
-            properties.Clear();
-
-            property = new FastLineRendererProperties();
-            property.LineType = FastLineRendererLineSegmentType.StartCap;
-            property.Color = CustomColor.GetColor(startColor);
-
-            beamIsInWater = false;
-            isActive = true;
+            resetLine();
         }
         curPosition = transform.position;
         property.Start = curPosition;
@@ -240,6 +249,20 @@ public class Beamscript_tmp_MS : MonoBehaviour
 
     }
 
+    private void resetLine()
+    {
+        r.Reset();
+        BeamCollider.OnDestroy();
+        properties.Clear();
+
+        property = new FastLineRendererProperties();
+        property.LineType = FastLineRendererLineSegmentType.StartCap;
+        property.Color = CustomColor.GetColor(startColor);
+
+        isActive = true;
+        beamIsInWater = false;
+    }
+
     #region helpers
 
     public List<FastLineRendererProperties> Properties
@@ -332,34 +355,27 @@ public class Beamscript_tmp_MS : MonoBehaviour
     {
         if (touched)
         {
-
-            var props = properties.Count;
-            lineProbs(0);
-            properties[0].LineType = FastLineRendererLineSegmentType.StartCap;
-            r.StartLine(properties[0]);
-
-            for (int i = 1; i < props; i++)
-            {
-                properties[i].Start = properties[i].End;
-          //      properties[i].LineJoin = FastLineRendererLineJoin.AdjustPosition;
-          //      properties[i].LineType = FastLineRendererLineSegmentType.None;
-
-                lineProbs(i);
-                r.AppendLine(properties[i]);
-            }
+            createLine();
             r.Apply(true);
         }
+    }
 
-        //if (touched)
-        //{
-        //    foreach (var prop in Properties)
-        //    {
-        //        reduceBeamIntencity(prop);
-        //        BeamCollider.AddColliderToLine(prop.Start, prop.End, r);
-        //        r.AddLine(prop);
-        //    }
-        //    r.Apply(true);
-        //}
+    private void createLine()
+    {
+        lineProbs(0);
+        properties[0].LineType = FastLineRendererLineSegmentType.StartCap;
+        r.StartLine(properties[0]);
+        appendLine();
+    }
+
+    private void appendLine()
+    {
+        for (int i = 1; i < properties.Count; i++)
+        {
+            lineProbs(i);
+            properties[i].Start = properties[i].End;
+            r.AppendLine(properties[i]);
+        }
     }
 
     private void lineProbs(int i)

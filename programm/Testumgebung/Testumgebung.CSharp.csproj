@@ -66,6 +66,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\EndMenuManager.cs" />
     <Compile Include="Assets\ExternalRessources\2D Forest Pack\Demo Scene\Standard Assets\Effects\ImageEffects\Scripts\Antialiasing.cs" />
     <Compile Include="Assets\ExternalRessources\2D Forest Pack\Demo Scene\Standard Assets\Effects\ImageEffects\Scripts\Bloom.cs" />
     <Compile Include="Assets\ExternalRessources\2D Forest Pack\Demo Scene\Standard Assets\Effects\ImageEffects\Scripts\BloomAndFlares.cs" />
@@ -209,7 +210,6 @@
     <Compile Include="Assets\ExternalRessources\Water2D_Tool\Scripts\Water2D_Tool.cs" />
     <Compile Include="Assets\Scripts\BeamCollider.cs" />
     <Compile Include="Assets\Scripts\BeamRefraction.cs" />
-    <Compile Include="Assets\Scripts\BeamScript_RJ.cs" />
     <Compile Include="Assets\Scripts\Beamscript.cs" />
     <Compile Include="Assets\Scripts\Beamscript_tmp_MS.cs" />
     <Compile Include="Assets\Scripts\CameraAnimationScript.cs" />

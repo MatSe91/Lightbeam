@@ -1,6 +1,6 @@
 using UnityEngine;
 using MadLevelManager;
-
+using System.Collections.Generic;
 
 public class HardwareInputManager : MonoBehaviour
 {
@@ -18,7 +18,6 @@ public class HardwareInputManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-
             if (MadLevel.currentLevelName == "MainMenu")
             {
                 if (leaveGameMenu != null)
@@ -28,16 +27,18 @@ public class HardwareInputManager : MonoBehaviour
                 }
             }
 
-            if (levelManager!= null && levelManager.GameFinished) // game finished
+            // das ist hardcore kacke --> hier müsste sowas hin wie alle nichtunterbrechbaren animationen
+            // klasse angefangen, aber ist grad iwie zu aufwendig das zu proggen.. blöööd
+            if (!endMenuCanvas.GetComponent<EndMenuManager>().InAnimation)
             {
-                if (endMenuCanvas != null)
-                    levelManager.Pause(endMenuCanvas);
+                if (levelManager!= null && levelManager.GameFinished) // game finished
+                {
+                    if (endMenuCanvas != null)
+                        levelManager.Pause(endMenuCanvas);
+                }
+                else if (pauseMenuCanvas != null)
+                    levelManager.Pause(pauseMenuCanvas);
             }
-            else if (pauseMenuCanvas != null)
-                levelManager.Pause(pauseMenuCanvas);
-
-            //gameObject.GetComponent<InputManager>().enabled = false;
         }
-
     }
 }

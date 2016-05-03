@@ -9,7 +9,7 @@ public class CameraMovement : MonoBehaviour {
 
     public float sensX = 100.0f;
 
-    void Update()
+    void FixedUpdate()
     {
         if (Input.GetMouseButton(0))
         {

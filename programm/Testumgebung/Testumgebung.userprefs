@@ -1,7 +1,11 @@
 ﻿<Properties StartupItem="Testumgebung.CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\MainMenuHandler.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\EndMenuManager.cs">
     <Files>
+      <File FileName="Assets\Scripts\EndMenuManager.cs" Line="1" Column="1" />
+      <File FileName="Assets\ExternalRessources\FastLineRenderer\Readme.txt" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\BeamRefraction.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\DoorManager.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\MainMenuHandler.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\Beamscript.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\BeamCollider.cs" Line="1" Column="1" />

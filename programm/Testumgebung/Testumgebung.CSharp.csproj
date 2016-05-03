@@ -61,12 +61,6 @@
     <Reference Include="UnityEditor">
       <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEditor.iOS.Extensions.Xcode">
-      <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.iOS.Extensions.Common">
-      <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Common.dll</HintPath>
-    </Reference>
     <Reference Include="SmartLocalization_Runtime">
       <HintPath>Assets\ExternalRessources\SmartLocalization\SmartLocalization_Runtime.dll</HintPath>
     </Reference>
@@ -213,7 +207,9 @@
     <Compile Include="Assets\ExternalRessources\Water2D_Tool\Scripts\Water2D_PolygonClipping.cs" />
     <Compile Include="Assets\ExternalRessources\Water2D_Tool\Scripts\Water2D_Simulation.cs" />
     <Compile Include="Assets\ExternalRessources\Water2D_Tool\Scripts\Water2D_Tool.cs" />
+    <Compile Include="Assets\Scripts\BackButton.cs" />
     <Compile Include="Assets\Scripts\BeamCollider.cs" />
+    <Compile Include="Assets\Scripts\BeamOnCollitionParticle.cs" />
     <Compile Include="Assets\Scripts\BeamRefraction.cs" />
     <Compile Include="Assets\Scripts\Beamscript.cs" />
     <Compile Include="Assets\Scripts\Beamscript_tmp_MS.cs" />
@@ -225,6 +221,7 @@
     <Compile Include="Assets\Scripts\Collectible.cs" />
     <Compile Include="Assets\Scripts\CollectibleManager.cs" />
     <Compile Include="Assets\Scripts\ColorMirror.cs" />
+    <Compile Include="Assets\Scripts\ColorProperty.cs" />
     <Compile Include="Assets\Scripts\ControllingCameraResolution.cs" />
     <Compile Include="Assets\Scripts\CustomColor.cs" />
     <Compile Include="Assets\Scripts\DoorKnopSimulation.cs" />

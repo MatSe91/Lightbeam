@@ -15,34 +15,25 @@ public class Coll_Pflanze_Script : MonoBehaviour {
             print("Do Something awesome like an animation!");
             Destroy(col.gameObject);
             this.gameObject.GetComponent<SpriteRenderer>().color = Color.white;
-
             
             for (int i = 0; i < layer.transform.childCount; i++)
             {
                 gameElements.Add(layer.transform.GetChild(i).gameObject);
             }
 
-
-
             foreach (var element in gameElements)
-            {
-               
+            {              
                 if (element.GetComponent<SpriteRenderer>() != null)
                 {
                     element.GetComponent<SpriteRenderer>().color = Color.white;
                 }
-
                 else
                 {
                     Renderer rend = element.GetComponent<Renderer>();
-
                     rend.material.shader = Shader.Find("Standard");
                     rend.material.SetColor("_Color", Color.grey);
-                }
-              
-            }
-           
-          
+                }              
+            }                   
             print(col.transform.gameObject);
         }
     }

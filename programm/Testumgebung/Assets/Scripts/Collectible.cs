@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Collectible : MonoBehaviour
@@ -5,6 +6,18 @@ public class Collectible : MonoBehaviour
     private bool collected = false;
     private bool connected;
     private Collider other;
+
+    private Animator animator;
+    private ParticleSystem sys;
+
+
+
+    void Start()
+    {
+       animator =  gameObject.GetComponent<Animator>();
+       sys = gameObject.GetComponent<ParticleSystem>();        
+       sys.Stop();
+    }
 
     public bool Collected
     {
@@ -56,5 +69,25 @@ public class Collectible : MonoBehaviour
         {
             connected = false;
         }
+        animateWater();
+    }
+
+    private void animateWater()
+    {
+        if (collected)
+        {
+            animator.SetBool("play", true);
+            if (!sys.isPlaying) sys.Play();
+
+            if (LevelManager.GameFinished)
+            {
+                animator.enabled = false;
+            }
+        }
+        else
+        {
+            if (sys.isPlaying) sys.Stop();
+            animator.SetBool("play", false);
+        }        
     }
 }

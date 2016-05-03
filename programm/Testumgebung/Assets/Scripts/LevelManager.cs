@@ -5,7 +5,7 @@ using DigitalRuby.FastLineRenderer;
 public class LevelManager : MonoBehaviour {
 
     private bool gameStarted;
-    private bool gameFinished;
+    private static bool gameFinished;
 
     private GameObject lastActiveGameObject;
     private GameObject pauseCanvas;
@@ -24,7 +24,7 @@ public class LevelManager : MonoBehaviour {
         }
     }
 
-    public bool GameFinished
+    public static bool GameFinished
     {
         get
         {

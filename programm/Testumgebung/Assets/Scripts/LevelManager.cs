@@ -90,7 +90,14 @@ public class LevelManager : MonoBehaviour {
     public void ClickNext()
     {
         destroyLightbeam();
-        MadLevel.LoadNext();
+        if (CollectibleManager.IsNextLevelAvailable())
+        {
+            MadLevel.LoadNext();
+        }
+        else
+        {
+            Debug.Log("Next Level is locked");
+        }
     }
 
     public void ClickSelect()

@@ -27,18 +27,24 @@ public class HardwareInputManager : MonoBehaviour
                 }
             }
 
+            if (MadLevel.currentLevelName == "Select Level")
+            {
+                MadLevel.LoadLevelByName("MainMenu");
+                return;
+            }
+
             // das ist hardcore kacke --> hier müsste sowas hin wie alle nichtunterbrechbaren animationen
             // klasse angefangen, aber ist grad iwie zu aufwendig das zu proggen.. blöööd
-            if (!endMenuCanvas.GetComponent<EndMenuManager>().InAnimation)
-            {
+            //if (!endMenuCanvas.GetComponent<EndMenuManager>().InAnimation)
+            //{
                 if (levelManager!= null && levelManager.GameFinished) // game finished
                 {
-                    if (endMenuCanvas != null)
+                    if (endMenuCanvas != null && !endMenuCanvas.GetComponent<EndMenuManager>().InAnimation)
                         levelManager.Pause(endMenuCanvas);
                 }
                 else if (pauseMenuCanvas != null)
                     levelManager.Pause(pauseMenuCanvas);
-            }
+            //}
         }
     }
 }

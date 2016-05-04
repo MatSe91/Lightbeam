@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Collectible : MonoBehaviour
@@ -5,6 +6,20 @@ public class Collectible : MonoBehaviour
     private bool collected = false;
     private bool connected;
     private Collider other;
+
+    private Animator animator;
+    private ParticleSystem sys;
+    private AudioSource sfx;
+
+
+
+    void Start()
+    {
+       animator =  gameObject.GetComponent<Animator>();
+       sfx = gameObject.GetComponent<AudioSource>();
+       sys = gameObject.GetComponent<ParticleSystem>();        
+       sys.Stop();
+    }
 
     public bool Collected
     {
@@ -26,11 +41,14 @@ public class Collectible : MonoBehaviour
     void OnTriggerEnter(Collider col)
     { 
         other = col;
+       
     }
 
     void OnTriggerStay(Collider col)
     {
         connected = true;
+      
+
     }
     /// <summary>
     /// Uncollect the collectible if the collider is not the collictble object
@@ -44,6 +62,8 @@ public class Collectible : MonoBehaviour
         if (connected && !collected)
         {
             collected = true;
+            sfx.Play();
+            Debug.Log("play");
         }
 
         if (other == null && !connected)
@@ -56,5 +76,25 @@ public class Collectible : MonoBehaviour
         {
             connected = false;
         }
+        animateWater();
+    }
+
+    private void animateWater()
+    {
+        if (collected)
+        {
+            animator.SetBool("play", true);
+            if (!sys.isPlaying) sys.Play();
+
+            if (LevelManager.GameFinished)
+            {
+                animator.enabled = false;
+            }
+        }
+        else
+        {
+            if (sys.isPlaying) sys.Stop();
+            animator.SetBool("play", false);
+        }        
     }
 }

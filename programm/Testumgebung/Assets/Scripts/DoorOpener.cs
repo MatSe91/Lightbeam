@@ -88,6 +88,7 @@ public class DoorOpener: MonoBehaviour
                 if (!loadingParticleSystem.isPlaying && !doorIsOpen)
                 {
                     loadingParticleSystem.Play();
+                    loading.GetComponent<AudioSource>().Play();
                 }
                 if (!doorIsOpen) timer();
             }

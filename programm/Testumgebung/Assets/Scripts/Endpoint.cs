@@ -22,7 +22,6 @@ public class Endpoint : MonoBehaviour {
         {
             LevelCompleted();
             SetCollectedUI();
-
         }
     }
 
@@ -46,6 +45,6 @@ public class Endpoint : MonoBehaviour {
     {
         manager.SetCollectedItems();
         manager.Pause(EndLevelMenu);
-        manager.GameFinished = true;
+        LevelManager.GameFinished = true;
     }
 }

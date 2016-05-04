@@ -5,7 +5,7 @@ using DigitalRuby.FastLineRenderer;
 public class LevelManager : MonoBehaviour {
 
     private bool gameStarted;
-    private bool gameFinished;
+    private static bool gameFinished;
 
     private GameObject lastActiveGameObject;
     private GameObject pauseCanvas;
@@ -24,7 +24,7 @@ public class LevelManager : MonoBehaviour {
         }
     }
 
-    public bool GameFinished
+    public static bool GameFinished
     {
         get
         {
@@ -90,14 +90,7 @@ public class LevelManager : MonoBehaviour {
     public void ClickNext()
     {
         destroyLightbeam();
-        if (CollectibleManager.IsNextLevelAvailable())
-        {
-            MadLevel.LoadNext();
-        }
-        else
-        {
-            Debug.Log("Next Level is locked");
-        }
+        MadLevel.LoadNext();
     }
 
     public void ClickSelect()

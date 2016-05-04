@@ -33,11 +33,11 @@ public class HardwareInputManager : MonoBehaviour
                 return;
             }
 
-            // das ist hardcore kacke --> hier müsste sowas hin wie alle nichtunterbrechbaren animationen
-            // klasse angefangen, aber ist grad iwie zu aufwendig das zu proggen.. blöööd
+            // das ist hardcore kacke --> hier mï¿½sste sowas hin wie alle nichtunterbrechbaren animationen
+            // klasse angefangen, aber ist grad iwie zu aufwendig das zu proggen.. blï¿½ï¿½ï¿½d
             //if (!endMenuCanvas.GetComponent<EndMenuManager>().InAnimation)
             //{
-                if (levelManager!= null && levelManager.GameFinished) // game finished
+                if (levelManager!= null && LevelManager.GameFinished) // game finished
                 {
                     if (endMenuCanvas != null && !endMenuCanvas.GetComponent<EndMenuManager>().InAnimation)
                         levelManager.Pause(endMenuCanvas);

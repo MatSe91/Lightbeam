@@ -37,6 +37,7 @@ public class DoorManager : MonoBehaviour {
     {
         targetPosition =  doorOpenParticleBeam.transform.position;
         detectAchse();
+        doorOpenParticleBeam.GetComponent<AudioSource>().Play(44100);
     }
 
     private void detectAchse()

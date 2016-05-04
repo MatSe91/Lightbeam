@@ -63,7 +63,7 @@ public class Collectible : MonoBehaviour
         {
             collected = true;
             sfx.Play();
-            Debug.Log("play");
+            Debug.Log("test");
         }
 
         if (other == null && !connected)

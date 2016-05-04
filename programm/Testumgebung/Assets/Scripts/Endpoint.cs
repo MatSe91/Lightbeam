@@ -47,4 +47,13 @@ public class Endpoint : MonoBehaviour {
         manager.Pause(EndLevelMenu);
         LevelManager.GameFinished = true;
     }
+
+    void Update()
+    {
+        if (!isBeamconntected)
+        {
+            this.gameObject.GetComponent<AudioSource>().Play();
+        }
+       
+    }
 }

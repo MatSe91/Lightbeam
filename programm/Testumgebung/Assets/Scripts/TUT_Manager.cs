@@ -6,6 +6,8 @@ using System.Collections;
 public class TUT_Manager : MonoBehaviour {
     public float startTutAfterXSeconds;
     public InputManager manager;
+    public GameObject playerOuter;
+    public GameObject Collectables;
     public List<GameObject> tuts;
     private bool tut_2 = false;
 
@@ -50,6 +52,10 @@ public class TUT_Manager : MonoBehaviour {
 
     public void TUT_1()
     {
+        manager.enabled = false;
+        playerOuter.GetComponent<PlayerRotator>().enabled = false;
+
+        getTUT("TUT_1").SetActive(true);
         Debug.Log("Do something awesome!");
     }
 
@@ -61,6 +67,7 @@ public class TUT_Manager : MonoBehaviour {
 
     void Update()
     {
+
         if (Time.timeSinceLevelLoad > startTutAfterXSeconds && Time.timeSinceLevelLoad < startTutAfterXSeconds+0.05f)
         {
             TUT_0(0);
@@ -72,6 +79,6 @@ public class TUT_Manager : MonoBehaviour {
                 TUT_1();
                 tut_2 = true;
             }
-        }
+        }       
     }
 }

@@ -248,6 +248,7 @@
     <Compile Include="Assets\Scripts\TUT.cs" />
     <Compile Include="Assets\Scripts\TUTChangeButtonValue.cs" />
     <Compile Include="Assets\Scripts\TUT_Manager.cs" />
+    <Compile Include="Assets\TUTLevel1.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\ExternalRessources\2D Forest Pack\Demo Scene\Standard Assets\Effects\GlassRefraction\Shaders\GlassStainedBumpDistort.shader" />

@@ -4,14 +4,14 @@ using DigitalRuby.FastLineRenderer;
 
 public class LevelManager : MonoBehaviour {
 
-    private bool gameStarted;
+    private static bool gameStarted;
     private static bool gameFinished;
 
     private GameObject lastActiveGameObject;
     private GameObject pauseCanvas;
     private GameObject endMenuCanvas;
 
-    public bool GameStarted
+    public static bool GameStarted
     {
         get
         {

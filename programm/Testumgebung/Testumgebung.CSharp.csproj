@@ -233,15 +233,20 @@
     <Compile Include="Assets\Scripts\InputManager.cs" />
     <Compile Include="Assets\Scripts\LevelManager.cs" />
     <Compile Include="Assets\Scripts\LineDrawer.cs" />
+    <Compile Include="Assets\Scripts\LoadPlayerForGame.cs" />
     <Compile Include="Assets\Scripts\MainMenuHandler.cs" />
     <Compile Include="Assets\Scripts\MirrorMovement.cs" />
     <Compile Include="Assets\Scripts\MirrorMovementAnim.cs" />
     <Compile Include="Assets\Scripts\MirrorRotator.cs" />
     <Compile Include="Assets\Scripts\MirrorRotatorAnim.cs" />
+    <Compile Include="Assets\Scripts\MissingParticleException.cs" />
     <Compile Include="Assets\Scripts\Music.cs" />
     <Compile Include="Assets\Scripts\PlayerRotator.cs" />
     <Compile Include="Assets\Scripts\Refraction_Medium.cs" />
     <Compile Include="Assets\Scripts\Settings.cs" />
+    <Compile Include="Assets\Scripts\TUT.cs" />
+    <Compile Include="Assets\Scripts\TUTChangeButtonValue.cs" />
+    <Compile Include="Assets\Scripts\TUT_Manager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\ExternalRessources\2D Forest Pack\Demo Scene\Standard Assets\Effects\GlassRefraction\Shaders\GlassStainedBumpDistort.shader" />

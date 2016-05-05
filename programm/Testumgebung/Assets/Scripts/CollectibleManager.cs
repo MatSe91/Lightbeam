@@ -36,12 +36,36 @@ public static  class CollectibleManager
         foreach (var item in Collected)
         {
             MadLevelProfile.SetLevelBoolean(MadLevel.currentLevelName, item, true);
+
+            IsNextLevelAvailable();
+
         }
-       
-       
+
+
     }
 
-   
+    public static bool IsNextLevelAvailable()
+    {
+        int waterdropGained = new MadLevelQuery()
+                    .ForGroup(MadLevel.currentGroupName)
+                    .OfLevelType(MadLevel.Type.Level)
+                    .SelectProperty("Waterdrop_1", "Waterdrop_2", "Waterdrop_3", "Waterdrop_4", "Waterdrop_5", "Waterdrop_6")
+                    .CountEnabled();
+        Debug.Log(waterdropGained);
+
+        int value = System.Convert.ToInt32(MadLevel.arguments);
+        if (waterdropGained >= value)
+        {
+            MadLevelProfile.SetCompleted(MadLevel.currentLevelName, true);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+
+    }
+
 
 
 

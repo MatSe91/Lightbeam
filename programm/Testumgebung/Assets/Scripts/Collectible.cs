@@ -9,12 +9,14 @@ public class Collectible : MonoBehaviour
 
     private Animator animator;
     private ParticleSystem sys;
+    private AudioSource sfx;
 
 
 
     void Start()
     {
        animator =  gameObject.GetComponent<Animator>();
+       sfx = gameObject.GetComponent<AudioSource>();
        sys = gameObject.GetComponent<ParticleSystem>();        
        sys.Stop();
     }
@@ -39,11 +41,14 @@ public class Collectible : MonoBehaviour
     void OnTriggerEnter(Collider col)
     { 
         other = col;
+       
     }
 
     void OnTriggerStay(Collider col)
     {
         connected = true;
+      
+
     }
     /// <summary>
     /// Uncollect the collectible if the collider is not the collictble object
@@ -57,6 +62,8 @@ public class Collectible : MonoBehaviour
         if (connected && !collected)
         {
             collected = true;
+            sfx.Play();
+            Debug.Log("test");
         }
 
         if (other == null && !connected)

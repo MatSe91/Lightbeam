@@ -47,4 +47,16 @@ public class Endpoint : MonoBehaviour {
         manager.Pause(EndLevelMenu);
         LevelManager.GameFinished = true;
     }
+
+    void Update()
+    {
+        if (!isBeamconntected)
+        {
+            if (gameObject.GetComponent<AudioSource>() != null)
+                this.gameObject.GetComponent<AudioSource>().Play();
+            else
+                Debug.Log("Missing Audiosource on EndPoint!");
+        }
+       
+    }
 }

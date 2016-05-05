@@ -62,7 +62,9 @@ public class Collectible : MonoBehaviour
         if (connected && !collected)
         {
             collected = true;
-            sfx.Play();
+            if (sfx != null)
+                sfx.Play();
+            else Debug.Log("No SFX File on WaterDrop!");
             Debug.Log("test");
         }
 

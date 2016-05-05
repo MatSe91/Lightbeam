@@ -1,7 +1,7 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
+using System;
 
 public class Coll_Pflanze_Script : MonoBehaviour {
 
@@ -30,7 +30,7 @@ public class Coll_Pflanze_Script : MonoBehaviour {
         {
             print("Do Something awesome like an animation!");
             ParticleSystem part = this.gameObject.GetComponent<ParticleSystem>();
-            if (!part.isPlaying) part.Play();
+            if (part != null && !part.isPlaying) part.Play();
             Destroy(col.gameObject);
 
             if (this.gameObject.GetComponent<SpriteRenderer>() != null)
@@ -82,16 +82,18 @@ public class Coll_Pflanze_Script : MonoBehaviour {
 
     private static Color GetColorByObject(bool bright, GameObject element)
     {
-       
-        if (bright)
+       if(element.GetComponent<ColorProperty>() != null)
         {
-           return element.GetComponent<ColorProperty>().Bright;
+            if (bright)
+            {
+               return element.GetComponent<ColorProperty>().Bright;
+            }
+            else
+            {
+                return element.GetComponent<ColorProperty>().Dark;
+            }
         }
-        else
-        {
-            return element.GetComponent<ColorProperty>().Dark;
-        }
- 
+        throw new NullReferenceException("There is no ColorProperty on Object.");
     }
 }
  

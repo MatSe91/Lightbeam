@@ -20,6 +20,7 @@ public class Coll_Pflanze_Script : MonoBehaviour {
             }
         }
 
+        gameElements.Add(this.gameObject);
         SetGameElementsColor(false);
 
     }

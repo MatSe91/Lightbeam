@@ -7,6 +7,7 @@ public class TUTChangeButtonValue : MonoBehaviour {
     TUT_Manager tutRoot;
     private int klicked = 1;
 
+
 	// Use this for initialization
 	void Start () {
         // button.GetComponent<Button>();
@@ -16,14 +17,9 @@ public class TUTChangeButtonValue : MonoBehaviour {
 
 	}
 
-    void Update()
-    {
-
-    }
-
     private void method(int v)
     {
-         tutRoot.TUT_0(v);
+         tutRoot.activate(gameObject.transform.parent.name, v);
          klicked++;
     }
 }

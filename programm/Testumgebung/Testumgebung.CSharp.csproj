@@ -207,6 +207,10 @@
     <Compile Include="Assets\ExternalRessources\Water2D_Tool\Scripts\Water2D_PolygonClipping.cs" />
     <Compile Include="Assets\ExternalRessources\Water2D_Tool\Scripts\Water2D_Simulation.cs" />
     <Compile Include="Assets\ExternalRessources\Water2D_Tool\Scripts\Water2D_Tool.cs" />
+    <Compile Include="Assets\Prefabs\Tutorial\TUT.cs" />
+    <Compile Include="Assets\Prefabs\Tutorial\TUTChangeButtonValue.cs" />
+    <Compile Include="Assets\Prefabs\Tutorial\TUTLevel1.cs" />
+    <Compile Include="Assets\Prefabs\Tutorial\TUT_Manager.cs" />
     <Compile Include="Assets\Scripts\BeamCollider.cs" />
     <Compile Include="Assets\Scripts\BeamOnCollitionParticle.cs" />
     <Compile Include="Assets\Scripts\BeamRefraction.cs" />
@@ -245,10 +249,6 @@
     <Compile Include="Assets\Scripts\PlayerRotator.cs" />
     <Compile Include="Assets\Scripts\Refraction_Medium.cs" />
     <Compile Include="Assets\Scripts\Settings.cs" />
-    <Compile Include="Assets\Scripts\TUT.cs" />
-    <Compile Include="Assets\Scripts\TUTChangeButtonValue.cs" />
-    <Compile Include="Assets\Scripts\TUT_Manager.cs" />
-    <Compile Include="Assets\TUTLevel1.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\ExternalRessources\2D Forest Pack\Demo Scene\Standard Assets\Effects\GlassRefraction\Shaders\GlassStainedBumpDistort.shader" />

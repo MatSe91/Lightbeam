@@ -5,24 +5,36 @@ public class TUTLevel1 : MonoBehaviour {
 
     public GameObject collectables;
     public GameObject background;
-    public GameObject endpoint;
+    private GameObject endpoint;
     public new Light light;
-    bool loopOneOneArrow = false;
+
+    void Start()
+    {
+        endpoint = GameObject.Find("Endpoint");
+    }
 
     private List<SpriteRenderer> getCompleteList()
     {
-        var list = new List<SpriteRenderer>();
-
-        foreach (var item in collectables.GetComponentsInChildren<SpriteRenderer>())
+        try
         {
-            list.Add(item);
-        }
+            var list = new List<SpriteRenderer>();
 
-        foreach (var item in background.GetComponentsInChildren<SpriteRenderer>())
-        {
-            list.Add(item);
+            foreach (var item in collectables.GetComponentsInChildren<SpriteRenderer>())
+            {
+                list.Add(item);
+            }
+
+            foreach (var item in background.GetComponentsInChildren<SpriteRenderer>())
+            {
+                list.Add(item);
+            }
+            return list;
+
         }
-        return list;
+        catch (System.NullReferenceException e)
+        {
+            throw e;
+        }
     }
 
     public void ChangeLight(string onoff)
@@ -48,21 +60,5 @@ public class TUTLevel1 : MonoBehaviour {
                 item.color = new Color(1, 1, 1, 1);
             }
         }
-    }
-
-    public void loopLevelOneOneArrow()
-    {
-        loopOneOneArrow = !loopOneOneArrow;
-    }
-
-    void Update()
-    {
-        if (loopOneOneArrow)
-        {
-            GetComponent<Animator>().SetBool("TUT_1_Phase_1_1_arrow", true);
-            loopOneOneArrow = !loopOneOneArrow;
-        }
-    }
-
-    
+    }  
 }

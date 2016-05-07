@@ -4,11 +4,15 @@ using UnityEngine.UI;
 
 public class Endpoint : MonoBehaviour {
 
-    public bool isBeamconntected;
+    private bool isBeamconntected;
     public GameObject EndLevelMenu;
     public GameObject CollectedUI;
     public LevelManager manager;
     
+    public bool getBeamConnectivity()
+    {
+        return isBeamconntected;
+    }
    
 
     public void setBeamConnectivity(bool bol)

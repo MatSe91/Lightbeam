@@ -48,8 +48,8 @@ public class InputManager : MonoBehaviour {
                         }
                         // und setze Objekt auf aktiv
                      inUse.SendMessage("setActiveGameObject", true);
-                     sameObject = inUse;
                     }
+                    sameObject = inUse;
                 }
             }
         }

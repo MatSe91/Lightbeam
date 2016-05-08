@@ -29,7 +29,7 @@ public class Coll_Pflanze_Script : MonoBehaviour {
     {
         if (col.gameObject.CompareTag("Collectible"))
         {
-            print("Do Something awesome like an animation!");
+           // print("Do Something awesome like an animation!");
             ParticleSystem part = this.gameObject.GetComponent<ParticleSystem>();
             if (part != null && !part.isPlaying) part.Play();
             Destroy(col.gameObject);
@@ -46,7 +46,7 @@ public class Coll_Pflanze_Script : MonoBehaviour {
            
 
             SetGameElementsColor(true);
-            print(col.transform.gameObject);
+           // print(col.transform.gameObject);
 
         }
     }

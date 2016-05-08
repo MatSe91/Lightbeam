@@ -51,7 +51,7 @@ public static  class CollectibleManager
                     .OfLevelType(MadLevel.Type.Level)
                     .SelectProperty("Waterdrop_1", "Waterdrop_2", "Waterdrop_3", "Waterdrop_4", "Waterdrop_5", "Waterdrop_6")
                     .CountEnabled();
-        Debug.Log(waterdropGained);
+        //Debug.Log(waterdropGained);
 
         int value = System.Convert.ToInt32(MadLevel.arguments);
         if (waterdropGained >= value)

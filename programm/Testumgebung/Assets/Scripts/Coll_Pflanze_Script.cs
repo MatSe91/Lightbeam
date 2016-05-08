@@ -20,8 +20,8 @@ public class Coll_Pflanze_Script : MonoBehaviour {
             }
         }
 
-        gameElements.Add(this.gameObject);
-        SetGameElementsColor(false);
+       
+        SetGameElementColor(false,this.gameObject);
 
     }
 
@@ -53,19 +53,24 @@ public class Coll_Pflanze_Script : MonoBehaviour {
 
     private void SetGameElementsColor(bool bright)
     {
-            foreach (var element in gameElements)
-            {
-                if (element.GetComponent<SpriteRenderer>() != null)
-            {
-                SetColorBySprite(bright, element);
-            }
-            else
-            {
-                SetColorBy3DObject(bright, element);
-            }
+         foreach (var element in gameElements)
+        {
+            SetGameElementColor(bright, element);
 
         }
 
+    }
+
+    private static void SetGameElementColor(bool bright, GameObject element)
+    {
+        if (element.GetComponent<SpriteRenderer>() != null)
+        {
+            SetColorBySprite(bright, element);
+        }
+        else
+        {
+            SetColorBy3DObject(bright, element);
+        }
     }
 
     private static void SetColorBy3DObject(bool bright, GameObject element)

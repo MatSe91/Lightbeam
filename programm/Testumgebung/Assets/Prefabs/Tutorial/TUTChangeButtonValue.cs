@@ -6,6 +6,7 @@ using System;
 public class TUTChangeButtonValue : MonoBehaviour {
     TUT_Manager tutRoot;
     private int klicked = 1;
+    public TUT_Manager level;
 
 
 	// Use this for initialization
@@ -19,7 +20,7 @@ public class TUTChangeButtonValue : MonoBehaviour {
 
     private void method(int v)
     {
-         tutRoot.activate(gameObject.transform.parent.name, v);
+         tutRoot.activate(level, gameObject.transform.parent.name, v);
          klicked++;
     }
 }

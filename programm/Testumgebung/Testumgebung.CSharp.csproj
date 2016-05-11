@@ -207,6 +207,8 @@
     <Compile Include="Assets\ExternalRessources\Water2D_Tool\Scripts\Water2D_PolygonClipping.cs" />
     <Compile Include="Assets\ExternalRessources\Water2D_Tool\Scripts\Water2D_Simulation.cs" />
     <Compile Include="Assets\ExternalRessources\Water2D_Tool\Scripts\Water2D_Tool.cs" />
+    <Compile Include="Assets\Prefabs\Tutorial\ITUT.cs" />
+    <Compile Include="Assets\Prefabs\Tutorial\Level01_TUT_Manager.cs" />
     <Compile Include="Assets\Prefabs\Tutorial\TUT.cs" />
     <Compile Include="Assets\Prefabs\Tutorial\TUTChangeButtonValue.cs" />
     <Compile Include="Assets\Prefabs\Tutorial\TUTLevel1.cs" />

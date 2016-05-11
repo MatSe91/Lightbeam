@@ -14,13 +14,64 @@ public class TUT_Manager : MonoBehaviour {
     public InputManager manager;
     public PlayerRotator player;
     public GameObject endpoint;
-    public List<GameObject> tuts;
     private bool tut_1 = false;
     private float timecounter;
     private bool tut_2;
     private float secTillActivation = 2f;
 
-    private GameObject getTUT(string tutName)
+    private List<GameObject> levelList = new List<GameObject>();
+    public List<GameObject> tuts = new List<GameObject>();
+    private GameObject activeLevel;
+
+    public InputManager Manager
+    {
+        get
+        {
+            return manager;
+        }
+    }
+
+    public bool Tut_1
+    {
+        get
+        {
+            return tut_1;
+        }
+
+        set
+        {
+            tut_1 = value;
+        }
+    }
+
+    void Start()
+    {
+        getAllLevelsWithTutorial();
+        activateLevel();
+        getAllTUTsInLevel();
+        activeLevel.SetActive(true);
+
+    }
+
+    public void getAllTUTsInLevel()
+    {
+        for (int i = 0; i < activeLevel.transform.childCount; i++)
+        {
+            tuts.Add(activeLevel.transform.GetChild(i).gameObject);
+            Debug.Log(activeLevel.transform.GetChild(i).gameObject);
+        }
+    }
+
+    public void getAllLevelsWithTutorial()
+    {
+
+        for(int i = 0; i < gameObject.transform.GetChild(0).childCount; i++)
+        {
+            levelList.Add(gameObject.transform.GetChild(0).GetChild(i).gameObject);
+        }
+    }
+
+    public GameObject getTUT(string tutName)
     {
         foreach (var item in tuts)
         {
@@ -29,102 +80,28 @@ public class TUT_Manager : MonoBehaviour {
                 return item;
             }
         }
-        throw new MissingReferenceException("Tutorial not found!");
+        return null;
     }
 
-
-    internal void activate(string name, int v)
+    public void activateLevel()
     {
-        MethodInfo mi =  this.GetType().GetMethod(name, new Type[] {typeof(string), typeof(int) });      
-        mi.Invoke(this, new object[] {name, v });
+        foreach (var level in levelList)
+        {
+            if (level.name == MadLevelManager.MadLevel.currentLevelName)
+            {
+                activeLevel = level;
+            }
+        }
     }
-    /// <summary>
-    /// Level 1 Tutorial-Panel 0
-    /// </summary>
-    /// <param name="name"></param>
-    /// <param name="phase"></param>
-    public void TUT_0(string name, int phase)
+
+
+    internal void activate(TUT_Manager go, string name, int v)
     {
-        
-        if(phase == (int)phasen.initializePhase)
-        {
-            manager.enabled = false;
-            getTUT(name).SetActive(true);
-            getTUT(name).GetComponent<Animator>().SetBool(name+"_Phase_"+phase, true);
-        }
-        if (phase == (int)phasen.firstPhase)
-        {
-            getTUT(name).GetComponent<Animator>().SetTrigger(name + "_Phase_" + phase);
-        }
-        if (phase == (int)phasen.secondPhase)
-        {
-            getTUT(name).GetComponent<Animator>().SetTrigger(name + "_Phase_" + phase);
-        }
-        if (phase == (int)phasen.thirdPhase)
-        {
-            manager.enabled = true;
-            getTUT(name).GetComponent<Animator>().SetTrigger(name + "_Phase_" + phase);
-            StartCoroutine(waitAndDisable(name, 1));           
-        }
+        MethodInfo mi = this.GetType().GetMethod(name, new Type[] { typeof(string), typeof(int) });
+        mi.Invoke(go, new object[] { name, v });
     }
-
-    /// <summary>
-    /// Level 1 Tutorial-Panel 1
-    /// </summary>
-    /// <param name="name"></param>
-    /// <param name="phase"></param>
-    public void TUT_1(string name, int phase)
-    {
-        if (phase == (int)phasen.initializePhase)
-        {
-            manager.enabled = false;
-            player.enabled = false;
-            getTUT(name).SetActive(true);
-            getTUT(name).GetComponent<Animator>().SetBool(name + "_Phase_" + phase, true);
-
-        }
-        if (phase == (int)phasen.firstPhase)
-        {
-            getTUT(name).GetComponent<Animator>().SetTrigger(name + "_Phase_" + phase);
-        }
-
-        if (phase == (int)phasen.secondPhase)
-        {
-            getTUT(name).GetComponent<Animator>().SetTrigger(name + "_Phase_" + phase);
-        }
-
-        if (phase == (int)phasen.thirdPhase)
-        {
-            getTUT(name).GetComponent<Animator>().SetTrigger(name + "_Phase_" + phase);
-            StartCoroutine(waitAndDisable(name, 2));
-            manager.enabled = true;
-            player.enabled = true;
-        }
-    }
-
-
-    public void TUT_2(string name, int phase)
-    {
-
-        if (phase == (int)phasen.initializePhase)
-        {
-            getTUT(name).SetActive(true);
-            manager.enabled = false;
-            player.enabled = false;
-            getTUT(name).GetComponent<Animator>().SetBool(name + "_Phase_" + phase, true);
-        }
-
-        if (phase == (int)phasen.firstPhase)
-        {
-            getTUT(name).GetComponent<Animator>().SetTrigger(name + "_Phase_" + phase);
-            manager.enabled = true;
-            player.enabled = true;
-            StartCoroutine(waitAndDisable(name, 1));
-        }
-
-    }
-
-    private IEnumerator waitAndDisable(String tut, int v)
+   
+    public IEnumerator waitAndDisable(String tut, int v)
     {
         yield return new WaitForSeconds(v);
         getTUT(tut).SetActive(false);
@@ -133,30 +110,23 @@ public class TUT_Manager : MonoBehaviour {
     void Update()
     {
 
-        if (Time.timeSinceLevelLoad > startTutAfterXSeconds && Time.timeSinceLevelLoad < startTutAfterXSeconds+0.05f)
-        {
-            TUT_0("TUT_0", 0);
-        }
-        if (LevelManager.GameStarted)
-        {
-            if (!tut_1)
-            {
-                TUT_1("TUT_1", 0);
-                tut_1 = true;
-            }
-
-            if (endpoint.GetComponent<Endpoint>().getBeamConnectivity())
-            {
-                timer();
-            }
-            else
-            {
-                timecounter = secTillActivation;
-            }
-        }       
+        //if (Time.timeSinceLevelLoad > startTutAfterXSeconds && Time.timeSinceLevelLoad < startTutAfterXSeconds+0.05f)
+        //{
+        //    TUT_0("TUT_0", 0);
+        //}
+        
+        //    if (endpoint.GetComponent<Endpoint>().getBeamConnectivity())
+        //    {
+        //        timer();
+        //    }
+        //    else
+        //    {
+        //        timecounter = secTillActivation;
+        //    }
+        //}       
     }
 
-    private enum phasen
+    public enum phasen
     {
         initializePhase,
         firstPhase,
@@ -168,16 +138,16 @@ public class TUT_Manager : MonoBehaviour {
 
     private void timer()
     {
-        timecounter -= Time.deltaTime;
+        //timecounter -= Time.deltaTime;
 
-        if (timecounter % 60 <= 0)
-        {
-            if (!tut_2)
-            {
-                TUT_2("TUT_2", 0);
-                tut_2 = true;
-            }
+        //if (timecounter % 60 <= 0)
+        //{
+        //    if (!tut_2)
+        //    {
+        //        TUT_2("TUT_2", 0);
+        //        tut_2 = true;
+        //    }
 
-        }
+        //}
     }
 }

@@ -125,6 +125,7 @@ public class Beamscript : MonoBehaviour
                 {
                     setMirrorReflection(hit, true, Vector3.Reflect(dir, hit.normal), previousColor);
                 }
+              
                 // if beam hits a colored Mirror
                 else if (hit.transform.gameObject.tag == colorMirrorTag)
                 {
@@ -211,6 +212,7 @@ public class Beamscript : MonoBehaviour
                 property.End = hit.point;
 
             }
+            
             else
             {
                 isActive = false;

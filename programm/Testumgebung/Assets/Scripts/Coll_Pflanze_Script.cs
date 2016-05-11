@@ -22,6 +22,7 @@ public class Coll_Pflanze_Script : MonoBehaviour {
 
        
         SetGameElementColor(false,this.gameObject);
+        SetGameElementsColor(false);
 
     }
 

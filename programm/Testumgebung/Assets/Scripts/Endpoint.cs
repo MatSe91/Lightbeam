@@ -48,6 +48,7 @@ public class Endpoint : MonoBehaviour {
     private void LevelCompleted()
     {
         manager.SetCollectedItems();
+        EndLevelMenu.transform.parent.localPosition = new Vector3(GameObject.Find("Main Camera").transform.position.x, 0, 0);
         manager.Pause(EndLevelMenu);
         LevelManager.GameFinished = true;
     }

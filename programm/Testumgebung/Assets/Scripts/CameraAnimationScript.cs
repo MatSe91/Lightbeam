@@ -43,6 +43,8 @@ public class CameraAnimationScript : MonoBehaviour {
     public void enableBeam()
     {
         checkpoint.GetComponent<PlayerRotator>().enabled = true;
+        checkpoint.transform.parent.GetComponentInChildren<SpriteRenderer>().enabled = true;
+
     }
 
     /// <summary>
@@ -52,5 +54,6 @@ public class CameraAnimationScript : MonoBehaviour {
     public void isPhase3()
     {
         checkpoint.GetComponent<CheckPointManager>().setPhaseCompleted(true);
+        checkpoint.GetComponentInChildren<SpriteRenderer>().enabled = true;
     }
 }

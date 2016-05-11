@@ -70,7 +70,7 @@ public class MirrorRotator : MonoBehaviour
                     angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
                     angle = SmoothAngle(angle);
 
-                    transform.eulerAngles = new Vector3(0, 0, ClampAngle(angle, minZ, maxZ));
+                    transform.localEulerAngles = new Vector3(0, 0, ClampAngle(angle, minZ, maxZ));
                 }
             }
             else
@@ -102,4 +102,22 @@ public class MirrorRotator : MonoBehaviour
         if (angle < 0) angle += 360;  // if angle negative, convert to 0..360
         return angle;
     }
+
+    //private float ClampAngle(float angle, float min, float max)
+    //{
+    //    while (max < min) max += 360f;
+    //    while (angle > max) angle -= 360f;
+    //    while (angle < min) angle += 360f;
+
+    //    if (angle > max)
+    //    {
+    //        if (angle - (max + min) * 0.5 < 180.0)
+    //            return max;
+    //        else
+    //            return min;
+    //    }
+    //    else
+    //        return angle;
+    //}
+
 }

@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Collectible : MonoBehaviour
 {
-    private bool collected = false;
+    public bool collected = false;
     private bool connected;
     private Collider other;
 

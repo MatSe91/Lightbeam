@@ -102,7 +102,8 @@ public class Beamscript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        touched = InputManager.touchInput;
+         touched = InputManager.touchInput;
+       // touched = true;
 
         if (r != null && touched)
         {
@@ -384,8 +385,11 @@ public class Beamscript : MonoBehaviour
         for (int i = 1; i < properties.Count; i++)
         {
             lineProbs(i);
+            properties[i].LineType = FastLineRendererLineSegmentType.Full;
             properties[i].Start = properties[i].End;
+
             r.AppendLine(properties[i]);
+
         }
     }
 

@@ -4,6 +4,10 @@ using System;
 
 public class CameraMovement : MonoBehaviour {
 
+    private const float X_VALUE_AREA_ONE = 0f;
+    private const float X_VALUE_AREA_TWO = 27f;
+    private const float X_VALUE_AREA_THREE = 54f;
+
     public Area numberOfAreas;
     private float minX = 0;
     public float sensX = 100.0f;
@@ -21,18 +25,18 @@ public class CameraMovement : MonoBehaviour {
         }
     }
 
-    // Hardcodierter Kack --> müsste aus der Kamera ausgelesen werden
+    // Hardcodierter Kack --> mï¿½sste aus der Kamera ausgelesen werden
     private float getValue()
     {
         if (numberOfAreas.Equals(Area.two))
         {
-            return 27f;
+            return X_VALUE_AREA_TWO;
         }
         else if (numberOfAreas.Equals(Area.three))
         {
-            return 54f;
+            return X_VALUE_AREA_THREE;
         }
-        return 0f;
+        return X_VALUE_AREA_ONE;
     }
 
 

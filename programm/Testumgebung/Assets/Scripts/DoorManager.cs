@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System;
+using System.Collections.Generic;
 
 public class DoorManager : MonoBehaviour {
 
@@ -26,6 +27,7 @@ public class DoorManager : MonoBehaviour {
     private Vector3 curPosition;
     private Vector3 targetPosition;
     private Vector3 V3Achse;
+    public List<GameObject> doors;
 
 
     public void IsParticleBeamFinished(bool value)
@@ -93,6 +95,7 @@ public class DoorManager : MonoBehaviour {
             {
                 Debug.Log("macht er was?");
                 isParticleBeamFinished = true;
+                OpenDoorAnimation();
             }
         }
         else
@@ -101,8 +104,17 @@ public class DoorManager : MonoBehaviour {
             {
                 Debug.Log("macht er was?");
                 isParticleBeamFinished = true;
+                OpenDoorAnimation();
             }
         }
         
+    }
+    private void OpenDoorAnimation()
+    {
+        foreach (var door in doors)
+        {
+            door.GetComponent<Animator>().SetTrigger("DoorOpen");
+           
+        }
     }
 }

@@ -55,7 +55,7 @@ public class Endpoint : MonoBehaviour {
 
     void Update()
     {
-        if (!isBeamconntected)
+        if (!isBeamconntected && LevelManager.GameStarted)
         {
             if (gameObject.GetComponent<AudioSource>() != null)
                 this.gameObject.GetComponent<AudioSource>().Play();

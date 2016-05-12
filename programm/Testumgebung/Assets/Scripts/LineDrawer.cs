@@ -23,6 +23,7 @@ public class LineDrawer : MonoBehaviour
         {           
             GameObject point = transform.GetChild(i).gameObject;
             renderer.SetPosition(i, point.transform.localPosition);
+            point.GetComponentInChildren<Transform>().gameObject.SetActive(false);
         }
     }
 }

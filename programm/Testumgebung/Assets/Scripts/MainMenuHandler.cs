@@ -169,7 +169,7 @@ public class MainMenuHandler : MonoBehaviour
 
     public void ClickPlay()
     {
-        MadLevel.LoadLevelByName("Select Level");
+        MadLevel.LoadLevelByName("SelectLevel");
     }
 
     public void ClickReset(GameObject previousMenu)

@@ -129,8 +129,13 @@ public class Beamscript : MonoBehaviour
               
                 // if beam hits a colored Mirror
                 else if (hit.transform.gameObject.tag == colorMirrorTag)
-                {                 
-                    setMirrorReflection(hit, true, hit.transform.gameObject.GetComponentInParent<ColorMirror>().GetReflection(previousColor, dir, hit), previousColor);              
+                {
+                    setMirrorReflection(hit, true, hit.transform.gameObject.GetComponentInParent<ColorMirror>().GetReflection(previousColor, dir, hit), previousColor);
+                }
+               // if beam hit Color Changer Gem
+               else if (hit.transform.gameObject.tag == colorChangerTag)
+                {
+                    setMirrorReflection(hit, true, dir, hit.transform.gameObject.GetComponent<ChangeBeamColor>().getNewBeamColor());
                 }
                 else
                 {
@@ -138,22 +143,6 @@ public class Beamscript : MonoBehaviour
                 }
 
                 #endregion
-                // if beam hit Color Changer Gem
-                if (hit.transform.gameObject.tag == colorChangerTag)
-                {
-                    var changecolor = hit.transform.gameObject.GetComponentInParent<ChangeBeamColor>().Reflect(previousColor);
-                    if (!changecolor.IsChanged)
-                    {
-                        setMirrorReflection(hit, true, dir, changecolor.getNewBeamColor());
-                       
-                    }
-                    else
-                    {
-                        isActive = false;
-                      
-                    }
-                }
-
 
                 #region Door 
                 // if beam hits doorKnop       

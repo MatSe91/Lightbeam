@@ -20,17 +20,18 @@ public class DoorKnopSimulation : MonoBehaviour {
 	
 	}
 	
-    public void activate()
+    public void activate(Color color)
     {
+        foreach (var sys in systems)
+        {
+            sys.startColor = color;
+            if (!sys.isPlaying) sys.Play();
+        }
         foreach (var anim in animators)
         {
             anim.SetBool("isActivated", true);
         }
 
-        foreach (var sys in systems)
-        {
-            if (!sys.isPlaying) sys.Play();
-        }
     }
 
     public void deactivate()

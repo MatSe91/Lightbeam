@@ -68,8 +68,10 @@ public class DoorOpener: MonoBehaviour
     private void OpenDoorProperties()
     {
         if (loadingParticleSystem.isPlaying) loadingParticleSystem.Stop();
-        Door.GetComponent<DoorManager>().OpenDoor();
-        GetComponentInChildren<DoorKnopSimulation>().activate();
+
+        var color = withColor ? CustomColor.GetColor(validColor) : CustomColor.GetColor(CustomColor.CustomizedColor.white);
+        Door.GetComponent<DoorManager>().OpenDoor(color);
+        GetComponentInChildren<DoorKnopSimulation>().activate(color);
         DoorIsOpen = true;
     }
 
@@ -127,5 +129,7 @@ public class DoorOpener: MonoBehaviour
     {
         timecounter = secTillActivation;
         loadingParticleSystem = loading.GetComponent<ParticleSystem>();
+
+        
     }
 }

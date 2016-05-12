@@ -54,9 +54,10 @@ public class DoorManager : MonoBehaviour {
         }
     }
 
-    public void OpenDoor()
+    public void OpenDoor(Color color)
     {
         isDoorOpen = true;
+        doorOpenParticleBeam.GetComponent<ParticleSystem>().startColor = color;
         doorOpenParticleBeam.SetActive(true);
         curPosition = transform.parent.GetChild(0).localPosition;
       

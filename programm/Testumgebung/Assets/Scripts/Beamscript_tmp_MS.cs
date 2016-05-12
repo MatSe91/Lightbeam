@@ -131,6 +131,7 @@ public class Beamscript_tmp_MS : MonoBehaviour
                 {
                     setMirrorReflection(hit, true, hit.transform.gameObject.GetComponentInParent<ColorMirror>().GetReflection(previousColor, dir, hit), previousColor);
                 }
+            
                 else
                 {
                     isActive = false;

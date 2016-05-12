@@ -71,8 +71,14 @@ public  class  CustomColor : MonoBehaviour   {
     }
 
     private static bool checkColor(Color c1, Color c2)
-    {        
-        if (Mathf.RoundToInt(c1.r) == Mathf.RoundToInt(c2.r) && Mathf.RoundToInt(c1.g) == Mathf.RoundToInt(c2.g) && Mathf.RoundToInt(c1.b) == Mathf.RoundToInt(c2.b))
+    {
+        //if ( Mathf.RoundToInt(c1.r) == Mathf.RoundToInt(c2.r) && Mathf.RoundToInt(c1.g) == Mathf.RoundToInt(c2.g) && Mathf.RoundToInt(c1.b) == Mathf.RoundToInt(c2.b))
+        //{
+        //    return true;
+        //}
+        //return false;
+
+        if (Mathf.Abs(c1.r - c2.r) < 0.02f && Mathf.Abs(c1.g - c2.g) < 0.02f && Mathf.Abs(c1.b - c2.b) < 0.02f)
         {
             return true;
         }

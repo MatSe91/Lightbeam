@@ -44,6 +44,8 @@ public class CameraAnimationScript : MonoBehaviour {
     {
         checkpoint.GetComponent<PlayerRotator>().enabled = true;
         checkpoint.transform.parent.GetComponentInChildren<SpriteRenderer>().enabled = true;
+        CollectibleManager.AddCollectedItems();
+        DigitalRuby.FastLineRenderer.BeamCollider.OnDestroy();
 
     }
 

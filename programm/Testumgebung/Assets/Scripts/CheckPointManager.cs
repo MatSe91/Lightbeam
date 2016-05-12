@@ -46,6 +46,6 @@ public class CheckPointManager : MonoBehaviour {
             }
         }
 
-        CollectibleManager.AddCollectedItems();
+      
     }
 }

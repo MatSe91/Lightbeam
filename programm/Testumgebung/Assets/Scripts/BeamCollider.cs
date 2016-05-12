@@ -47,7 +47,7 @@ namespace DigitalRuby.FastLineRenderer
 
             foreach (var item in ColliderList)
             {
-                DestroyImmediate(item);
+                Destroy(item);
             }
         }
     }

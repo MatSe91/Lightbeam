@@ -128,14 +128,9 @@ public class Beamscript_tmp_MS : MonoBehaviour
                 // if beam hits a colored Mirror
                 else if (hit.transform.gameObject.tag == colorMirrorTag)
                 {
-                    var colorMirror =  hit.transform.gameObject.GetComponentInParent<ColorMirror>().Reflect(previousColor, dir, hit);
-                    if (colorMirror.Reflected)
-                        setMirrorReflection(hit, true, colorMirror.Dir, previousColor);
-                    else
-                    {
-                        isActive = false;
-                    }
+                    setMirrorReflection(hit, true, hit.transform.gameObject.GetComponentInParent<ColorMirror>().GetReflection(previousColor, dir, hit), previousColor);
                 }
+            
                 else
                 {
                     isActive = false;

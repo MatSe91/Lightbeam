@@ -129,14 +129,8 @@ public class Beamscript : MonoBehaviour
               
                 // if beam hits a colored Mirror
                 else if (hit.transform.gameObject.tag == colorMirrorTag)
-                {
-                    var colorMirror = hit.transform.gameObject.GetComponentInParent<ColorMirror>().Reflect(previousColor, dir, hit);
-                    if (colorMirror.Reflected)
-                        setMirrorReflection(hit, true, colorMirror.Dir, previousColor);
-                    else
-                    {
-                        isActive = false;
-                    }
+                {                 
+                    setMirrorReflection(hit, true, hit.transform.gameObject.GetComponentInParent<ColorMirror>().GetReflection(previousColor, dir, hit), previousColor);              
                 }
                 else
                 {
@@ -147,7 +141,17 @@ public class Beamscript : MonoBehaviour
                 // if beam hit Color Changer Gem
                 if (hit.transform.gameObject.tag == colorChangerTag)
                 {
-                    setMirrorReflection(hit, true, dir, hit.transform.gameObject.GetComponent<ChangeBeamColor>().getNewBeamColor());
+                    var changecolor = hit.transform.gameObject.GetComponentInParent<ChangeBeamColor>().Reflect(previousColor);
+                    if (!changecolor.IsChanged)
+                    {
+                        setMirrorReflection(hit, true, dir, changecolor.getNewBeamColor());
+                       
+                    }
+                    else
+                    {
+                        isActive = false;
+                      
+                    }
                 }
 
 

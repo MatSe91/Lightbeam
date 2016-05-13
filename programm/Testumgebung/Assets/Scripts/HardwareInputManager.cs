@@ -27,7 +27,7 @@ public class HardwareInputManager : MonoBehaviour
                 }
             }
 
-            if (MadLevel.currentLevelName == "Select Level")
+            if (MadLevel.currentLevelName == "SelectLevel")
             {
                 MadLevel.LoadLevelByName("MainMenu");
                 return;

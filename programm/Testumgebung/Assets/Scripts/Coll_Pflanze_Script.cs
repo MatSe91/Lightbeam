@@ -28,9 +28,11 @@ public class Coll_Pflanze_Script : MonoBehaviour {
 
     void OnTriggerEnter(Collider col)
     {
+
+        Debug.Log("Collider: "+ col);
         if (col.gameObject.CompareTag("Collectible"))
         {
-           // print("Do Something awesome like an animation!");
+         //  print("Do Something awesome like an animation!");
             ParticleSystem part = this.gameObject.GetComponent<ParticleSystem>();
             if (part != null && !part.isPlaying) part.Play();
             Destroy(col.gameObject);

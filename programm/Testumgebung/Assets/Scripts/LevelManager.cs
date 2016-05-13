@@ -96,7 +96,7 @@ public class LevelManager : MonoBehaviour {
     public void ClickSelect()
     {
         destroyLightbeam();
-        MadLevel.LoadLevelByName("Select Level");
+        MadLevel.LoadLevelByName("SelectLevel");
     }
 
     public void ClickMainMenu()

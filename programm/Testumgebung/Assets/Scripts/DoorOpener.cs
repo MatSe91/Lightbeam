@@ -128,8 +128,6 @@ public class DoorOpener: MonoBehaviour
     void Start()
     {
         timecounter = secTillActivation;
-        loadingParticleSystem = loading.GetComponent<ParticleSystem>();
-
-        
+        loadingParticleSystem = loading.GetComponent<ParticleSystem>();        
     }
 }

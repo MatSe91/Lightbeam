@@ -26,6 +26,7 @@ public class Beamscript : MonoBehaviour
     private Vector3 dir;
     private bool beamIsInWater;
     public float lineRadius = 0.06f;
+    public bool inWaterAtStart = false;
 
     [Range(0.3f, 0.5f)]
     public float jitterMultiplier = 0.4f;
@@ -135,7 +136,15 @@ public class Beamscript : MonoBehaviour
                // if beam hit Color Changer Gem
                else if (hit.transform.gameObject.tag == colorChangerTag)
                 {
-                    setMirrorReflection(hit, true, dir, hit.transform.gameObject.GetComponent<ChangeBeamColor>().getNewBeamColor());
+                    var changecolor = hit.transform.gameObject.GetComponent<ChangeBeamColor>().Reflect(previousColor);
+                    if (!changecolor.IsChanged)
+                    {
+                        setMirrorReflection(hit, true, dir, changecolor.getNewBeamColor());
+                    }
+                    else
+                    {
+                        isActive = false;
+                    }
                 }
                 else
                 {
@@ -265,7 +274,7 @@ public class Beamscript : MonoBehaviour
         property.Color = CustomColor.GetColor(startColor);
 
         isActive = true;
-        beamIsInWater = false;
+        beamIsInWater = inWaterAtStart;
     }
 
     #region helpers

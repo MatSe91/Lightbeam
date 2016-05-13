@@ -56,6 +56,5 @@ public class CameraAnimationScript : MonoBehaviour {
     public void isPhase3()
     {
         checkpoint.GetComponent<CheckPointManager>().setPhaseCompleted(true);
-        checkpoint.GetComponentInChildren<SpriteRenderer>().enabled = true;
     }
 }

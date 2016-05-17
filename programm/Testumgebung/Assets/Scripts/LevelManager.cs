@@ -106,6 +106,13 @@ public class LevelManager : MonoBehaviour {
       
     }
 
+    public void ClickSettings()
+    {
+        destroyLightbeam();
+        MadLevel.LoadLevelByName("SettingsMenu");
+
+    }
+
     private static void destroyLightbeam()
     {
         var beam = GameObject.FindGameObjectsWithTag("Beam");

@@ -137,6 +137,9 @@
 	<data name="language.German" xml:space="preserve">
 		<value>Deutsch</value>
 	</data>
+	<data name="manu.exitGame" xml:space="preserve">
+		<value>Wirklich verlassen?</value>
+	</data>
 	<data name="menu.MainMenu" xml:space="preserve">
 		<value>Hauptmenü</value>
 	</data>
@@ -153,15 +156,12 @@
 		<value>Sprache</value>
 	</data>
 	<data name="settings.Music" xml:space="preserve">
-		<value>Musik</value>
+		<value>Einstellungen</value>
 	</data>
 	<data name="settings.Reset" xml:space="preserve">
 		<value>Fortschritt zurücksetzen</value>
 	</data>
 	<data name="settings.Title" xml:space="preserve">
 		<value>Einstellungen</value>
-	</data>
-	<data name="manu.exitGame" xml:space="preserve">
-		<value>Wirklich verlassen?</value>
 	</data>
 </root>

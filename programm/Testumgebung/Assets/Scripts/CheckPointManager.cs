@@ -42,6 +42,7 @@ public class CheckPointManager : MonoBehaviour {
         {
             if (!isPhaseCompleted)
             {
+                
                 cam.GetComponent<CameraAnimationScript>().playAnimation(this.gameObject);
             }
         }

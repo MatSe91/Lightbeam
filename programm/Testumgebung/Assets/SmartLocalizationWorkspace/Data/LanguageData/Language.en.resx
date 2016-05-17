@@ -156,7 +156,7 @@
 		<value>Language</value>
 	</data>
 	<data name="settings.Music" xml:space="preserve">
-		<value>Music</value>
+		<value>Settings</value>
 	</data>
 	<data name="settings.Reset" xml:space="preserve">
 		<value>Reset progress</value>

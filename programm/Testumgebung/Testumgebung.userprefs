@@ -1,7 +1,9 @@
 ﻿<Properties StartupItem="Testumgebung.CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\EndMenuManager.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\CheckPointManager.cs">
     <Files>
+      <File FileName="Assets\Scripts\CheckPointManager.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\MirrorMovement.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\EndMenuManager.cs" Line="1" Column="1" />
       <File FileName="Assets\ExternalRessources\FastLineRenderer\Readme.txt" Line="1" Column="1" />
       <File FileName="Assets\Scripts\BeamRefraction.cs" Line="1" Column="1" />

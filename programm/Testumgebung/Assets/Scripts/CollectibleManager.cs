@@ -27,6 +27,7 @@ public static  class CollectibleManager
                 Collected.Add(collectible.name);
                 collectible.GetComponent<Rigidbody>().useGravity = true;
                 collectible.GetComponent<Rigidbody>().isKinematic = false;
+                collectible.GetComponent<Animator>().enabled = false;
             }
         }
     }

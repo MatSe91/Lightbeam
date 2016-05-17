@@ -42,9 +42,10 @@ public class CameraAnimationScript : MonoBehaviour {
 
     public void enableBeam()
     {
+        CollectibleManager.AddCollectedItems();
         checkpoint.GetComponent<PlayerRotator>().enabled = true;
         checkpoint.transform.parent.GetComponentInChildren<SpriteRenderer>().enabled = true;
-        CollectibleManager.AddCollectedItems();
+       
         DigitalRuby.FastLineRenderer.BeamCollider.OnDestroy();
 
     }

@@ -5,12 +5,17 @@ using System.Collections.Generic;
 public class LineDrawer : MonoBehaviour
 {
     public float width = 1;
+    public Color startColor;
+    public Color endColor;
+    public Material material;
     // Use this for initialization
     void Start()
     {
+        LineRenderer renderer = gameObject.AddComponent<LineRenderer>();
         int childCount = transform.childCount;
-        LineRenderer renderer = GetComponent<LineRenderer>();
-        renderer.SetVertexCount(childCount );
+        renderer.material = material;
+        renderer.SetColors(startColor, endColor);
+        renderer.SetVertexCount(childCount);
         renderer.SetWidth(width, width);
         renderer.useWorldSpace = false;
         
@@ -18,6 +23,7 @@ public class LineDrawer : MonoBehaviour
         {           
             GameObject point = transform.GetChild(i).gameObject;
             renderer.SetPosition(i, point.transform.localPosition);
+            point.GetComponentInChildren<Transform>().gameObject.SetActive(false);
         }
     }
 }

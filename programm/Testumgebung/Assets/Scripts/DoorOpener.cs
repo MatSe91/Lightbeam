@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.Collections;
 using System;
+using MadLevelManager;
+using DigitalRuby.FastLineRenderer;
 
 public class DoorOpener: MonoBehaviour
 {
@@ -19,12 +21,18 @@ public class DoorOpener: MonoBehaviour
     [Tooltip("Sekunden bis Schalter aktiviert")]
     public float secTillActivation = 60f;
 
+    [Tooltip("Object, das die Türknopfsimulation besitzt (Script).")]
+    public GameObject activated;
 
+    [Tooltip("Loading Particlesystem")]
+    public GameObject loading; 
+
+    private ParticleSystem loadingParticleSystem;
     private bool doorIsOpen =false;
     private bool isBeamconnected;
     private CustomColor.CustomizedColor collisionColor;
-    private Collider other;
     private float timecounter = 0f;
+
 
     public CustomColor.CustomizedColor CollisionColor
     {
@@ -54,82 +62,72 @@ public class DoorOpener: MonoBehaviour
 
     public void OpenDoor()
     {
+        OpenDoorProperties();
+    }
 
-        if (!withColor && !DoorIsOpen && isBeamconnected)
-        {          
-            Debug.Log("Animation Door open");
-            DoorIsOpen = true;
-        }
+    private void OpenDoorProperties()
+    {
+        if (loadingParticleSystem.isPlaying) loadingParticleSystem.Stop();
 
-        if (CollisionColor == validColor && withColor && !DoorIsOpen && isBeamconnected)
-        {           
-            Debug.Log("Animation Door open");
-            DoorIsOpen = true;
-        } 
+        var color = withColor ? CustomColor.GetColor(validColor) : CustomColor.GetColor(CustomColor.CustomizedColor.white);
+        Door.GetComponent<DoorManager>().OpenDoor(color);
+        GetComponentInChildren<DoorKnopSimulation>().activate(color);
+        DoorIsOpen = true;
     }
 
     public void SetBeamConnected(bool value)
     {
         isBeamconnected = value;
-        if (value)
-        {
-           
-        }
-        
     }
-
-    void OnCollisionEnter(Collision col)
-    {
-        if (timecounter%60 <= 0)
-        {
-            
-            OpenDoor();
-            other = col.collider;
-        }
-        Debug.Log(Mathf.Floor(timecounter % 60));
-    }
-
-  
-
 
     void Update()
     {      
-        if (!other && DoorIsOpen && ConstantTrigger)
-        { 
-            CloseDoor(); 
-        }
-        if(isBeamconnected)
-        {
-            timecounter -= Time.deltaTime;
-        }
-        else timecounter = secTillActivation;
 
+        if (isBeamconnected)
+        {
+            if ((!withColor && !DoorIsOpen && isBeamconnected) || (withColor && CollisionColor.Equals(validColor) && !DoorIsOpen && isBeamconnected))
+            {
+                if (!loadingParticleSystem.isPlaying && !doorIsOpen)
+                {
+                    loadingParticleSystem.Play();
+                    loading.GetComponent<AudioSource>().Play();
+                }
+                if (!doorIsOpen) timer();
+            }
+
+
+        }
+        else
+        {
+            timecounter = secTillActivation;
+            if (loadingParticleSystem.isPlaying) loadingParticleSystem.Stop();
+        }
+
+        CloseDoor();
+    }
+
+    private void timer()
+    {
+        timecounter -= Time.deltaTime;
+
+        if (timecounter % 60 <= 0)
+        {
+            OpenDoor();
+        }
     }
 
     public void CloseDoor()
     {
-        if (DoorIsOpen && !isBeamconnected)
+        if (DoorIsOpen && !isBeamconnected && ConstantTrigger)
         {
-            Debug.Log("Animation Door close");
-            DoorIsOpen = false;
-           
+            Door.GetComponent<DoorManager>().CloseDoor();
+            GetComponentInChildren<DoorKnopSimulation>().deactivate();
+            DoorIsOpen = false;         
         }
     }
     void Start()
     {
         timecounter = secTillActivation;
+        loadingParticleSystem = loading.GetComponent<ParticleSystem>();        
     }
 }
-
-
-    // starte die Partikel mit X sekunden dauer
-    // Wenn lichtstrahl runter --> breche Partikel abspielen ab (aktuellen Loop beenden, nicht nur abbrechen)
-    // wenn Partikel dauer in Sec erfolgreich durchgelaufen
-    // beende Partikel
-    // öffne Tür
-    // spiele animation ab
-
-    // ggf wenn licht von doorknop
-    // dann beende animation
-    // ggf selbe prozedure von vorn
-

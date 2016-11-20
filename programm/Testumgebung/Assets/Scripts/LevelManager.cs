@@ -1,40 +1,67 @@
 using UnityEngine;
-using System.Collections;
-using System;
-using System.Collections.Generic;
+using MadLevelManager;
+using DigitalRuby.FastLineRenderer;
 
 public class LevelManager : MonoBehaviour {
-    private GameObject inputManager;
-    private GameObject lastActiveGameObject;
-    private GameObject pauseObject;
 
-    //private List<GameObject> waterDropList;
+    private static bool gameStarted;
+    private static bool gameFinished;
+
+    private GameObject lastActiveGameObject;
+    private GameObject pauseCanvas;
+    private GameObject endMenuCanvas;
+
+    public static bool GameStarted
+    {
+        get
+        {
+            return gameStarted;
+        }
+
+        set
+        {
+            gameStarted = value;
+        }
+    }
+
+    public static bool GameFinished
+    {
+        get
+        {
+            return gameFinished;
+        }
+
+        set
+        {
+            gameFinished = value;
+        }
+    }
 
     void Awake()
     {
-        inputManager = GameObject.Find("Main Camera");
+        GameFinished = false;
+        GameStarted = false;
     }
 
     public void Pause(GameObject obj)
     {
-        pauseObject = obj;
-        lastActiveGameObject = InputManager.lastObjectBevorePause;
+        pauseCanvas = obj;
+        lastActiveGameObject = InputManager.sameObject;
 
 
-        if (pauseObject.activeInHierarchy == false)
+        if (!pauseCanvas.activeInHierarchy)
         {
-            de_ActivateMenue(true, 0, false);
+            de_ActivateMenue(true, false);
         }
         else
         {
-            de_ActivateMenue(false, 1, true);
+            de_ActivateMenue(false, true);
         }
     }
 
-    private void de_ActivateMenue(bool canvasActive, int timeScale, bool objectActive)
+    private void de_ActivateMenue(bool canvasActive, bool objectActive)
     {
-        pauseObject.SetActive(canvasActive);
-        //Time.timeScale = timeScale;
+        pauseCanvas.SetActive(canvasActive);
         De_ActivateGameObjects(objectActive);
     }
 
@@ -43,17 +70,58 @@ public class LevelManager : MonoBehaviour {
         if (lastActiveGameObject != null)
         {
             lastActiveGameObject.SendMessage("setActiveGameObject", bo);
-            inputManager.GetComponent<InputManager>().enabled = bo;
+            gameObject.GetComponent<InputManager>().enabled = bo;
         }
     }
 
-    public void addWaterDrop(GameObject water)
+    public  void SetCollectedItems()
     {
-       // waterDropList.Add(water);
+        CollectibleManager.AddCollectedItems();
+        CollectibleManager.SetCollectiblesToLevel();
     }
 
-    private void gainWaterDrop(List<GameObject> waterDropList)
+
+    public void ClickAgain()
     {
-        // TODO jeder Waterdrop, der in der Liste steht, soll persistiert werden
+        destroyLightbeam();
+        MadLevel.LoadLevelByName(MadLevel.currentLevelName);
+    }
+
+    public void ClickNext()
+    {
+        destroyLightbeam();
+        MadLevel.LoadNext();
+    }
+
+    public void ClickSelect()
+    {
+        destroyLightbeam();
+        MadLevel.LoadLevelByName("SelectLevel");
+    }
+
+    public void ClickMainMenu()
+    {
+        destroyLightbeam();
+        MadLevel.LoadLevelByName("MainMenu");
+      
+    }
+
+    public void ClickSettings()
+    {
+        destroyLightbeam();
+        MadLevel.LoadLevelByName("SettingsMenu");
+
+    }
+
+    private static void destroyLightbeam()
+    {
+        var beam = GameObject.FindGameObjectsWithTag("Beam");
+        foreach (var item in beam)
+        {
+            FastLineRenderer flr = item.GetComponent<Beamscript>().R;
+            flr.Reset();
+            Destroy(flr);
+            Destroy(item);
+        }
     }
 }

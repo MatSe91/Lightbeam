@@ -5,15 +5,13 @@ using System;
 public class InputManager : MonoBehaviour {
 
     private GameObject inUse;
-    private GameObject sameObject;
-    private bool gameStarted;
-    public GameObject PlayerChild;
+    public static GameObject sameObject;
+    private GameObject player;
     public static bool touchInput;
-    public static GameObject lastObjectBevorePause;
 
 	// Use this for initialization
 	void Start () {
-        gameStarted = false;
+        player = GameObject.Find("Player");
 	}
 
     // Update is called once per frame
@@ -30,48 +28,29 @@ public class InputManager : MonoBehaviour {
             if (Physics.Raycast(ray, out hit))
             {
                 // ermittle das GameObject, welches jetzt gerade getroffen wurde
-                inUse = hit.collider.gameObject;
+                inUse = hit.transform.gameObject;
 
-                // Wenn Hintergrund oder Wand getroffen wurde mache nichts
-                // TODO refctoring
-                if (inUse.name == "Background" || inUse.tag == "Wall" || inUse.layer == 4|| inUse.layer == 9)
-                {
-                    return;
-                }
-
-                // wenn ein TouchCollider getroffen wurde
-                if (inUse.name == "TouchCollider")
-                {
-                    // dann ermittle das Parent GameObject
-                    inUse = inUse.transform.parent.gameObject;
-
+                if (inUse.layer == 14)
+                { 
                     // Wird der Lichtkörper angeklickt starte das Spiel und aktiviere Script PlayerRotator2
-                    if (!gameStarted && inUse.Equals(PlayerChild))
+                    if (!LevelManager.GameStarted && hit.transform.gameObject.Equals(player.GetComponentInChildren<PlayerRotator>().gameObject))
                     {
-                        gameStarted = true;
-                        PlayerChild.GetComponent<PlayerRotator>().enabled = true;
-                        //  Debug.Log("Spiel Gestartet:" + gameStarted );
+                        player.GetComponent<LoadPlayerForGame>().ManageStart();
                     }
 
                     // wenn das Spiel gestartet wurde darfst du arbeiten
-                    if (gameStarted)
+                    if (LevelManager.GameStarted)
                     {
-
-                        // Debug.Log("foo" + inUse, inUse);
                         // wenn ein neues Objekt gewählt wurde, setze das Alte auf passiv
                         if (sameObject != null && !sameObject.Equals(inUse))
                         {
-
                             sameObject.SendMessage("setActiveGameObject", false);
                         }
                         // und setze Objekt auf aktiv
-                        inUse.SendMessage("setActiveGameObject", true);
-
+                     inUse.SendMessage("setActiveGameObject", true);
                     }
-                    lastObjectBevorePause = inUse;
+                    sameObject = inUse;
                 }
-                // speichere das GameObject zwischen zur Überprüfung
-                sameObject = inUse;
             }
         }
         else if (Input.GetMouseButtonUp(0))

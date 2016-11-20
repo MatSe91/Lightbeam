@@ -8,6 +8,7 @@ public class PlayerRotator : MonoBehaviour {
     private float angle;
     public int framesTillMovable = 8;
     public GameObject lightBeam;
+    public GameObject touchAnimGameObject;
     private int pressed = 0;
 
 
@@ -20,6 +21,24 @@ public class PlayerRotator : MonoBehaviour {
     void setActiveGameObject(bool rot)
     {
         active = rot;
+        if (active)
+        {
+            if (touchAnimGameObject != null)
+            {
+                touchAnimGameObject.SetActive(true);
+            }
+            else
+            {
+                print("Bitte fügen Sie einen Touch Anim Game Objekt hinzu.");
+            }
+        }
+        else 
+        {
+            if (touchAnimGameObject != null)
+            {
+                touchAnimGameObject.SetActive(false);
+            }
+        }
     }
 
     void Update() {

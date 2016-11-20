@@ -6,6 +6,7 @@ public class CheckPointManager : MonoBehaviour {
     private bool isBeamconntected;
     private bool isPhaseCompleted;
     private GameObject cam;
+   
 
     public void Start()
     {
@@ -41,8 +42,11 @@ public class CheckPointManager : MonoBehaviour {
         {
             if (!isPhaseCompleted)
             {
+                
                 cam.GetComponent<CameraAnimationScript>().playAnimation(this.gameObject);
             }
         }
+
+      
     }
 }

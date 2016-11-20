@@ -49,8 +49,8 @@ public class BeamRefraction
     {
         float alpha = Vector3.Angle(-direction, hit.normal);
         Vector3 normale = -hit.normal;
-        float n1 = medium.refraction_Index(rm1);    // ist das gut? evtl. Refactoring
-        float n2 = medium.refraction_Index(rm2);    // ist das gut? evtl. Refactoring
+        float n1 = medium.refraction_Index(rm1);
+        float n2 = medium.refraction_Index(rm2);
         float beta = 0;
 
         //  n1 = dünner Stoff, n2 = dichter Stoff
@@ -74,37 +74,44 @@ public class BeamRefraction
         else //  n1 = dichter Stoff, n2 = dünner Stoff
         {
             beta = Mathf.Rad2Deg * (Mathf.Asin(((Mathf.Sin(alpha * Mathf.Deg2Rad)) * n1) / n2));
-
+            
             // Wenn Richtungsvektor nach rechts zeigt (positiver x Wert) breche nach rechts weg
             if (direction.x > 0)
             {
                 // wenn beta > 0  --> Brechung, sonst Totalreflexion
-                if (beta > 0) 
-                {
-                    this.dir = Quaternion.Euler(0, 0, -beta) * normale;
-                    this.inWater = false;
-                }
-                else
-                {
-                    this.dir = Vector3.Reflect(direction, -normale);
-                    this.inWater = true;
-                }
+                refraction(direction, normale, beta, true);
             }
             // Wenn Richtungsvektor nach links zeigt(negativer x Wert) breche nach links weg
             else
             {
                 // wenn beta > 0  --> Brechung, sonst Totalreflexion
-                if (beta > 0) 
-                {
-                    this.dir = Quaternion.Euler(0, 0, beta) * normale;
-                    this.inWater = false;
-                }
-                else
-                {
-                    this.dir = Vector3.Reflect(direction, -normale);
-                    this.inWater = true;
-                }
+                refraction(direction, normale, beta, false);
             }
+
+            if (beta > 0)
+            {
+                this.inWater = false;
+            }
+            else
+            {
+                this.inWater = true;
+            }
+        }
+    }
+
+    private void refraction(Vector3 direction, Vector3 normale, float beta, bool value)
+    {
+        if (beta > 0)
+        {
+            if (value)
+            {
+                beta = -beta;
+            }
+            this.dir = Quaternion.Euler(0, 0, beta) * normale;
+        }
+        else
+        {
+            this.dir = Vector3.Reflect(direction, -normale);
         }
     }
 }

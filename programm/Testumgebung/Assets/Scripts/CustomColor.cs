@@ -1,6 +1,4 @@
 using UnityEngine;
-using System.Collections;
-
 public  class  CustomColor : MonoBehaviour   {
 
     public enum CustomizedColor
@@ -11,84 +9,80 @@ public  class  CustomColor : MonoBehaviour   {
         yellow,
         green,
         blue,
-        indigo,
         violet,
     }
 
-// TODO ergänzen und bearbeiten
     public static Color GetColor(CustomizedColor color)
     {
-        if (color == CustomizedColor.white)
+        int number = (int)color;
+        switch (number)
         {
-            return Color.white;
+            case 0:
+                return new Color(0.58f, 0.529f, 1, 0.902f); // white
+            case 1:
+                return new Color(1, 0, 0, 0.8f); // red
+            case 2:
+                return new Color(1, 0.65f, 0, 0.8f); // orange
+            case 3:
+                return new Color(1, 0.92f, 0.016f, 0.8f); // yellow
+            case 4:
+                return new Color(0, 1, 0, 0.8f); // green
+            case 5:
+                return new Color(0, 0, 1, 0.8f); // blue
+            case 6:
+                return new Color(0.5f, 0, 0.5f, 0.8f); // violet
+            default:
+                return new Color(0.58f, 0.529f, 1, 0.902f); // white
+
         }
-        if (color == CustomizedColor.red)
-        {
-            return Color.red;
-        }
-        if (color == CustomizedColor.orange)
-        {
-            return new Color(1, 0.65f, 0, 1);
-        }
-        if (color == CustomizedColor.yellow)
-        {
-            return Color.yellow;
-        }
-        if (color == CustomizedColor.green)
-        {
-            return Color.green;
-        }
-        if (color == CustomizedColor.blue)
-        {
-            return Color.blue;
-        }
-        if (color == CustomizedColor.indigo)
-        {
-            return new Color(0.29f, 0, 0.51f, 1);
-        }
-        if (color == CustomizedColor.violet)
-        {
-            return new Color(0.5f, 0, 0.5f, 1);
-        }
-        return Color.white;
     }
 
     public static CustomizedColor GetCustomColor(Color color)
     {
-        if (color == Color.white)
+        if (checkColor(color, new Color(0.58f, 0.529f, 1, 0.902f)))
         {
             return CustomizedColor.white;
         }
-        if (color == Color.red)
+        if (checkColor(color, new Color(1, 0, 0, 0.8f)))
         {
             return CustomizedColor.red;
         }
-        if (color == new Color(255, 165, 0, 1))
+        if (checkColor(color, new Color(1, 0.65f, 0, 0.8f)))
         {
             return CustomizedColor.orange;
         }
-        if (color == Color.yellow)
+        if (checkColor(color, new Color(1, 0.92f, 0.016f, 0.8f)))
         {
             return CustomizedColor.yellow;
         }
-        if (color == Color.green)
+        if (checkColor(color, new Color(0, 1, 0, 0.8f)))
         {
             return CustomizedColor.green;
         }
-        if (color == Color.blue)
+        if (checkColor(color, new Color(0, 0, 1, 0.8f)))
         {
             return CustomizedColor.blue;
         }
-        if (color == new Color(75, 0, 130, 1))
-        {
-            return CustomizedColor.indigo;
-        }
-        if (color == new Color(128, 0, 128, 1))
+        if (checkColor(color, new Color(0.5f, 0, 0.5f, 0.8f)))
         {
             return CustomizedColor.violet;
         }
         return CustomizedColor.white;
     }
 
+    private static bool checkColor(Color c1, Color c2)
+    {
+        //if ( Mathf.RoundToInt(c1.r) == Mathf.RoundToInt(c2.r) && Mathf.RoundToInt(c1.g) == Mathf.RoundToInt(c2.g) && Mathf.RoundToInt(c1.b) == Mathf.RoundToInt(c2.b))
+        //{
+        //    return true;
+        //}
+        //return false;
+
+        if (Mathf.Abs(c1.r - c2.r) < 0.02f && Mathf.Abs(c1.g - c2.g) < 0.02f && Mathf.Abs(c1.b - c2.b) < 0.02f)
+        {
+            return true;
+        }
+        return false;
+    }
 
 }

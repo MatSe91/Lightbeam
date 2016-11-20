@@ -1,24 +1,53 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-
+using System;
+using UnityEngine;
 
 public class Collectible : MonoBehaviour
 {
-    [Tooltip ("Angabe ob das Sammelobjekt bereits eingesammelt wurde")]
-    public bool collected = false;
+    private bool collected = false;
+    private bool connected;
     private Collider other;
 
-   /// <summary>
-   /// Collect the collectible  on with trigger
-   /// </summary>
-   /// <param name="col"></param>
-    void OnTriggerEnter(Collider col)
-    {
+    private Animator animator;
+    private ParticleSystem sys;
+    private AudioSource sfx;
 
-        collected = true;
+
+
+    void Start()
+    {
+       animator =  gameObject.GetComponent<Animator>();
+       sfx = gameObject.GetComponent<AudioSource>();
+       sys = gameObject.GetComponent<ParticleSystem>();        
+       sys.Stop();
+    }
+
+    public bool Collected
+    {
+        get
+        {
+            return collected;
+        }
+
+        set
+        {
+            collected = value;
+        }
+    }
+
+    /// <summary>
+    /// Collect the collectible  on with trigger
+    /// </summary>
+    /// <param name="col"></param>
+    void OnTriggerEnter(Collider col)
+    { 
         other = col;
+       
+    }
+
+    void OnTriggerStay(Collider col)
+    {
+        connected = true;
+      
 
     }
     /// <summary>
@@ -26,11 +55,47 @@ public class Collectible : MonoBehaviour
     /// </summary>
     void Update()
     {
-        if (collected && !other)
-        {
-            collected = false;
-        }
-       
 
+        // Das hier ist der größte Schrott, aber anders funktioniert es einfach nicht bei mir
+        // vorallem 2. und 3. If, fehle eine davon spackt es wieder abartig rum
+
+        if (connected && !collected)
+        {
+            collected = true;
+            if (sfx != null)
+                sfx.Play();
+            else Debug.Log("No SFX File on WaterDrop!");
+        }
+
+        if (other == null && !connected)
+        {           
+            collected = false;
+            connected = false;
+        }
+
+        if (other == null && connected)
+        {
+            connected = false;
+        }
+        animateWater();
+    }
+
+    private void animateWater()
+    {
+        if (collected)
+        {
+            animator.SetBool("play", true);
+            if (!sys.isPlaying) sys.Play();
+
+            if (LevelManager.GameFinished)
+            {
+                animator.enabled = false;
+            }
+        }
+        else
+        {
+            if (sys.isPlaying) sys.Stop();
+            animator.SetBool("play", false);
+        }        
     }
 }
